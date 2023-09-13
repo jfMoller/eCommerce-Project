@@ -1,0 +1,23 @@
+<template>
+    <nav class="space-x-6">
+        <StyledRouterLink text="Home" path="/"
+            additionalClass="text-gray-400 hover:text-white transition duration-300 ease-in-out" />
+        <StyledRouterLink text="About" path="/about"
+            additionalClass="text-gray-400 hover:text-white transition duration-300 ease-in-out" />
+        <StyledRouterLink text="Shop" path="/shop"
+            additionalClass="text-gray-400 hover:text-white transition duration-300 ease-in-out" />
+        <StyledRouterLink text="Contact" path="/contact"
+            additionalClass="text-gray-400 hover:text-white transition duration-300 ease-in-out" />
+    </nav>
+</template>
+  
+<script lang="ts">
+import StyledRouterLink from '../StyledRouterLink.vue';
+
+export default {
+    name: "FooterNavItems",
+    components: {
+        StyledRouterLink
+    },
+}
+</script>
