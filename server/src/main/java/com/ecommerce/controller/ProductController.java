@@ -2,7 +2,7 @@ package com.ecommerce.controller;
 
 
 import com.ecommerce.entity.Product;
-import com.ecommerce.service.ProductService;
+import com.ecommerce.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +23,11 @@ public class ProductController {
     @GetMapping("/all")
     public ResponseEntity<List<Product>> getProducts() {
         return productService.getProducts();
+    }
+
+    @GetMapping("/{product_id}")
+    public ResponseEntity<Object> getProduct(@PathVariable String product_id) {
+        return productService.getProduct(product_id);
     }
 
     @PostMapping("/insert")
