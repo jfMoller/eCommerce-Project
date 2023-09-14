@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collection = "orders")
+@Document(collection = "orders2")
 public class Order {
 
     @Id

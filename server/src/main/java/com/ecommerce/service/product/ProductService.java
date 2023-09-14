@@ -2,8 +2,9 @@ package com.ecommerce.service.product;
 
 import com.ecommerce.entity.Product;
 import com.ecommerce.repository.ProductRepository;
+import com.ecommerce.service.CollectionService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,17 @@ public class ProductService implements ProductServiceInterface {
 
     private final ProductRepository productRepository;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private final CollectionService collectionService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, CollectionService collectionService) {
         this.productRepository = productRepository;
+        this.collectionService = collectionService;
+    }
+
+    @PostConstruct
+    public void setupCollection() {
+        collectionService.setupCollection("products");
     }
     @Override
     public ResponseEntity<List<Product>> getProducts() {
