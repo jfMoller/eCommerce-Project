@@ -3,6 +3,7 @@ package com.ecommerce.service.product;
 import com.ecommerce.entity.Product;
 import com.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,12 @@ public class ProductService implements ProductServiceInterface {
     private final ProductRepository productRepository;
 
     @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-
     @Override
     public ResponseEntity<List<Product>> getProducts() {
         List<Product> products = productRepository.findAll();
