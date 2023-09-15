@@ -2,8 +2,6 @@ package com.ecommerce.service.product;
 
 import com.ecommerce.entity.Product;
 import com.ecommerce.repository.ProductRepository;
-import com.ecommerce.service.CollectionService;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +15,12 @@ public class ProductService implements ProductServiceInterface {
 
     private final ProductRepository productRepository;
 
-    private final CollectionService collectionService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CollectionService collectionService) {
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.collectionService = collectionService;
     }
 
-    @PostConstruct
-    public void setupCollection() {
-        collectionService.setupCollection("products");
-    }
     @Override
     public ResponseEntity<List<Product>> getProducts() {
         List<Product> products = productRepository.findAll();
