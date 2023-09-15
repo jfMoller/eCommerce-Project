@@ -1,7 +1,9 @@
-package com.ecommerce.config;
+package com.ecommerce.config.database;
 
 import com.ecommerce.entity.User;
 import com.ecommerce.repository.UserRepository;
+
+import static com.ecommerce.entity.Role.REGULAR_USER;
 
 public class UsersConfig {
 
@@ -13,7 +15,9 @@ public class UsersConfig {
 
     public void createDefaultUsers() {
         if (userRepository.count() == 0) {
-            createUser(new User("user@user.com", "password"));
+            createUser(
+                    new User("John Doe", "user@user.com", "password",
+                            REGULAR_USER));
         }
     }
 

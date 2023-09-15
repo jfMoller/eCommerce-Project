@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Product>> getProducts() {
+    public ResponseEntity<List<Product>> getProducts(@RequestHeader("Authorization") String token) {
         return productService.getProducts();
     }
 

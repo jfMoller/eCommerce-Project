@@ -1,4 +1,4 @@
-package com.ecommerce.config;
+package com.ecommerce.config.database;
 
 import com.ecommerce.entity.Product;
 import com.ecommerce.repository.ProductRepository;

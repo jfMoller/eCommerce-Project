@@ -1,4 +1,4 @@
-package com.ecommerce.config;
+package com.ecommerce.config.database;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
