@@ -1,6 +1,5 @@
 package com.ecommerce.auth;
 
-import com.ecommerce.entity.UserDetails;
 import com.ecommerce.service.user.UserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -8,12 +7,11 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.naming.AuthenticationException;
 import java.security.Key;
 import java.util.Date;
 
-import static com.ecommerce.entity.Role.ADMIN;
 import static com.ecommerce.auth.TokenInfo.*;
+import static com.ecommerce.entity.Role.ADMIN;
 
 @Service
 public class JwtTokenProvider {
@@ -54,7 +52,7 @@ public class JwtTokenProvider {
         }
     }
 
-    public String extractTokenInfo(String token, TokenInfo type) {
+    private String extractTokenInfo(String token, TokenInfo type) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
@@ -63,19 +61,13 @@ public class JwtTokenProvider {
         return (String) claims.get(type.toString());
     }
 
-    public UserDetails retrieveUserDetails(String user_id, String token) throws AuthenticationException {
-
-        if (isValidToken(token)) {
-            throw new AuthenticationException("Invalid token");
-        }
-
-        String token_id = extractTokenInfo(token, TokenInfo.ID);
-        return userDetailsService.getUserDetails(token_id);
-    }
-
-    public boolean isAdminRole(String token) {
+    public boolean hasAdminRole(String token) {
         String role = extractTokenInfo(token, ROLE);
         return role.equals(ADMIN.toString());
+    }
+
+    private boolean isValidAdminToken(String token) {
+        return isValidToken(token) && hasAdminRole(token);
     }
 
 }
