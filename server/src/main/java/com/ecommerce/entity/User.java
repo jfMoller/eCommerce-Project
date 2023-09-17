@@ -73,11 +73,11 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "_id='" + _id + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", orders=" + orders +
-                '}';
+                "\n    _id='" + _id + '\'' +
+                ",\n    email='" + email + '\'' +
+                ",\n    password='" + password + '\'' +
+                ",\n    orders=" + orders +
+                "\n}";
     }
 }
 

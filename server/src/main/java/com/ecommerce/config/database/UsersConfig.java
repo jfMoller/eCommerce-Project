@@ -23,6 +23,6 @@ public class UsersConfig {
 
     private void createUser(User user) {
         userRepository.save(user);
-        System.out.println("UsersConfig created a new user: " + user.getEmail());
+        System.out.println("UsersConfig created a new user: " + user.toString());
     }
 }

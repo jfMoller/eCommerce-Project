@@ -1,4 +1,4 @@
-package com.ecommerce.controller;
+package com.ecommerce.controller.product;
 
 
 import com.ecommerce.auth.JwtAuthProvider;
@@ -18,7 +18,7 @@ public class ProductController {
 
     private final JwtAuthProvider jwtAuthProvider;
 
-    private final boolean requiresAdminRole = true;
+    private final boolean requireAdminRole = true;
 
     @Autowired
     public ProductController(ProductService productService, JwtAuthProvider jwtAuthProvider) {
@@ -40,20 +40,20 @@ public class ProductController {
     public ResponseEntity<Product> insertProduct(
             @RequestHeader("Authorization") String token, @RequestBody Product product) {
         return jwtAuthProvider.authorizeAccess(
-                requiresAdminRole, token, () -> productService.addProduct(product));
+                requireAdminRole, token, () -> productService.addProduct(product));
     }
 
     @PutMapping("/edit/{product_id}")
     public ResponseEntity<String> editProduct(
             @RequestHeader("Authorization") String token, @PathVariable String product_id, @RequestBody Product editedProduct) {
         return jwtAuthProvider.authorizeAccess(
-                requiresAdminRole, token, () -> productService.editProduct(product_id, editedProduct));
+                requireAdminRole, token, () -> productService.editProduct(product_id, editedProduct));
     }
 
     @DeleteMapping("/delete/{product_id}")
     public ResponseEntity<String> deleteProduct(
             @RequestHeader("Authorization") String token, @PathVariable String product_id) {
         return jwtAuthProvider.authorizeAccess(
-                requiresAdminRole, token, () -> productService.deleteProduct(product_id));
+                requireAdminRole, token, () -> productService.deleteProduct(product_id));
     }
 }
