@@ -11,23 +11,20 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductService implements ProductServiceInterface {
+public class ProductService {
 
     private final ProductRepository productRepository;
-
 
     @Autowired
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    @Override
     public ResponseEntity<List<Product>> getProducts() {
         List<Product> products = productRepository.findAll();
         return ResponseEntity.ok(products);
     }
 
-    @Override
     public ResponseEntity<Object> getProduct(String product_id) {
         Optional<Product> requestedProduct = productRepository.findById(product_id);
 
@@ -42,13 +39,11 @@ public class ProductService implements ProductServiceInterface {
         }
     }
 
-    @Override
     public ResponseEntity<Product> addProduct(Product product) {
         Product savedProduct = productRepository.save(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
-    @Override
     public ResponseEntity<String> deleteProduct(String product_id) {
         if (isValidProductID(product_id)) {
             productRepository.deleteById(product_id);
@@ -58,7 +53,6 @@ public class ProductService implements ProductServiceInterface {
         }
     }
 
-    @Override
     public ResponseEntity<String> editProduct(String product_id, Product editedProduct) {
         if (isValidProductID(product_id)) {
             Product product = productRepository.findById(product_id).orElse(null);

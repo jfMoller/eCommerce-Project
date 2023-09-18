@@ -1,6 +1,7 @@
 package com.ecommerce.service.user;
 
-import com.ecommerce.controller.login.LoginCredentials;
+import com.ecommerce.controller.account.LoginCredentials;
+import com.ecommerce.controller.account.RegisterCredentials;
 import com.ecommerce.entity.User;
 import com.ecommerce.entity.UserDetails;
 import com.ecommerce.repository.UserRepository;
@@ -25,6 +26,25 @@ public class UserDetailsService {
                         user.getPassword().equals(loginCredentials.password()))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public User findUser(RegisterCredentials registerCredentials) {
+        return userRepository.findAll().stream()
+                .filter(user -> user.getUsername().equals(registerCredentials.username()) &&
+                        user.getEmail().equals(registerCredentials.email()) &&
+                        user.getPassword().equals(registerCredentials.password()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean isExistingUsername(String username) {
+        return userRepository.findAll().stream()
+                .anyMatch(user -> user.getUsername().equals(username));
+    }
+
+    public boolean isExistingEmail(String email) {
+        return userRepository.findAll().stream()
+                .anyMatch(user -> user.getEmail().equals(email));
     }
 
     public String findUserId(LoginCredentials loginCredentials) {

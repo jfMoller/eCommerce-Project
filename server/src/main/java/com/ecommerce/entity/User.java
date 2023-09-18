@@ -1,6 +1,7 @@
 package com.ecommerce.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -10,7 +11,11 @@ import java.util.List;
 public class User {
     @Id
     public String _id;
+
+    @Indexed(unique = true)
     public String username;
+
+    @Indexed(unique = true)
     private String email;
 
     private String password;
@@ -74,6 +79,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "\n    _id='" + _id + '\'' +
+                ",\n    username='" + username + '\'' +
                 ",\n    email='" + email + '\'' +
                 ",\n    password='" + password + '\'' +
                 ",\n    orders=" + orders +

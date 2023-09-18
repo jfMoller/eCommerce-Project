@@ -3,6 +3,7 @@ package com.ecommerce.config.database;
 import com.ecommerce.entity.User;
 import com.ecommerce.repository.UserRepository;
 
+import static com.ecommerce.entity.Role.ADMIN;
 import static com.ecommerce.entity.Role.REGULAR_USER;
 
 public class UsersConfig {
@@ -18,6 +19,9 @@ public class UsersConfig {
             createUser(
                     new User("John Doe", "user@user.com", "password",
                             REGULAR_USER));
+            createUser(
+                    new User("Jane Doe", "admin@admin.com", "password",
+                            ADMIN));
         }
     }
 
