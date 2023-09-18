@@ -46,8 +46,18 @@ public class AccountService {
 
     public ResponseEntity<Object> submitRegister(RegisterCredentials registerCredentials) {
 
-        if (findPreexistingCredentials(registerCredentials) != null) {
-            return findPreexistingCredentials(registerCredentials);
+        ResponseEntity<Object> formattingErrorsResponse =
+                findFormattingErrors(registerCredentials);
+
+        if (formattingErrorsResponse != null) {
+            return formattingErrorsResponse;
+        }
+
+        ResponseEntity<Object> preexistingCredentialsResponse =
+                findPreexistingCredentials(registerCredentials);
+
+        if (preexistingCredentialsResponse != null) {
+            return preexistingCredentialsResponse;
         }
 
         User newUser = new User(
@@ -78,6 +88,31 @@ public class AccountService {
                     ResponseStatus.ERROR,
                     HttpStatus.CONFLICT,
                     "An account with that email already exists.");
+        }
+
+        return null;
+    }
+
+    private ResponseEntity<Object> findFormattingErrors(RegisterCredentials registerCredentials) {
+        if (!AccountFormatProvider.isMatchingUsernameFormat(registerCredentials.username())) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid username; a valid username must be between 3-10 characters long.");
+        }
+
+        if (!AccountFormatProvider.isMatchingEmailFormat(registerCredentials.email())) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid email; valid format example: email@example.com.");
+        }
+
+        if (!AccountFormatProvider.isMatchingPasswordFormat(registerCredentials.password())) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid password; a valid password must be between 8-20 characters long.");
         }
 
         return null;
