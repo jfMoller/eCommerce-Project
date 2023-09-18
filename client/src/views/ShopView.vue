@@ -10,17 +10,17 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import ProductCards from '@/components/products/ProductCards.vue';
 import SearchInput from '@/components/SearchInput.vue';
-import { useAPI } from '@/stores/network/API';
+import { useProductAPI } from '@/stores/network/productAPI';
 import type { Product } from '@/types/products';
 
 export default defineComponent({
   name: "ShopView",
   setup() {
-    const API = useAPI();
+    const productAPI = useProductAPI();
     const products = ref<Product[] | null>(null);
 
     onMounted(async () => {
-      products.value = await API.getAllProducts();
+      products.value = await productAPI.getAllProducts();
     });
     return {
       products,
@@ -31,4 +31,4 @@ export default defineComponent({
   }
 
 });
-</script>
+</script>@/stores/network/productAPI
