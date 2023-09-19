@@ -24,8 +24,8 @@ public class AccountController {
         return accountService.submitLogin(loginCredentials);
     }
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<Object> register(@RequestBody RegisterCredentials registerCredentials) {
-        return accountService.submitRegister(registerCredentials);
+        return accountService.submitSignup(registerCredentials);
     }
 }

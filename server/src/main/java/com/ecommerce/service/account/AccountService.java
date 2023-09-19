@@ -41,10 +41,10 @@ public class AccountService {
             return JsonResponseProvider.sendAuthenticationEntity(details.role(), jwtToken);
         }
         return JsonResponseProvider.sendResponseEntity(
-                ResponseStatus.ERROR, HttpStatus.UNAUTHORIZED, "Invalid login credentials.");
+                ResponseStatus.ERROR, HttpStatus.OK, "Invalid email or password.");
     }
 
-    public ResponseEntity<Object> submitRegister(RegisterCredentials registerCredentials) {
+    public ResponseEntity<Object> submitSignup(RegisterCredentials registerCredentials) {
 
         ResponseEntity<Object> formattingErrorsResponse =
                 findFormattingErrors(registerCredentials);
@@ -79,14 +79,14 @@ public class AccountService {
         if (userDetailsService.isExistingUsername(registerCredentials.username())) {
             return JsonResponseProvider.sendResponseEntity(
                     ResponseStatus.ERROR,
-                    HttpStatus.CONFLICT,
+                    HttpStatus.OK,
                     "An account with that username already exists.");
         }
 
         if (userDetailsService.isExistingEmail(registerCredentials.email())) {
             return JsonResponseProvider.sendResponseEntity(
                     ResponseStatus.ERROR,
-                    HttpStatus.CONFLICT,
+                    HttpStatus.OK,
                     "An account with that email already exists.");
         }
 
@@ -97,21 +97,21 @@ public class AccountService {
         if (!AccountFormatProvider.isMatchingUsernameFormat(registerCredentials.username())) {
             return JsonResponseProvider.sendResponseEntity(
                     ResponseStatus.ERROR,
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid username; a valid username must be between 3-10 characters long.");
+                    HttpStatus.OK,
+                    "Invalid username; a valid username must be between 3-10 characters long without special characters.");
         }
 
         if (!AccountFormatProvider.isMatchingEmailFormat(registerCredentials.email())) {
             return JsonResponseProvider.sendResponseEntity(
                     ResponseStatus.ERROR,
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.OK,
                     "Invalid email; valid format example: email@example.com.");
         }
 
         if (!AccountFormatProvider.isMatchingPasswordFormat(registerCredentials.password())) {
             return JsonResponseProvider.sendResponseEntity(
                     ResponseStatus.ERROR,
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.OK,
                     "Invalid password; a valid password must be between 8-20 characters long.");
         }
 

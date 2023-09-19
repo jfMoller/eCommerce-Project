@@ -3,8 +3,6 @@ import { callPost } from './calls'
 import { ref } from 'vue'
 import { useAuthenticationProvider } from '../authenticationProvider'
 
-const authenticationProvider = useAuthenticationProvider()
-
 export interface LoginResponseSuccess {
   success: boolean
   userRole: string
@@ -21,9 +19,9 @@ export interface ResponseSuccess {
   message: string
 }
 
-const loginErrorResponse = ref<ResponseError | ResponseSuccess | null>(null)
-
 export const useAccountAPI = defineStore('accountAPI', () => {
+  const loginErrorResponse = ref<ResponseError | ResponseSuccess | null>(null)
+
   async function submitLogin(email: string, password: string): Promise<any> {
     const response: LoginResponseSuccess | ResponseError = await callPost('/account/login', {
       email: email,
@@ -32,7 +30,7 @@ export const useAccountAPI = defineStore('accountAPI', () => {
 
     handleLoginErrorResponse(response as ResponseError)
 
-    authenticationProvider.handleAuthentication(response as LoginResponseSuccess)
+    useAuthenticationProvider().handleAuthentication(response as LoginResponseSuccess)
 
     return response
   }
@@ -44,6 +42,10 @@ export const useAccountAPI = defineStore('accountAPI', () => {
         message: response.message
       }
     } else loginErrorResponse.value = null
+  }
+
+  function submitLogout() {
+    useAuthenticationProvider().handleRevokeAuthentication()
   }
 
   const signupResponse = ref<ResponseError | ResponseSuccess | null>(null)
@@ -78,6 +80,7 @@ export const useAccountAPI = defineStore('accountAPI', () => {
   return {
     submitLogin,
     loginErrorResponse,
+    submitLogout,
     submitSignup,
     signupResponse
   }

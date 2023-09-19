@@ -1,21 +1,33 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import type { LoginResponseSuccess } from './network/accountAPI'
+import { useNavigationProvider } from './navigationProvider'
 
 export const useAuthenticationProvider = defineStore('authenticationProvider', () => {
   const isAuthenticated = ref<boolean>(false)
   const isAdmin = ref<boolean>(false)
 
   function handleAuthentication(response: LoginResponseSuccess) {
-    console.log(response)
-    if (response.success) {
+    if (response.success && response.token) {
       storeJwtToken(response.token)
-      if (response.userRole === 'ADMIN') isAdmin.value = true
       isAuthenticated.value = true
 
-      console.log(isAuthenticated.value)
-      console.log(getJwtToken())
+      if (response.userRole === 'ADMIN') {
+        isAdmin.value = true
+      }
+
+      useNavigationProvider().conditionalNavigate(isAuthenticated.value, 'home', 'login')
     }
+  }
+
+  function handleRevokeAuthentication() {
+    clearJwtToken()
+    revokeAuthentication()
+    useNavigationProvider().navigate('home')
+  }
+
+  function revokeAuthentication() {
+    isAuthenticated.value = false
   }
 
   function storeJwtToken(token: string) {
@@ -23,13 +35,18 @@ export const useAuthenticationProvider = defineStore('authenticationProvider', (
   }
 
   function getJwtToken() {
-    return sessionStorage.getItem("jwtToken")
+    return sessionStorage.getItem('jwtToken')
+  }
+
+  function clearJwtToken() {
+    sessionStorage.removeItem('jwtToken')
   }
 
   return {
     isAuthenticated,
     isAdmin,
     handleAuthentication,
+    handleRevokeAuthentication,
     getJwtToken
   }
 })
