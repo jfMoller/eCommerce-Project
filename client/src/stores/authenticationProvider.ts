@@ -1,41 +1,44 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { LoginResponseSuccess } from './network/accountAPI'
-import { useNavigationProvider } from './navigationProvider'
+import type { LoginResponseSuccess } from './network/connectionAPI'
+import navigationProvider from '../router/navigationProvider'
 
 export const useAuthenticationProvider = defineStore('authenticationProvider', () => {
-  const isAuthenticated = ref<boolean>(false)
-  const isAdmin = ref<boolean>(false)
+  const values = {
+    isAuthenticated: ref<boolean>(false),
+    isAdmin: ref<boolean>(false)
+  }
 
-  function handleAuthentication(response: LoginResponseSuccess) {
-    if (response.success && response.token) {
-      storeJwtToken(response.token)
-      isAuthenticated.value = true
+  const methods = {
+    handleAuthentication: (response: LoginResponseSuccess) => {
+      if (response.success && response.token) {
+        storeJwtToken(response.token)
+        values.isAuthenticated.value = true
 
-      if (response.userRole === 'ADMIN') {
-        isAdmin.value = true
+        if (response.userRole === 'ADMIN') {
+          values.isAdmin.value = true
+        }
+
+        navigationProvider.navigateOnCondition(values.isAuthenticated.value, 'home', 'login')
       }
+    },
+    handleRevokeAuthentication: () => {
+      clearJwtToken()
+      revokeAuthentication()
+      navigationProvider.navigate('home')
+    },
 
-      useNavigationProvider().conditionalNavigate(isAuthenticated.value, 'home', 'login')
+    getJwtToken: () => {
+      return sessionStorage.getItem('jwtToken')
     }
   }
 
-  function handleRevokeAuthentication() {
-    clearJwtToken()
-    revokeAuthentication()
-    useNavigationProvider().navigate('home')
-  }
-
   function revokeAuthentication() {
-    isAuthenticated.value = false
+    values.isAuthenticated.value = false
   }
 
   function storeJwtToken(token: string) {
     sessionStorage.setItem('jwtToken', token)
-  }
-
-  function getJwtToken() {
-    return sessionStorage.getItem('jwtToken')
   }
 
   function clearJwtToken() {
@@ -43,10 +46,7 @@ export const useAuthenticationProvider = defineStore('authenticationProvider', (
   }
 
   return {
-    isAuthenticated,
-    isAdmin,
-    handleAuthentication,
-    handleRevokeAuthentication,
-    getJwtToken
+    values,
+    methods
   }
 })

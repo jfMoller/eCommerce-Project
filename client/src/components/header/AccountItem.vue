@@ -1,9 +1,6 @@
 <template>
     <div class="cursor-pointer transition duration-300" @mouseover="showPopup" @mouseleave="hidePopup">
-        <IconRouterLink 
-        iconClass="fas fa-user" 
-        path="/account"
-        />
+        <IconRouterLink iconClass="fas fa-user" path="/account" />
         <AccountOrLogoutPopup v-if="isShowingPopup" />
     </div>
 </template>
@@ -31,8 +28,8 @@ export default defineComponent({
 
     },
     components: {
-    AccountOrLogoutPopup,
-    IconRouterLink
-},
+        AccountOrLogoutPopup,
+        IconRouterLink
+    },
 })
 </script>

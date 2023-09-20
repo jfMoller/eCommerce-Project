@@ -19,7 +19,7 @@ import AccountItem from './AccountItem.vue';
 
 export default defineComponent({
     setup() {
-        const isAuthenticated = computed(() => useAuthenticationProvider().isAuthenticated)
+        const isAuthenticated = computed(() => useAuthenticationProvider().values.isAuthenticated)
 
         return { isAuthenticated }
     },

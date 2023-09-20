@@ -40,7 +40,6 @@ import { useAccountAPI } from '@/stores/network/accountAPI';
 
 export default defineComponent({
   setup() {
-    const accountAPI = useAccountAPI();
     const signupResponse = ref<any>(null)
     const responseMessageColor = ref('')
 
@@ -50,13 +49,12 @@ export default defineComponent({
     const confirmPassword = ref('');
 
     async function handleSignup() {
-      await accountAPI.submitSignup(username.value, email.value, password.value)
+      await useAccountAPI().methods.submitSignup(username.value, email.value, password.value)
       handleResponseMessage()
-
     }
 
     function handleResponseMessage() {
-      signupResponse.value = accountAPI.signupResponse
+      signupResponse.value = useAccountAPI().values.signupResponse
 
       if (signupResponse.value.error) {
         responseMessageColor.value = "text-red-700"
@@ -69,4 +67,4 @@ export default defineComponent({
     return { username, email, password, confirmPassword, handleSignup, signupResponse, responseMessageColor };
   }
 })
-</script>
+</script>@/stores/network/connectionAPI

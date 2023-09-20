@@ -16,11 +16,10 @@ import type { Product } from '@/types/products';
 export default defineComponent({
   name: "ShopView",
   setup() {
-    const productAPI = useProductAPI();
     const products = ref<Product[] | null>(null);
 
     onMounted(async () => {
-      products.value = await productAPI.getAllProducts();
+      products.value = await useProductAPI().methods.getAllProducts();
     });
     return {
       products,

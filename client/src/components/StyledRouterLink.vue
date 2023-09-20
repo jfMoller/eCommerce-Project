@@ -17,7 +17,7 @@
         required: true
       },
       path: {
-        type: String,
+        type: String || Object,
         required: true
       },
 

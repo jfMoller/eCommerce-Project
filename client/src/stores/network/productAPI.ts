@@ -4,12 +4,11 @@ import { callGet } from './calls'
 
 export const useProductAPI = defineStore('productAPI', () => {
   
-  async function getAllProducts(): Promise<Product[]> {
-    const response = await callGet('/products/all')
-    return response
+  const methods = {
+    getAllProducts: async (): Promise<Product[]> => await callGet('/products/all')
   }
 
   return {
-    getAllProducts
+    methods
   }
 })
