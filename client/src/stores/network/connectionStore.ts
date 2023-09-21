@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { callPost } from './calls'
+import { callPost } from './requests'
 import { ref } from 'vue'
 import { useAuthenticationStore } from '../authenticationStore'
 

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Product } from '@/types/products'
-import { callGet } from './calls'
+import { callGet } from './requests'
 
 export const useProductStore = defineStore('productStore', () => {
   
