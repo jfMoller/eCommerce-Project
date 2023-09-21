@@ -30,7 +30,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import StyledRouterLink from '@/components/StyledRouterLink.vue';
-import { useConnectionAPI } from '@/stores/network/connectionAPI'
+import { useConnectionStore } from '@/stores/network/connectionStore'
 
 export default defineComponent({
   setup() {
@@ -39,13 +39,13 @@ export default defineComponent({
     const loginErrorResponse = ref<any>(null);
 
     async function handleLogin() {
-      await useConnectionAPI().methods.submitLogin(email.value, password.value);
+      await useConnectionStore().API.submitLogin(email.value, password.value);
       handleErrorResponseMessage()
 
     };
 
     function handleErrorResponseMessage() {
-      loginErrorResponse.value = useConnectionAPI().values.loginErrorResponse
+      loginErrorResponse.value = useConnectionStore().states.loginErrorResponse
     }
 
     return { email, password, handleLogin, loginErrorResponse };
@@ -54,4 +54,3 @@ export default defineComponent({
   components: { StyledRouterLink }
 })
 </script>
-@/stores/network/connectionAPI

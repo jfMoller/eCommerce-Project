@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { callPost } from './calls'
 import { ref } from 'vue'
-import { useAuthenticationProvider } from '../authenticationProvider'
+import { useAuthenticationStore } from '../authenticationStore'
 
 export interface LoginResponseSuccess {
   success: boolean
@@ -19,12 +19,12 @@ export interface ResponseSuccess {
   message: string
 }
 
-export const useConnectionAPI = defineStore('connectionAPI', () => {
-  const values = {
+export const useConnectionStore = defineStore('connectionStore', () => {
+  const states = {
     loginErrorResponse: ref<ResponseError | ResponseSuccess | null>(null)
   }
 
-  const methods = {
+  const API = {
     submitLogin: async (email: string, password: string): Promise<any> => {
       const response: LoginResponseSuccess | ResponseError = await callPost('/account/login', {
         email: email,
@@ -32,25 +32,25 @@ export const useConnectionAPI = defineStore('connectionAPI', () => {
       })
 
       handleLoginErrorResponse(response as ResponseError)
-      useAuthenticationProvider().methods.handleAuthentication(response as LoginResponseSuccess)
+      useAuthenticationStore().methods.handleAuthentication(response as LoginResponseSuccess)
 
       return response
     },
 
-    submitLogout: () => useAuthenticationProvider().methods.handleRevokeAuthentication()
+    submitLogout: () => useAuthenticationStore().methods.handleRevokeAuthentication()
   }
 
   function handleLoginErrorResponse(response: any) {
     if (response.error) {
-      values.loginErrorResponse.value = {
+      states.loginErrorResponse.value = {
         error: response.error,
         message: response.message
       }
-    } else values.loginErrorResponse.value = null
+    } else states.loginErrorResponse.value = null
   }
 
   return {
-    methods,
-    values
+    states,
+    API
   }
 })

@@ -20,21 +20,18 @@
 import { defineComponent, computed } from 'vue';
 import ProductItems from './ProductItems.vue';
 import StyledButton from '../StyledButton.vue';
-import { useShoppingCart } from '@/stores/shoppingCart';
+import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 
 export default defineComponent({
   name: "FeaturedProducts",
   setup() {
-    const shoppingCart = useShoppingCart();
+    const checkoutProducts = computed(() => useShoppingCartStore().methods.getAllItems())
 
-    const checkoutProducts = computed(() => shoppingCart.getAllItems())
-
-    const totalPrice = computed(() => shoppingCart.getTotalPrice())
+    const totalPrice = computed(() => useShoppingCartStore().methods.getTotalPrice())
 
 
     function goToPayment() {
-      // Send ids through API
-      const itemIds: String[] = shoppingCart.getItemIds()
+      const itemIds: String[] = useShoppingCartStore().methods.getItemIds()
     console.log(itemIds)
     }
 
@@ -47,4 +44,4 @@ export default defineComponent({
   }
 
 });
-</script>
+</script>@/stores/shoppingCartStore

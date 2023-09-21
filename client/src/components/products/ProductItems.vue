@@ -26,7 +26,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import StyledButton from '../StyledButton.vue';
-import { useShoppingCart } from '../../stores/shoppingCart';
+import { useShoppingCartStore } from '../../stores/shoppingCartStore';
 import type { Product } from '@/types/products'
 
 export default defineComponent({
@@ -39,7 +39,6 @@ export default defineComponent({
   },
 
   setup(props) {
-    const shoppingCart = useShoppingCart();
 
     const groupedProducts = computed(() => {
       const grouped: Record<string, Product[]> = {};
@@ -54,11 +53,11 @@ export default defineComponent({
     });
 
     const increaseItemQuantity = (product: Product) => {
-      shoppingCart.addItem(product)
+      useShoppingCartStore().methods.addItem(product)
     };
 
     const decreaseItemQuantity = (product: Product) => {
-      shoppingCart.removeItem(product)
+      useShoppingCartStore().methods.removeItem(product)
     };
 
     return {
@@ -70,4 +69,4 @@ export default defineComponent({
   },
   components: { StyledButton }
 });
-</script>
+</script>../../stores/shoppingCartStore

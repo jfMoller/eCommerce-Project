@@ -10,7 +10,7 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import ProductCards from '@/components/products/ProductCards.vue';
 import SearchInput from '@/components/SearchInput.vue';
-import { useProductAPI } from '@/stores/network/productAPI';
+import { useProductStore } from '@/stores/network/productStore';
 import type { Product } from '@/types/products';
 
 export default defineComponent({
@@ -19,7 +19,7 @@ export default defineComponent({
     const products = ref<Product[] | null>(null);
 
     onMounted(async () => {
-      products.value = await useProductAPI().methods.getAllProducts();
+      products.value = await useProductStore().API.getAllProducts();
     });
     return {
       products,
@@ -30,4 +30,4 @@ export default defineComponent({
   }
 
 });
-</script>@/stores/network/productAPI
+</script>@/stores/network/productAPI@/stores/network/productStore

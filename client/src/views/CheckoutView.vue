@@ -9,7 +9,7 @@
 <script lang="ts">
 import ProductCheckoutSummary from '@/components/products/ProductCheckoutSummary.vue';
 import { defineComponent, computed } from 'vue';
-import { useShoppingCart } from '@/stores/shoppingCart';
+import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 import EmptyShoppingCartNotice from '@/components/EmptyShoppingCartNotice.vue'
 import FeaturedProducts from '@/components/products/FeaturedProducts.vue';
 
@@ -17,9 +17,7 @@ import FeaturedProducts from '@/components/products/FeaturedProducts.vue';
 export default defineComponent({
   setup() {
 
-    const shoppingCart = useShoppingCart()
-
-    const amountOfCartItems = computed(() => shoppingCart.getTotalItemsCount())
+    const amountOfCartItems = computed(() => useShoppingCartStore().methods.getTotalItemsCount())
 
     return { amountOfCartItems }
   },
@@ -33,4 +31,4 @@ export default defineComponent({
 
   },
 })
-</script>
+</script>@/stores/shoppingCartStore

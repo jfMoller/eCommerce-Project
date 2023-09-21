@@ -21,13 +21,13 @@
     
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useConnectionAPI } from '@/stores/network/connectionAPI';
+import { useConnectionStore } from '@/stores/network/connectionStore';
 
 export default defineComponent({
     name: "AccountOrLogoutPopup",
     setup() {
         function handleLogout() {
-            useConnectionAPI().methods.submitLogout()
+            useConnectionStore().API.submitLogout()
         }
 
         return { handleLogout }
@@ -36,4 +36,4 @@ export default defineComponent({
     components: {}
 });
 </script>
-  @/stores/network/connectionAPI
+  @/stores/network/connectionAPI@/stores/network/connectionStore

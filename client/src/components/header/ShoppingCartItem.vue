@@ -9,15 +9,13 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import IconRouterLink from '../IconRouterLink.vue';
-import { useShoppingCart } from '@/stores/shoppingCart';
+import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 
 export default defineComponent({
     name: "ShoppingCartItem",
 
     setup() {
-        const shoppingCart = useShoppingCart();
-
-        const itemsCount = computed(() => shoppingCart.getTotalItemsCount());
+        const itemsCount = computed(() => useShoppingCartStore().methods.getTotalItemsCount());
 
         return { itemsCount }
 
@@ -25,4 +23,4 @@ export default defineComponent({
 
     components: { IconRouterLink }
 });
-</script>
+</script>@/stores/shoppingCartStore

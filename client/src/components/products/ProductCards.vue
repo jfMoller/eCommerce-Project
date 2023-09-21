@@ -18,7 +18,7 @@
 import { defineComponent } from 'vue';
 import StyledButton from '../StyledButton.vue';
 import type { Product } from '@/types/products';
-import { useShoppingCart } from '../../stores/shoppingCart'
+import { useShoppingCartStore } from '../../stores/shoppingCartStore'
 
 export default defineComponent({
   name: "ProductCards",
@@ -30,10 +30,9 @@ export default defineComponent({
   },
 
   setup(props) {
-    const shoppingCart = useShoppingCart();
     
     const addToCart = (product: Product) => {
-    shoppingCart.addItem(product)
+    useShoppingCartStore().methods.addItem(product)
     };
 
     return {
@@ -43,4 +42,4 @@ export default defineComponent({
   },
   components: { StyledButton }
 });
-</script>
+</script>../../stores/shoppingCartStore

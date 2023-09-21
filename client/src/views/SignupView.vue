@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useAccountAPI } from '@/stores/network/accountAPI';
+import { useAccountStore } from '@/stores/network/accountStore';
 
 export default defineComponent({
   setup() {
@@ -49,12 +49,12 @@ export default defineComponent({
     const confirmPassword = ref('');
 
     async function handleSignup() {
-      await useAccountAPI().methods.submitSignup(username.value, email.value, password.value)
+      await useAccountStore().API.submitSignup(username.value, email.value, password.value)
       handleResponseMessage()
     }
 
     function handleResponseMessage() {
-      signupResponse.value = useAccountAPI().values.signupResponse
+      signupResponse.value = useAccountStore().states.signupResponse
 
       if (signupResponse.value.error) {
         responseMessageColor.value = "text-red-700"
@@ -67,4 +67,4 @@ export default defineComponent({
     return { username, email, password, confirmPassword, handleSignup, signupResponse, responseMessageColor };
   }
 })
-</script>@/stores/network/connectionAPI
+</script>

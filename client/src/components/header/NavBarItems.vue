@@ -14,12 +14,12 @@ import LoginItem from './LoginItem.vue';
 import StyledRouterLink from '../StyledRouterLink.vue';
 import ShoppingCartItem from './ShoppingCartItem.vue';
 import { defineComponent, computed } from 'vue';
-import { useAuthenticationProvider } from '@/stores/authenticationProvider';
+import { useAuthenticationStore } from '@/stores/authenticationStore';
 import AccountItem from './AccountItem.vue';
 
 export default defineComponent({
     setup() {
-        const isAuthenticated = computed(() => useAuthenticationProvider().values.isAuthenticated)
+        const isAuthenticated = computed(() => useAuthenticationStore().states.isAuthenticated)
 
         return { isAuthenticated }
     },
@@ -31,4 +31,4 @@ export default defineComponent({
         AccountItem
     },
 })
-</script>
+</script>@/stores/authenticationStore

@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { LoginResponseSuccess } from './network/connectionAPI'
+import type { LoginResponseSuccess } from './network/connectionStore'
 import navigationProvider from '../router/navigationProvider'
 
-export const useAuthenticationProvider = defineStore('authenticationProvider', () => {
-  const values = {
+export const useAuthenticationStore = defineStore('authenticationStore', () => {
+  const states = {
     isAuthenticated: ref<boolean>(false),
     isAdmin: ref<boolean>(false)
   }
@@ -13,15 +13,16 @@ export const useAuthenticationProvider = defineStore('authenticationProvider', (
     handleAuthentication: (response: LoginResponseSuccess) => {
       if (response.success && response.token) {
         storeJwtToken(response.token)
-        values.isAuthenticated.value = true
+        states.isAuthenticated.value = true
 
         if (response.userRole === 'ADMIN') {
-          values.isAdmin.value = true
+          states.isAdmin.value = true
         }
 
-        navigationProvider.navigateOnCondition(values.isAuthenticated.value, 'home', 'login')
+        navigationProvider.navigateOnCondition(states.isAuthenticated.value, 'home', 'login')
       }
     },
+
     handleRevokeAuthentication: () => {
       clearJwtToken()
       revokeAuthentication()
@@ -34,7 +35,7 @@ export const useAuthenticationProvider = defineStore('authenticationProvider', (
   }
 
   function revokeAuthentication() {
-    values.isAuthenticated.value = false
+    states.isAuthenticated.value = false
   }
 
   function storeJwtToken(token: string) {
@@ -46,7 +47,7 @@ export const useAuthenticationProvider = defineStore('authenticationProvider', (
   }
 
   return {
-    values,
+    states,
     methods
   }
 })

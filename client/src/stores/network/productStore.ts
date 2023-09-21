@@ -2,13 +2,13 @@ import { defineStore } from 'pinia'
 import type { Product } from '@/types/products'
 import { callGet } from './calls'
 
-export const useProductAPI = defineStore('productAPI', () => {
+export const useProductStore = defineStore('productStore', () => {
   
-  const methods = {
+  const API = {
     getAllProducts: async (): Promise<Product[]> => await callGet('/products/all')
   }
 
   return {
-    methods
+    API
   }
 })

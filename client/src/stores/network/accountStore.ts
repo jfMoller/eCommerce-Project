@@ -12,12 +12,12 @@ export interface ResponseSuccess {
   message: string
 }
 
-export const useAccountAPI = defineStore('accountAPI', () => {
-  const values = {
+export const useAccountStore = defineStore('accountStore', () => {
+  const states = {
     signupResponse: ref<ResponseSuccess | ResponseError | null>(null)
   }
 
-  const methods = {
+  const API = {
     submitSignup: async (username: string, email: string, password: string): Promise<any> => {
       const response: ResponseSuccess | ResponseError = await callPost('/account/signup', {
         username: username,
@@ -32,13 +32,13 @@ export const useAccountAPI = defineStore('accountAPI', () => {
 
   function assignSignupResponse(response: any) {
     if (response.error) {
-      values.signupResponse.value = {
+      states.signupResponse.value = {
         error: response.error,
         message: response.message
       }
     }
     if (response.success) {
-      values.signupResponse.value = {
+      states.signupResponse.value = {
         success: response.error,
         message: response.message
       }
@@ -46,7 +46,7 @@ export const useAccountAPI = defineStore('accountAPI', () => {
   }
 
   return {
-    values,
-    methods
+    states,
+    API
   }
 })
