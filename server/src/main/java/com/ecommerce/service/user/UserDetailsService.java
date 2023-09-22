@@ -37,6 +37,11 @@ public class UserDetailsService {
                 .orElse(null);
     }
 
+    public User findUser(String user_id) {
+        Optional <User> requestedUser = userRepository.findById(user_id);
+        return requestedUser.orElse(null);
+    }
+
     public boolean isExistingUsername(String username) {
         return userRepository.findAll().stream()
                 .anyMatch(user -> user.getUsername().equals(username));

@@ -1,11 +1,10 @@
 package com.ecommerce.auth;
 
-import com.ecommerce.service.user.UserDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
@@ -13,17 +12,13 @@ import java.util.Date;
 import static com.ecommerce.auth.TokenInfo.*;
 import static com.ecommerce.entity.Role.ADMIN;
 
-@Service
+@Component
 public class JwtTokenProvider {
     private final String secret = "keyboardcat-FEWFWEJFnjöFEJNNfejfeÖnfjöwefjwefwfe";
     private final Key secretKey = Keys.hmacShaKeyFor(secret.getBytes());
 
-    private final UserDetailsService userDetailsService;
-
     @Autowired
-    public JwtTokenProvider(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    public JwtTokenProvider() {}
 
     public String generateToken(String _id, String email, String role) {
         Date now = new Date();
@@ -52,6 +47,15 @@ public class JwtTokenProvider {
         }
     }
 
+    public boolean hasAdminRole(String token) {
+        String role = extractTokenInfo(token, ROLE);
+        return role.equals(ADMIN.toString());
+    }
+
+    public String getToken_id(String token) {
+        return extractTokenInfo(token, ID);
+    }
+
     private String extractTokenInfo(String token, TokenInfo type) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(secretKey)
@@ -59,11 +63,6 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return (String) claims.get(type.toString());
-    }
-
-    public boolean hasAdminRole(String token) {
-        String role = extractTokenInfo(token, ROLE);
-        return role.equals(ADMIN.toString());
     }
 
     private boolean isValidAdminToken(String token) {

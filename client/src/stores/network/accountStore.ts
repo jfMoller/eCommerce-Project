@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { callPost, callGet, callPut } from './requests'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useAuthenticationStore } from '../authenticationStore'
 
 export interface ResponseError {
   error: boolean
@@ -15,10 +16,27 @@ export interface ResponseSuccess {
 export const useAccountStore = defineStore('accountStore', () => {
   const states = {
     signupResponse: ref<ResponseSuccess | ResponseError | null>(null),
+    changeUsernameResponse: ref<ResponseSuccess | ResponseError | null>(null),
+
     username: ref<string | null>(null),
     email: ref<string | null>(null),
     orders: ref<any | null>(null)
   }
+
+  
+  watch(
+    async () => useAuthenticationStore().states.isAuthenticated,
+    async (newState) => {
+      if (newState && await newState != false) {
+        await API.getUserDetails().then((response) => {
+          if (response.success) {
+            states.username.value = response.username
+            states.email.value = response.email
+          }
+        })
+      }
+    }
+  )
 
   const API = {
     submitSignup: async (username: string, email: string, password: string): Promise<any> => {
@@ -28,13 +46,23 @@ export const useAccountStore = defineStore('accountStore', () => {
         password: password
       })
 
-      assignSignupResponse(response)
+      assignResponse(response, states.signupResponse)
       return response
     },
 
-    getUsername: () => callGet('/account/get_username'),
+    getUserDetails: () => callGet('/account/details'),
 
-    getEmail: () => callGet('/account/get_email'),
+    changeUsername: async (newUsername: string) => {
+      const response: ResponseSuccess | ResponseError = await callPut('/account/username', {
+        newUsername: newUsername
+      })
+
+      assignResponse(response, states.changeUsernameResponse)
+
+      return response
+    },
+
+    changeEmail: (newEmail: string) => callPut('/account/email', { newUsername: newEmail }),
 
     changePassword: (currentPassword: string, newPassword: string) =>
       callPost('/account/change_password', {
@@ -42,29 +70,20 @@ export const useAccountStore = defineStore('accountStore', () => {
         newPassword: newPassword
       }),
 
-    editUsername: (newUsername: string) =>
-      callPut('/account/edit_username', { newUsername: newUsername }),
-
-    editEmail: (newEmail: string) => callPut('/account/edit_email', { newUsername: newEmail }),
-
-    showOrders: () => callGet('/account/orders/get_all'),
+    getOrders: () => callGet('/account/orders/all'),
 
     deleteAccount: (currentPassword: string) =>
-      callPost('/account/delete_account', { currentPassword: currentPassword })
+      callPost('/account/delete', { currentPassword: currentPassword })
   }
 
-  function assignSignupResponse(response: any) {
-    if (response.error) {
-      states.signupResponse.value = {
-        error: response.error,
-        message: response.message
-      }
-    }
+  function assignResponse(response: any, state: any) {
     if (response.success) {
-      states.signupResponse.value = {
-        success: response.error,
-        message: response.message
-      }
+      const { success, message } = response
+      state.value = { success, message }
+    }
+    if (response.error) {
+      const { error, message } = response
+      state.value = { error, message }
     }
   }
 

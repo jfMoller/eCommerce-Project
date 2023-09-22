@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import { callPost } from './requests'
 import { ref } from 'vue'
 import { useAuthenticationStore } from '../authenticationStore'
+import { useAccountStore } from './accountStore'
+import navigationProvider from '@/router/navigationProvider'
 
 export interface LoginResponseSuccess {
   success: boolean
@@ -21,7 +23,8 @@ export interface ResponseSuccess {
 
 export const useConnectionStore = defineStore('connectionStore', () => {
   const states = {
-    loginErrorResponse: ref<ResponseError | ResponseSuccess | null>(null)
+    loginErrorResponse: ref<ResponseError | ResponseSuccess | null>(null),
+    isConfirmationError: ref<boolean | null>(null)
   }
 
   const API = {
@@ -37,7 +40,26 @@ export const useConnectionStore = defineStore('connectionStore', () => {
       return response
     },
 
-    submitLogout: () => useAuthenticationStore().methods.handleRevokeAuthentication()
+    submitLogout: async () => useAuthenticationStore().methods.handleRevokeAuthentication(),
+
+    reconnect: async (password: string, origin: string): Promise<any> => {
+      await API.submitLogout()
+      await API.submitLogin(useAccountStore().states.email as string, password)
+      await navigationProvider.navigate(origin)
+    },
+
+    isValidLoginCredentials: async (password: string): Promise<boolean> => {
+      const isConfirmed: boolean = await callPost('/account/confirm', {
+        email: useAccountStore().states.email,
+        password: password
+      })
+
+      if (!isConfirmed) {
+        states.isConfirmationError.value = true
+      }
+
+      return isConfirmed
+    }
   }
 
   function handleLoginErrorResponse(response: any) {

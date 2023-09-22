@@ -20,6 +20,15 @@ public class JsonResponseProvider {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    public static ResponseEntity<Object> sendUserDetailsEntity(String username, String email) {
+        Map<String, Object> response = new HashMap<>();
+        response.put(SUCCESS.toString(), true);
+        response.put("username", username);
+        response.put("email", email);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     public static ResponseEntity<Object> sendResponseEntity(
             ResponseStatus responseStatus, HttpStatus httpStatus, String message) {
         Map<String, Object> response = new HashMap<>();

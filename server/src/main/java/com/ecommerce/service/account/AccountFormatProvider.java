@@ -1,5 +1,9 @@
 package com.ecommerce.service.account;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class AccountFormatProvider {
 
     private static final String USERNAME_FORMAT_REGEX = "^[a-zA-Z0-9_.-]{3,10}$";
@@ -29,19 +33,24 @@ $                     # End of the string */
     [a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':",.<>/?]{8,20}  # Match between 8 and 20 characters of letters (both uppercase
                                                       # and lowercase), digits, and special characters
     $                                                 # End of the string */
-    public static boolean isMatchingUsernameFormat(String username) {
+
+    @Autowired
+    public AccountFormatProvider() {
+    }
+
+    public boolean isMatchingUsernameFormat(String username) {
         return isMatchingRegex(username, USERNAME_FORMAT_REGEX);
     }
 
-    public static boolean isMatchingEmailFormat(String email) {
+    public boolean isMatchingEmailFormat(String email) {
         return isMatchingRegex(email, EMAIL_FORMAT_REGEX);
     }
 
-    public static boolean isMatchingPasswordFormat(String password) {
+    public boolean isMatchingPasswordFormat(String password) {
         return isMatchingRegex(password, PASSWORD_FORMAT_REGEX);
     }
 
-    private static boolean isMatchingRegex(String string, String regex) {
+    private boolean isMatchingRegex(String string, String regex) {
         return string.matches(regex);
     }
 

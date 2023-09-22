@@ -32,6 +32,7 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
     getJwtToken: () => {
       return sessionStorage.getItem('jwtToken')
     }
+    
   }
 
   function revokeAuthentication() {

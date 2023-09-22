@@ -9,19 +9,23 @@
 </template>
   
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { useAccountStore } from '@/stores/network/accountStore';
+import { defineComponent, ref, onMounted} from 'vue';
 
 export default defineComponent({
     name: 'AccountInfo',
     setup() {
+        const accountStore = useAccountStore();
 
-        const username = ref<string>('');
-        const email = ref<string>('')
+        const username = ref<string | null>(null);
+        const email = ref<string | null>(null)
 
         onMounted(async () => {
-            //username.value = await useUserStore.getUserName()
-            //email.value = await useUserStore.getEmail();
+            username.value = accountStore.states.username
+            email.value = accountStore.states.email
         });
+
+    
 
         return { username, email }
     },

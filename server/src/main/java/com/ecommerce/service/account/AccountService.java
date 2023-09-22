@@ -24,11 +24,17 @@ public class AccountService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final AccountFormatProvider accountFormatProvider;
+
     @Autowired
-    public AccountService(UserRepository userRepository, UserDetailsService userDetailsService, JwtTokenProvider jwtTokenProvider) {
+    public AccountService(UserRepository userRepository,
+                          UserDetailsService userDetailsService,
+                          JwtTokenProvider jwtTokenProvider,
+                          AccountFormatProvider accountFormatProvider) {
         this.userRepository = userRepository;
         this.userDetailsService = userDetailsService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.accountFormatProvider = accountFormatProvider;
     }
 
     public ResponseEntity<Object> submitLogin(LoginCredentials loginCredentials) {
@@ -75,12 +81,67 @@ public class AccountService {
                         " was successfully added as a user.");
     }
 
-    private ResponseEntity<Object> findPreexistingCredentials(RegisterCredentials registerCredentials) {
-        if (userDetailsService.isExistingUsername(registerCredentials.username())) {
+    public boolean isValidLoginCredentials(LoginCredentials loginCredentials) {
+        return userDetailsService.findUser(loginCredentials) != null;
+    }
+
+    public ResponseEntity<Object> getUserDetails(String token) {
+        String user_id = jwtTokenProvider.getToken_id(token);
+        UserDetails details = userDetailsService.getUserDetails(user_id);
+        if (details != null) {
+            return JsonResponseProvider.sendUserDetailsEntity(details.username(), details.email());
+        }
+        return JsonResponseProvider.sendResponseEntity(
+                ResponseStatus.ERROR,
+                HttpStatus.NOT_FOUND,
+                "Requested user details were not found.");
+
+    }
+
+    public ResponseEntity<Object> changeUsername(String token, String newUsername) {
+
+        ResponseEntity<Object> usernameErrors = findUsernameErrors(newUsername);
+
+        if (usernameErrors != null) {
+            return usernameErrors;
+        }
+
+        String user_id = jwtTokenProvider.getToken_id(token);
+        User requestedUser = userDetailsService.findUser(user_id);
+
+        if (requestedUser != null) {
+            requestedUser.setUsername(newUsername);
+            userRepository.save(requestedUser);
             return JsonResponseProvider.sendResponseEntity(
-                    ResponseStatus.ERROR,
-                    HttpStatus.CONFLICT,
-                    "An account with that username already exists.");
+                    ResponseStatus.SUCCESS,
+                    HttpStatus.OK,
+                    "Username changed successfully.");
+        }
+        return JsonResponseProvider.sendResponseEntity(
+                ResponseStatus.ERROR,
+                HttpStatus.BAD_REQUEST,
+                "Requested user does not exist.");
+    }
+
+    private ResponseEntity<Object> findUsernameErrors(String username) {
+        ResponseEntity<Object> existingUsernameError = findExistingUsername(username);
+
+        if (existingUsernameError != null) {
+            return existingUsernameError;
+        }
+
+        ResponseEntity<Object> userFormattingError = findUsernameFormattingErrors(username);
+        if (userFormattingError != null) {
+            return userFormattingError;
+        }
+
+        return null;
+    }
+
+
+    private ResponseEntity<Object> findPreexistingCredentials(RegisterCredentials registerCredentials) {
+        if (findExistingUsername(registerCredentials.username()) != null) {
+            return findExistingUsername(registerCredentials.username());
         }
 
         if (userDetailsService.isExistingEmail(registerCredentials.email())) {
@@ -94,21 +155,19 @@ public class AccountService {
     }
 
     private ResponseEntity<Object> findFormattingErrors(RegisterCredentials registerCredentials) {
-        if (!AccountFormatProvider.isMatchingUsernameFormat(registerCredentials.username())) {
-            return JsonResponseProvider.sendResponseEntity(
-                    ResponseStatus.ERROR,
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid username; a valid username must be between 3-10 characters long without special characters.");
+        ResponseEntity<Object> userFormattingError = findUsernameFormattingErrors(registerCredentials.username());
+        if (userFormattingError != null) {
+            return userFormattingError;
         }
 
-        if (!AccountFormatProvider.isMatchingEmailFormat(registerCredentials.email())) {
+        if (!accountFormatProvider.isMatchingEmailFormat(registerCredentials.email())) {
             return JsonResponseProvider.sendResponseEntity(
                     ResponseStatus.ERROR,
                     HttpStatus.BAD_REQUEST,
                     "Invalid email; valid format example: email@example.com.");
         }
 
-        if (!AccountFormatProvider.isMatchingPasswordFormat(registerCredentials.password())) {
+        if (!accountFormatProvider.isMatchingPasswordFormat(registerCredentials.password())) {
             return JsonResponseProvider.sendResponseEntity(
                     ResponseStatus.ERROR,
                     HttpStatus.BAD_REQUEST,
@@ -117,5 +176,26 @@ public class AccountService {
 
         return null;
     }
+
+    private ResponseEntity<Object> findExistingUsername(String username) {
+        if (userDetailsService.isExistingUsername(username)) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.CONFLICT,
+                    "An account with that username already exists.");
+        }
+        return null;
+    }
+
+    private ResponseEntity<Object> findUsernameFormattingErrors(String username) {
+        if (!accountFormatProvider.isMatchingUsernameFormat(username)) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid username; a valid username must be between 3-10 characters long without special characters.");
+        }
+        return null;
+    }
+
 
 }
