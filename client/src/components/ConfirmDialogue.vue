@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import { useConnectionStore } from '@/stores/network/connectionStore';
+import { useAccountStore } from '@/stores/network/accountStore';
 
 export default defineComponent({
   props: {
@@ -48,7 +48,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const connectionStore = useConnectionStore();
+    const accountStore = useAccountStore()
     const isConfirmationErrorResponse = ref<any | null>(null);
 
     const requirePassword = props.isPasswordRequired;
@@ -56,11 +56,10 @@ export default defineComponent({
 
 
     async function handleConfirm() {
-      const confirmedCredentials = await connectionStore.API.isValidLoginCredentials(password.value)
+      const confirmedCredentials = await accountStore.API.confirmCredentials(password.value)
 
       if (confirmedCredentials) {
         props.onConfirm();
-        connectionStore.API.reconnect(password.value, "EditAccountView")
       } else {
         handleErrorResponseMessage()
       }
@@ -68,7 +67,7 @@ export default defineComponent({
     };
 
     function handleErrorResponseMessage() {
-      isConfirmationErrorResponse.value = useConnectionStore().states.isConfirmationError
+      isConfirmationErrorResponse.value = accountStore.states.isConfirmationErrorResponse
     }
 
     function cancel() {

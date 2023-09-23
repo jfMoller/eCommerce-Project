@@ -17,23 +17,18 @@ export const useAccountStore = defineStore('accountStore', () => {
   const states = {
     signupResponse: ref<ResponseSuccess | ResponseError | null>(null),
     changeUsernameResponse: ref<ResponseSuccess | ResponseError | null>(null),
+    isConfirmationErrorResponse: ref<boolean | null>(null),
 
     username: ref<string | null>(null),
     email: ref<string | null>(null),
     orders: ref<any | null>(null)
   }
 
-  
   watch(
     async () => useAuthenticationStore().states.isAuthenticated,
-    async (newState) => {
-      if (newState && await newState != false) {
-        await API.getUserDetails().then((response) => {
-          if (response.success) {
-            states.username.value = response.username
-            states.email.value = response.email
-          }
-        })
+    async (newState, previousState) => {
+      if (newState && newState !== previousState) {
+        await API.getUserDetails()
       }
     }
   )
@@ -50,7 +45,26 @@ export const useAccountStore = defineStore('accountStore', () => {
       return response
     },
 
-    getUserDetails: () => callGet('/account/details'),
+    confirmCredentials: async (password: string): Promise<boolean> => {
+      const isConfirmed: boolean = await callPost('/account/confirm', {
+        email: useAccountStore().states.email,
+        password: password
+      })
+
+      if (!isConfirmed) {
+        states.isConfirmationErrorResponse.value = true
+      }
+
+      return isConfirmed
+    },
+
+    getUserDetails: async () => {
+      const response = await callGet('/account/details')
+      if (response.success) {
+        states.username.value = response.username
+        states.email.value = response.email
+      }
+    },
 
     changeUsername: async (newUsername: string) => {
       const response: ResponseSuccess | ResponseError = await callPut('/account/username', {
