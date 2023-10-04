@@ -123,6 +123,31 @@ public class AccountService {
                 "Requested user does not exist.");
     }
 
+    public ResponseEntity<Object> changePassword(String token, String newPassword) {
+        String user_id = jwtTokenProvider.getToken_id(token);
+
+        ResponseEntity<Object> passwordErrors = findPasswordErrors(user_id, newPassword);
+
+        if (passwordErrors != null) {
+            return passwordErrors;
+        }
+
+        User requestedUser = userDetailsService.findUser(user_id);
+
+        if (requestedUser != null) {
+            requestedUser.setPassword(newPassword);
+            userRepository.save(requestedUser);
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.SUCCESS,
+                    HttpStatus.OK,
+                    "Password changed successfully.");
+        }
+        return JsonResponseProvider.sendResponseEntity(
+                ResponseStatus.ERROR,
+                HttpStatus.BAD_REQUEST,
+                "Requested user does not exist.");
+    }
+
     private ResponseEntity<Object> findUsernameErrors(String username) {
         ResponseEntity<Object> existingUsernameError = findExistingUsername(username);
 
@@ -135,6 +160,20 @@ public class AccountService {
             return userFormattingError;
         }
 
+        return null;
+    }
+
+    private ResponseEntity<Object> findPasswordErrors(String user_id, String password) {
+        ResponseEntity<Object> passwordFormattingError = findPasswordFormattingErrors(password);
+        if (passwordFormattingError != null) {
+            return passwordFormattingError;
+        }
+
+        ResponseEntity<Object> currentPasswordMatch = findMatchingCurrentPassword(user_id, password);
+        if (currentPasswordMatch != null) {
+            return currentPasswordMatch;
+        }
+        
         return null;
     }
 
@@ -167,11 +206,9 @@ public class AccountService {
                     "Invalid email; valid format example: email@example.com.");
         }
 
-        if (!accountFormatProvider.isMatchingPasswordFormat(registerCredentials.password())) {
-            return JsonResponseProvider.sendResponseEntity(
-                    ResponseStatus.ERROR,
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid password; a valid password must be between 8-20 characters long.");
+        ResponseEntity<Object> passwordFormattingError = findPasswordFormattingErrors(registerCredentials.password());
+        if (passwordFormattingError != null) {
+            return passwordFormattingError;
         }
 
         return null;
@@ -187,12 +224,32 @@ public class AccountService {
         return null;
     }
 
+    private ResponseEntity<Object> findMatchingCurrentPassword(String user_id, String password) {
+        if (userDetailsService.isUsersCurrentPassword(user_id, password)) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.CONFLICT,
+                    "Invalid request; you can not change your password to your current password.");
+        }
+        return null;
+    }
+
     private ResponseEntity<Object> findUsernameFormattingErrors(String username) {
         if (!accountFormatProvider.isMatchingUsernameFormat(username)) {
             return JsonResponseProvider.sendResponseEntity(
                     ResponseStatus.ERROR,
                     HttpStatus.BAD_REQUEST,
                     "Invalid username; a valid username must be between 3-10 characters long without special characters.");
+        }
+        return null;
+    }
+
+    private ResponseEntity<Object> findPasswordFormattingErrors(String password) {
+        if (!accountFormatProvider.isMatchingPasswordFormat(password)) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid password; a valid password must be between 8-20 characters long.");
         }
         return null;
     }

@@ -17,6 +17,7 @@ export const useAccountStore = defineStore('accountStore', () => {
   const states = {
     signupResponse: ref<ResponseSuccess | ResponseError | null>(null),
     changeUsernameResponse: ref<ResponseSuccess | ResponseError | null>(null),
+    changePasswordResponse: ref<ResponseSuccess | ResponseError | null>(null),
     isConfirmationErrorResponse: ref<boolean | null>(null),
 
     username: ref<string | null>(null),
@@ -78,11 +79,16 @@ export const useAccountStore = defineStore('accountStore', () => {
 
     changeEmail: (newEmail: string) => callPut('/account/email', { newUsername: newEmail }),
 
-    changePassword: (currentPassword: string, newPassword: string) =>
-      callPost('/account/change_password', {
+    changePassword: async (currentPassword: string, newPassword: string) => {
+      const response: ResponseSuccess | ResponseError = await callPut('/account/password', {
         currentPassword: currentPassword,
         newPassword: newPassword
-      }),
+      })
+
+      assignResponse(response, states.changePasswordResponse)
+
+      return response
+    },
 
     getOrders: () => callGet('/account/orders/all'),
 

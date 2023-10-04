@@ -1,7 +1,7 @@
 <template>
-    <ConfirmDialogue :isPasswordRequired="true"
-    header="Confirm username change" text="Are you sure you want to change your username?"
-        v-if="isConfirmationVisible" :onConfirm="handleChangeUsername" :onCancel="closeConfirmation" />
+    <ConfirmDialogue :isPasswordRequired="true" header="Confirm username change"
+        text="Are you sure you want to change your username?" v-if="isConfirmationVisible" :onConfirm="handleChangeUsername"
+        :onCancel="closeConfirmation" />
 
     <div class="p-4 bg-white rounded shadow">
         <h2 class="text-xl font-semibold mb-4">Change Username</h2>
@@ -22,12 +22,14 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import { useAccountStore } from '@/stores/network/accountStore';
+import { useConnectionStore } from '@/stores/network/connectionStore';
 import ConfirmDialogue from '@/components/ConfirmDialogue.vue'
 
 export default defineComponent({
     name: 'EditUsername',
     setup() {
         const accountStore = useAccountStore();
+        const connectionStore = useConnectionStore();
 
         const newUsername = ref('');
         const changeUsernameResponse = ref<any | null>(null);
@@ -44,11 +46,16 @@ export default defineComponent({
         }
 
         async function handleChangeUsername() {
-            await accountStore.API.changeUsername(newUsername.value);
+            const response = await accountStore.API.changeUsername(newUsername.value);
             handleResponseMessage()
+
+            if ('success' in response) {
+                setTimeout(async () => {
+                    await connectionStore.API.submitLogout();;
+                }, 2000);
+            }
             closeConfirmation();
         }
-
 
         function handleResponseMessage() {
             changeUsernameResponse.value = accountStore.states.changeUsernameResponse

@@ -38,7 +38,7 @@ public class UserDetailsService {
     }
 
     public User findUser(String user_id) {
-        Optional <User> requestedUser = userRepository.findById(user_id);
+        Optional<User> requestedUser = userRepository.findById(user_id);
         return requestedUser.orElse(null);
     }
 
@@ -50,6 +50,14 @@ public class UserDetailsService {
     public boolean isExistingEmail(String email) {
         return userRepository.findAll().stream()
                 .anyMatch(user -> user.getEmail().equals(email));
+    }
+
+    public boolean isUsersCurrentPassword(String user_id, String password) {
+        User requestedUser = findUser(user_id);
+        if (requestedUser.getPassword().equals(password)) {
+            return true;
+        }
+        return false;
     }
 
     public String findUserId(LoginCredentials loginCredentials) {

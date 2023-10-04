@@ -1,6 +1,7 @@
 package com.ecommerce.controller.account;
 
 import com.ecommerce.auth.JwtAuthProvider;
+import com.ecommerce.dto.ChangePasswordRequest;
 import com.ecommerce.dto.ChangeUsernameRequest;
 import com.ecommerce.service.account.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,11 @@ public class AccountController {
 
     @PostMapping("/confirm")
     public boolean isValidLoginCredentials(@RequestHeader("Authorization") String token,
-                                                 @RequestBody LoginCredentials loginCredentials) {
+                                           @RequestBody LoginCredentials loginCredentials) {
         return jwtAuthProvider.authorizeAccess(token,
                 () -> accountService.isValidLoginCredentials(loginCredentials));
     }
+
     @PutMapping("/username")
     public ResponseEntity<Object> changeUsername(@RequestHeader("Authorization") String token,
                                                  @RequestBody ChangeUsernameRequest request) {
@@ -55,8 +57,10 @@ public class AccountController {
     }
 
     @PutMapping("/password")
-    public ResponseEntity<Object> changePassword(@RequestHeader("Authorization") String token) {
-        return ResponseEntity.badRequest().body("Not implemented.");
+    public ResponseEntity<Object> changePassword(@RequestHeader("Authorization") String token,
+                                                 @RequestBody ChangePasswordRequest request) {
+        return jwtAuthProvider.authorizeAccess(token,
+                () -> accountService.changePassword(token, request.getNewPassword()));
     }
 
     @DeleteMapping("/delete")

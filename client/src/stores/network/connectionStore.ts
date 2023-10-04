@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { callPost } from './requests'
 import { ref } from 'vue'
 import { useAuthenticationStore } from '../authenticationStore'
-import { useAccountStore } from './accountStore'
 
 export interface LoginResponseSuccess {
   success: boolean
