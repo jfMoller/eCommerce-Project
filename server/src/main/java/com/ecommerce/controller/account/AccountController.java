@@ -1,6 +1,7 @@
 package com.ecommerce.controller.account;
 
 import com.ecommerce.auth.JwtAuthProvider;
+import com.ecommerce.dto.ChangeEmailRequest;
 import com.ecommerce.dto.ChangePasswordRequest;
 import com.ecommerce.dto.ChangeUsernameRequest;
 import com.ecommerce.service.account.AccountService;
@@ -52,8 +53,10 @@ public class AccountController {
     }
 
     @PutMapping("/email")
-    public ResponseEntity<Object> changeEmail(@RequestHeader("Authorization") String token) {
-        return ResponseEntity.badRequest().body("Not implemented.");
+    public ResponseEntity<Object> changeEmail(@RequestHeader("Authorization") String token,
+                                              @RequestBody ChangeEmailRequest request) {
+        return jwtAuthProvider.authorizeAccess(token,
+                () -> accountService.changeEmail(token, request.getNewEmail()));
     }
 
     @PutMapping("/password")

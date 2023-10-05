@@ -1,14 +1,16 @@
 <template>
-    <EditUsername />
+    <ChangeUsername />
+    <ChangeEmail />
 </template>
   
 <script lang="ts">
 import { defineComponent } from 'vue';
-import EditUsername from './EditUsername.vue'
+import ChangeUsername from './ChangeUsername.vue'
+import ChangeEmail from './ChangeEmail.vue';
 
 export default defineComponent({
     name: 'EditInformation',
-    components: { EditUsername }
+    components: { ChangeUsername, ChangeEmail }
 });
 
 </script>

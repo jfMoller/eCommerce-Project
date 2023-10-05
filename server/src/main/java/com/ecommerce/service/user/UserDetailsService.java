@@ -52,12 +52,14 @@ public class UserDetailsService {
                 .anyMatch(user -> user.getEmail().equals(email));
     }
 
+    public boolean isUsersCurrentEmail(String user_id, String email) {
+        User requestedUser = findUser(user_id);
+        return requestedUser.getEmail().equals(email);
+    }
+
     public boolean isUsersCurrentPassword(String user_id, String password) {
         User requestedUser = findUser(user_id);
-        if (requestedUser.getPassword().equals(password)) {
-            return true;
-        }
-        return false;
+        return requestedUser.getPassword().equals(password);
     }
 
     public String findUserId(LoginCredentials loginCredentials) {

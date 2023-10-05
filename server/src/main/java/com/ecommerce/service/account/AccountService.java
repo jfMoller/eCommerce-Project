@@ -123,6 +123,32 @@ public class AccountService {
                 "Requested user does not exist.");
     }
 
+    public ResponseEntity<Object> changeEmail(String token, String newEmail) {
+
+        String user_id = jwtTokenProvider.getToken_id(token);
+
+        ResponseEntity<Object> emailErrors = findEmailErrors(user_id, newEmail);
+
+        if (emailErrors != null) {
+            return emailErrors;
+        }
+
+        User requestedUser = userDetailsService.findUser(user_id);
+
+        if (requestedUser != null) {
+            requestedUser.setEmail(newEmail);
+            userRepository.save(requestedUser);
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.SUCCESS,
+                    HttpStatus.OK,
+                    "Email changed successfully.");
+        }
+        return JsonResponseProvider.sendResponseEntity(
+                ResponseStatus.ERROR,
+                HttpStatus.BAD_REQUEST,
+                "Requested user does not exist.");
+    }
+
     public ResponseEntity<Object> changePassword(String token, String newPassword) {
         String user_id = jwtTokenProvider.getToken_id(token);
 
@@ -163,6 +189,26 @@ public class AccountService {
         return null;
     }
 
+    private ResponseEntity<Object> findEmailErrors(String user_id, String email) {
+
+        ResponseEntity<Object> emailFormattingError = findEmailFormattingErrors(email);
+        if (emailFormattingError != null) {
+            return emailFormattingError;
+        }
+
+        ResponseEntity<Object> currentEmailMatch = findMatchingCurrentEmail(user_id, email);
+        if (currentEmailMatch != null) {
+            return currentEmailMatch;
+        }
+
+        ResponseEntity<Object> nonUniqueEmailMatch = findExistingEmail(email);
+        if (nonUniqueEmailMatch != null) {
+            return nonUniqueEmailMatch;
+        }
+
+        return null;
+    }
+
     private ResponseEntity<Object> findPasswordErrors(String user_id, String password) {
         ResponseEntity<Object> passwordFormattingError = findPasswordFormattingErrors(password);
         if (passwordFormattingError != null) {
@@ -173,7 +219,7 @@ public class AccountService {
         if (currentPasswordMatch != null) {
             return currentPasswordMatch;
         }
-        
+
         return null;
     }
 
@@ -183,11 +229,8 @@ public class AccountService {
             return findExistingUsername(registerCredentials.username());
         }
 
-        if (userDetailsService.isExistingEmail(registerCredentials.email())) {
-            return JsonResponseProvider.sendResponseEntity(
-                    ResponseStatus.ERROR,
-                    HttpStatus.CONFLICT,
-                    "An account with that email already exists.");
+        if (findExistingEmail(registerCredentials.email()) != null) {
+            return findExistingEmail(registerCredentials.email());
         }
 
         return null;
@@ -199,11 +242,9 @@ public class AccountService {
             return userFormattingError;
         }
 
-        if (!accountFormatProvider.isMatchingEmailFormat(registerCredentials.email())) {
-            return JsonResponseProvider.sendResponseEntity(
-                    ResponseStatus.ERROR,
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid email; valid format example: email@example.com.");
+        ResponseEntity<Object> emailFormattingError = findEmailFormattingErrors(registerCredentials.email());
+        if (emailFormattingError != null) {
+            return emailFormattingError;
         }
 
         ResponseEntity<Object> passwordFormattingError = findPasswordFormattingErrors(registerCredentials.password());
@@ -224,6 +265,16 @@ public class AccountService {
         return null;
     }
 
+    private ResponseEntity<Object> findExistingEmail(String email) {
+        if (userDetailsService.isExistingEmail(email)) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.CONFLICT,
+                    "An account with that email already exists.");
+        }
+        return null;
+    }
+
     private ResponseEntity<Object> findMatchingCurrentPassword(String user_id, String password) {
         if (userDetailsService.isUsersCurrentPassword(user_id, password)) {
             return JsonResponseProvider.sendResponseEntity(
@@ -234,12 +285,32 @@ public class AccountService {
         return null;
     }
 
+    private ResponseEntity<Object> findMatchingCurrentEmail(String user_id, String email) {
+        if (userDetailsService.isUsersCurrentEmail(user_id, email)) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.CONFLICT,
+                    "Invalid request; you can not change your email to your current email.");
+        }
+        return null;
+    }
+
     private ResponseEntity<Object> findUsernameFormattingErrors(String username) {
         if (!accountFormatProvider.isMatchingUsernameFormat(username)) {
             return JsonResponseProvider.sendResponseEntity(
                     ResponseStatus.ERROR,
                     HttpStatus.BAD_REQUEST,
                     "Invalid username; a valid username must be between 3-10 characters long without special characters.");
+        }
+        return null;
+    }
+
+    private ResponseEntity<Object> findEmailFormattingErrors(String email) {
+        if (!accountFormatProvider.isMatchingEmailFormat(email)) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.BAD_REQUEST,
+                    "Invalid email; valid format example: email@example.com.");
         }
         return null;
     }

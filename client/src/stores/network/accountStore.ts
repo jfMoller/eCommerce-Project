@@ -16,8 +16,13 @@ export interface ResponseSuccess {
 export const useAccountStore = defineStore('accountStore', () => {
   const states = {
     signupResponse: ref<ResponseSuccess | ResponseError | null>(null),
+
     changeUsernameResponse: ref<ResponseSuccess | ResponseError | null>(null),
+
+    changeEmailResponse: ref<ResponseSuccess | ResponseError | null>(null),
+    
     changePasswordResponse: ref<ResponseSuccess | ResponseError | null>(null),
+
     isConfirmationErrorResponse: ref<boolean | null>(null),
 
     username: ref<string | null>(null),
@@ -77,7 +82,16 @@ export const useAccountStore = defineStore('accountStore', () => {
       return response
     },
 
-    changeEmail: (newEmail: string) => callPut('/account/email', { newUsername: newEmail }),
+    
+    changeEmail: async (newEmail: string) => {
+      const response: ResponseSuccess | ResponseError = await callPut('/account/email', {
+        newEmail: newEmail
+      })
+
+      assignResponse(response, states.changeEmailResponse)
+
+      return response
+    },
 
     changePassword: async (currentPassword: string, newPassword: string) => {
       const response: ResponseSuccess | ResponseError = await callPut('/account/password', {
