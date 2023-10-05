@@ -174,6 +174,33 @@ public class AccountService {
                 "Requested user does not exist.");
     }
 
+    public ResponseEntity<Object> deleteAccount(String token) {
+        String user_id = jwtTokenProvider.getToken_id(token);
+        User requestedUserAccount = userDetailsService.findUser(user_id);
+
+        if (requestedUserAccount == null) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.BAD_REQUEST,
+                    "The requested account does not exist.");
+        }
+
+        if (jwtTokenProvider.hasAdminRole(token)) {
+            return JsonResponseProvider.sendResponseEntity(
+                    ResponseStatus.ERROR,
+                    HttpStatus.CONFLICT,
+                    "An admin account can only be deleted manually in MongoDB.");
+        }
+
+        userRepository.deleteById(user_id);
+
+        return JsonResponseProvider.sendResponseEntity(
+                ResponseStatus.SUCCESS,
+                HttpStatus.OK,
+                "The account was deleted successfully.");
+
+    }
+
     private ResponseEntity<Object> findUsernameErrors(String username) {
         ResponseEntity<Object> existingUsernameError = findExistingUsername(username);
 

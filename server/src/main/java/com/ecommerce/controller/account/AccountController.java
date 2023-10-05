@@ -68,7 +68,8 @@ public class AccountController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<Object> deleteAccount(@RequestHeader("Authorization") String token) {
-        return ResponseEntity.badRequest().body("Not implemented.");
+        return jwtAuthProvider.authorizeAccess(token,
+                () -> accountService.deleteAccount(token));
     }
 
 }

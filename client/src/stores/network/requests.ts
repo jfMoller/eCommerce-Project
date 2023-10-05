@@ -16,13 +16,13 @@ export async function callPut(endpoint: string, data: any) {
   return await makeRequest('PUT', endpoint, data)
 }
 
-export async function callDelete(endpoint: string, _id: string) {
-  return await makeRequest('DELETE', endpoint, undefined, _id)
+export async function callDelete(endpoint: string) {
+  return await makeRequest('DELETE', endpoint, undefined)
 }
 
-async function makeRequest(method: Method, endpoint: string, data?: any, id?: string) {
+async function makeRequest(method: Method, endpoint: string, data?: any) {
   try {
-    const url = id ? `${baseUrl}${endpoint}/${id}` : `${baseUrl}${endpoint}`
+    const url = `${baseUrl}${endpoint}`
     const jwtToken = useAuthenticationStore().methods.getJwtToken()
 
     const result = await axios.request({

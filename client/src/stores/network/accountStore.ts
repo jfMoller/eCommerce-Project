@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { callPost, callGet, callPut } from './requests'
+import { callPost, callGet, callPut, callDelete } from './requests'
 import { ref, watch } from 'vue'
 import { useAuthenticationStore } from '../authenticationStore'
 
@@ -22,6 +22,8 @@ export const useAccountStore = defineStore('accountStore', () => {
     changeEmailResponse: ref<ResponseSuccess | ResponseError | null>(null),
     
     changePasswordResponse: ref<ResponseSuccess | ResponseError | null>(null),
+
+    deleteAccountResponse: ref<ResponseSuccess | ResponseError | null>(null),
 
     isConfirmationErrorResponse: ref<boolean | null>(null),
 
@@ -106,8 +108,13 @@ export const useAccountStore = defineStore('accountStore', () => {
 
     getOrders: () => callGet('/account/orders/all'),
 
-    deleteAccount: (currentPassword: string) =>
-      callPost('/account/delete', { currentPassword: currentPassword })
+    deleteAccount: async () => {
+      const response: ResponseSuccess | ResponseError = await callDelete('/account/delete')
+
+      assignResponse(response, states.deleteAccountResponse)
+
+      return response
+    },
   }
 
   function assignResponse(response: any, state: any) {
