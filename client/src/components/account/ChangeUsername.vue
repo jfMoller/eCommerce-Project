@@ -51,10 +51,11 @@ export default defineComponent({
 
             if ('success' in response) {
                 setTimeout(async () => {
-                    await connectionStore.API.submitRelog('EditAccountView');;
+                    await connectionStore.API.submitRelog('EditAccountView');
                 }, 2000);
             }
             closeConfirmation();
+            newUsername.value = '';
         }
 
         function handleResponseMessage() {

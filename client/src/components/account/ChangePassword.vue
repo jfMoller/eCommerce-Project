@@ -18,7 +18,8 @@
                 :class="['flex', 'justify-center', 'font-semibold', 'my-2', responseMessageColor]">
                 <p>{{ changePasswordResponse.message }}</p>
             </div>
-            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Change password</button>
+            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded disabled:bg-gray-500 disabled:hover:bg-gray-700 disabled:cursor-not-allowed"
+            :disabled="newPassword === '' || newPassword != confirmNewPassword">Change password</button>
         </form>
     </div>
 </template>
@@ -57,10 +58,13 @@ export default defineComponent({
 
             if ('success' in response) {
                 setTimeout(async () => {
-                    await connectionStore.API.submitLogout();;
+                    await connectionStore.API.submitRelog('EditAccountView');
                 }, 2000);
             }
             closeConfirmation();
+
+            newPassword.value = '';
+            confirmNewPassword.value = '';
         }
 
         function handleResponseMessage() {

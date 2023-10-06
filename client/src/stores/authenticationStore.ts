@@ -10,10 +10,11 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
   }
 
   const methods = {
-    handleAuthentication: (response: LoginResponseSuccess, routerOriginName?: string) => {
+    handleAuthentication: async (response: LoginResponseSuccess, routerOriginName?: string) => {
       if (response.success && response.token) {
         storeJwtToken(response.token)
         states.isAuthenticated.value = true
+        console.log(states.isAuthenticated.value)
 
         if (response.userRole === 'ADMIN') {
           states.isAdmin.value = true

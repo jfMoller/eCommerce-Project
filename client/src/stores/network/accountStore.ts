@@ -34,8 +34,9 @@ export const useAccountStore = defineStore('accountStore', () => {
 
   watch(
     async () => useAuthenticationStore().states.isAuthenticated,
-    async (newState, previousState) => {
-      if (newState && newState !== previousState) {
+    async (change) => {
+      const isAuthenticated: boolean = await change
+      if (isAuthenticated) {
         await API.getUserDetails()
       }
     }

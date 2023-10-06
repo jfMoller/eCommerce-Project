@@ -63,7 +63,7 @@ public class AccountService {
         return JsonResponseProvider.sendResponseEntity(
                 ResponseStatus.ERROR,
                 HttpStatus.UNAUTHORIZED,
-                "User could not be retrieved, re-authentication failed.");
+                "User with this _id could not be retrieved, re-authentication failed.");
     }
 
     public ResponseEntity<Object> submitSignup(RegisterCredentials registerCredentials) {
