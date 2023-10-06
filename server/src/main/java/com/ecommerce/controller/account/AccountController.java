@@ -33,6 +33,12 @@ public class AccountController {
         return accountService.submitSignup(registerCredentials);
     }
 
+    @GetMapping("/re-authenticate")
+    public ResponseEntity<Object> login(@RequestHeader("Authorization") String token) {
+        return jwtAuthProvider.authorizeAccess(token,
+                () -> accountService.reAuthenticateUser(token));
+    }
+
     @GetMapping("/details")
     public ResponseEntity<Object> getUserDetails(@RequestHeader("Authorization") String token) {
         return jwtAuthProvider.authorizeAccess(token, () -> accountService.getUserDetails(token));

@@ -10,7 +10,7 @@
   
 <script lang="ts">
 import { useAccountStore } from '@/stores/network/accountStore';
-import { defineComponent, ref, onMounted} from 'vue';
+import { defineComponent, ref, onMounted, watch } from 'vue';
 
 export default defineComponent({
     name: 'AccountInfo',
@@ -25,7 +25,23 @@ export default defineComponent({
             email.value = accountStore.states.email
         });
 
-    
+        watch(
+            () => accountStore.states.username,
+            (newUsernameState: any) => {
+                if (newUsernameState) {
+                    username.value = accountStore.states.username;
+                }
+            }
+        );
+
+        watch(
+            () => accountStore.states.email,
+            (newEmailState: any) => {
+                if (newEmailState) {
+                    email.value = accountStore.states.email;
+                }
+            }
+        );
 
         return { username, email }
     },

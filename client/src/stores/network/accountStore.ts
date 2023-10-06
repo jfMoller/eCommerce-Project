@@ -20,7 +20,7 @@ export const useAccountStore = defineStore('accountStore', () => {
     changeUsernameResponse: ref<ResponseSuccess | ResponseError | null>(null),
 
     changeEmailResponse: ref<ResponseSuccess | ResponseError | null>(null),
-    
+
     changePasswordResponse: ref<ResponseSuccess | ResponseError | null>(null),
 
     deleteAccountResponse: ref<ResponseSuccess | ResponseError | null>(null),
@@ -84,7 +84,6 @@ export const useAccountStore = defineStore('accountStore', () => {
       return response
     },
 
-    
     changeEmail: async (newEmail: string) => {
       const response: ResponseSuccess | ResponseError = await callPut('/account/email', {
         newEmail: newEmail
@@ -114,7 +113,7 @@ export const useAccountStore = defineStore('accountStore', () => {
       assignResponse(response, states.deleteAccountResponse)
 
       return response
-    },
+    }
   }
 
   function assignResponse(response: any, state: any) {

@@ -10,7 +10,7 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
   }
 
   const methods = {
-    handleAuthentication: (response: LoginResponseSuccess) => {
+    handleAuthentication: (response: LoginResponseSuccess, routerOriginName?: string) => {
       if (response.success && response.token) {
         storeJwtToken(response.token)
         states.isAuthenticated.value = true
@@ -19,7 +19,7 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
           states.isAdmin.value = true
         }
 
-        navigationProvider.navigateOnCondition(states.isAuthenticated.value, 'home', 'login')
+        navigationProvider.navigateOnCondition(states.isAuthenticated.value, routerOriginName ? routerOriginName : 'home', 'login')
       }
     },
 

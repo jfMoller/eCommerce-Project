@@ -51,7 +51,7 @@ export default defineComponent({
 
             if ('success' in response) {
                 setTimeout(async () => {
-                    await connectionStore.API.submitLogout();;
+                    await connectionStore.API.submitRelog('EditAccountView');;
                 }, 2000);
             }
             closeConfirmation();

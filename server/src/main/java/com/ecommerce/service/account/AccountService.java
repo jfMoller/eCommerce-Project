@@ -50,6 +50,22 @@ public class AccountService {
                 ResponseStatus.ERROR, HttpStatus.UNAUTHORIZED, "Invalid email or password.");
     }
 
+    public ResponseEntity<Object> reAuthenticateUser(String token) {
+        String user_id = jwtTokenProvider.getToken_id(token);
+        User requestedUser = userDetailsService.findUser(user_id);
+
+        if (requestedUser != null) {
+            LoginCredentials credentials = new LoginCredentials(
+                    requestedUser.getEmail(), requestedUser.getPassword());
+            return submitLogin(credentials);
+        }
+
+        return JsonResponseProvider.sendResponseEntity(
+                ResponseStatus.ERROR,
+                HttpStatus.UNAUTHORIZED,
+                "User could not be retrieved, re-authentication failed.");
+    }
+
     public ResponseEntity<Object> submitSignup(RegisterCredentials registerCredentials) {
 
         ResponseEntity<Object> formattingErrorsResponse =
