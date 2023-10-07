@@ -5,6 +5,7 @@ import SignupView from '../views/SignupView.vue'
 import AccountView from '../views/AccountView.vue'
 import EditAccountView from '../views/EditAccountView.vue'
 import ShowAccountOrdersView from '@/views/ShowAccountOrdersView.vue'
+import { useAuthenticationStore } from '@/stores/authenticationStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,13 @@ const router = createRouter({
       path: '/account',
       name: 'account',
       component: AccountView,
+      beforeEnter: (to, from, next) => {
+        if (useAuthenticationStore().states.isAuthenticated) {
+          next()
+        } else {
+          next('/login')
+        }
+      },
       children: [
         {
           path: 'edit',
@@ -60,7 +68,8 @@ const router = createRouter({
       path: '/checkout',
       name: 'checkout',
       component: () => import('../views/CheckoutView.vue')
-    }
+    },
+    { path: '/:catchAll(.*)', redirect: '/' }
   ]
 })
 
