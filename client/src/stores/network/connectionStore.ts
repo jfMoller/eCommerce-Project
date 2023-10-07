@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { callGet, callPost } from './requests'
 import { ref } from 'vue'
 import { useAuthenticationStore } from '../authenticationStore'
+import { useAccountStore } from './accountStore'
 
 export interface LoginResponseSuccess {
   success: boolean
@@ -33,6 +34,10 @@ export const useConnectionStore = defineStore('connectionStore', () => {
 
       handleLoginErrorResponse(response as ResponseError)
       useAuthenticationStore().methods.handleAuthentication(response as LoginResponseSuccess)
+
+      if (!useAccountStore().states.username || !useAccountStore().states.email) {
+        useAccountStore().API.getUserDetails()
+      }
 
       return response
     },

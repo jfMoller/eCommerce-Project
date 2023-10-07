@@ -4,7 +4,6 @@
       <span class="close absolute top-2 right-2 cursor-pointer text-gray-600">&times;</span>
       <h3 class="font-semibold text-2xl">{{ header }}</h3>
       <p class="text-gray-700">{{ text }}</p>
-      <p v-if="requirePassword" class="text-gray-700">You will be logged out for the changes to take effect.</p>
       <div class="flex justify-start space-x-2">
         <input v-if="requirePassword" v-model="password"
           class="border border-gray-300 rounded py-2 px-4 outline-none focus:border-blue-500"

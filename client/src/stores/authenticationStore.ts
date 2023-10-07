@@ -14,13 +14,16 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
       if (response.success && response.token) {
         storeJwtToken(response.token)
         states.isAuthenticated.value = true
-        console.log(states.isAuthenticated.value)
 
         if (response.userRole === 'ADMIN') {
           states.isAdmin.value = true
         }
 
-        navigationProvider.navigateOnCondition(states.isAuthenticated.value, routerOriginName ? routerOriginName : 'home', 'login')
+        navigationProvider.navigateOnCondition(
+          states.isAuthenticated.value,
+          routerOriginName ? routerOriginName : 'home',
+          'login'
+        )
       }
     },
 
@@ -33,7 +36,6 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
     getJwtToken: () => {
       return sessionStorage.getItem('jwtToken')
     }
-    
   }
 
   function revokeAuthentication() {
