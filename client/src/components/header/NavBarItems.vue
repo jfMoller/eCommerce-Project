@@ -1,5 +1,5 @@
 <template>
-    <nav class="space-x-6 px-4 flex items-center text-xl">
+    <nav :class="['text-xl', props.additionalClass]">
         <LoginItem v-if="!isAuthenticated" />
         <AccountItem v-else />
         <StyledRouterLink text="Shop" path="/shop" />
@@ -18,10 +18,16 @@ import { useAuthenticationStore } from '@/stores/authenticationStore';
 import AccountItem from './AccountItem.vue';
 
 export default defineComponent({
-    setup() {
+    props: {
+        additionalClass: {
+            Type: String,
+            required: false
+        }
+    },
+    setup(props) {
         const isAuthenticated = computed(() => useAuthenticationStore().states.isAuthenticated)
 
-        return { isAuthenticated }
+        return { isAuthenticated, props }
     },
 
     components: {
