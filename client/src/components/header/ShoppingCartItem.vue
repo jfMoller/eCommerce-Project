@@ -1,8 +1,11 @@
 <template>
-    <IconRouterLink iconClass="fa-solid fa-cart-shopping" additionalClass="relative" path="/checkout" />
-    <div v-if="itemsCount > 0" class="absolute top-3 right-10">
-        <p class="p-1 h-4 bg-green-200 text-xs rounded-full text-center flex justify-center items-center">{{ itemsCount }}
-        </p>
+    <div :class="[additionalClass]">
+        <IconRouterLink iconClass="fa-solid fa-cart-shopping" additionalClass="relative" path="/checkout" />
+        <div v-if="itemsCount > 0" class="absolute top-3 right-10">
+            <p class="p-1 h-4 bg-green-200 text-xs rounded-full text-center flex justify-center items-center">{{ itemsCount
+            }}
+            </p>
+        </div>
     </div>
 </template>
 
@@ -13,6 +16,13 @@ import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 
 export default defineComponent({
     name: "ShoppingCartItem",
+
+    props: {
+        additionalClass: {
+            type: String,
+            required: false
+        }
+    },
 
     setup() {
         const itemsCount = computed(() => useShoppingCartStore().methods.getTotalItemsCount());

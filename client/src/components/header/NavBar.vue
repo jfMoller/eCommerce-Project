@@ -2,27 +2,28 @@
   <header class="bg-gray-900 py-4 px-10 shadow-md sticky top-0 z-999">
 
     <div class="flex justify-between items-center">
-      <RouterLink to="/">
-        <div class="text-4xl font-extrabold text-white">eCommerce</div>
-      </RouterLink>
-
-      <div @click="toggleAsideVisibility" class="block sm:hidden cursor-pointer">
-        <i class="fas fa-bars text-white h-15"></i>
-      </div>
+      <HeaderLogo />
+      <!--     Desktop view -->
       <NavBarItems additionalClass="hidden sm:flex space-x-6 flex items-center text-xl px-4" />
-    </div>
 
+      <!-- Phone view -->
+      <div class="sm:hidden cursor-pointer space-x-6 text-xl px-4 flex justify-center items-center">
+        <HamburgerIcon :handleOnClick="toggleAsideVisibility" />
+        <ShoppingCartItem />
+      </div>
+
+    </div>
   </header>
-  <aside v-if="isAsideOpen" class="sm:hidden fixed right-0 w-[20rem] h-screen bg-gray-800 z-99 py-20 text-left">
-    <nav class="space-y-6 flex flex-col items-center justify-center text-xl">
-      <NavBarItems class="flex flex-col space-y-6 items-center text-xl w-full" />
-    </nav>
-  </aside>
+  <HamburgerDropdown :isOpen="isAsideOpen" :onClose="closeAside" :onClickOutside="handleClickOutsideAside" />
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import HeaderLogo from './HeaderLogo.vue'
+import HamburgerIcon from './HamburgerIcon.vue'
 import NavBarItems from './NavBarItems.vue';
+import ShoppingCartItem from './ShoppingCartItem.vue';
+import HamburgerDropdown from './HamburgerDropdown.vue';
 
 export default defineComponent({
   name: "NavBar",
@@ -32,14 +33,24 @@ export default defineComponent({
 
     function toggleAsideVisibility() {
       isAsideOpen.value = !isAsideOpen.value
-      console.log(isAsideOpen.value)
     }
 
-    return { isAsideOpen, toggleAsideVisibility }
+    function closeAside() {
+      isAsideOpen.value = false
+    }
+
+    function handleClickOutsideAside(event: any) {
+      if (!event.target.closest('bg-gray-800')) { // The aside background color
+        closeAside()
+      }
+    }
+
+
+    return { isAsideOpen, toggleAsideVisibility, closeAside, handleClickOutsideAside }
 
   },
   components: {
-    NavBarItems
+    HeaderLogo, HamburgerIcon, NavBarItems, ShoppingCartItem, HamburgerDropdown
   },
 })
 </script>

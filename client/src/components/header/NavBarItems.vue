@@ -5,7 +5,7 @@
         <StyledRouterLink text="Shop" path="/shop" />
         <StyledRouterLink text="About" path="/about" />
         <StyledRouterLink text="Contact" path="/contact" />
-        <ShoppingCartItem />
+        <ShoppingCartItem v-if="props.isShoppingCartIncluded" />
     </nav>
 </template>
   
@@ -22,7 +22,12 @@ export default defineComponent({
         additionalClass: {
             Type: String,
             required: false
-        }
+        },
+        isShoppingCartIncluded: {
+            Type: Boolean,
+            required: false,
+            default: true
+        },
     },
     setup(props) {
         const isAuthenticated = computed(() => useAuthenticationStore().states.isAuthenticated)
@@ -37,4 +42,4 @@ export default defineComponent({
         AccountItem
     },
 })
-</script>@/stores/authenticationStore
+</script>

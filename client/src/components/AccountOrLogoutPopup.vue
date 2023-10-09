@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute pt-2">
+    <div class="hidden sm:block absolute pt-2">
         <div class="flex flex-col justify-center items-center bg-white p-4 shadow-md rounded-md">
             <div class="text-left space-y-2 flex flex-col">
                 <router-link :to="{ name: 'EditAccountView' }" class="text-blue-700 hover:text-blue-500">
