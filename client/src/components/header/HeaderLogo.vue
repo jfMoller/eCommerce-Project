@@ -1,10 +1,8 @@
 <template>
     <RouterLink to="/">
         <div class="flex items-center">
-            <div class="text-xl w-10 h-10 font-extrabold bg-orange-500 p-2 rounded-full flex justify-center items-center mr-4">
-                <i class="fas fa-coffee text-white"></i>
-            </div>
-            <p class="text-white text-xl semi-bold custom-font">Java Enthusiast</p>
+            <img src="../../resources/coffee-cup-logo.jpg" class="max-h-[2rem] mt-[-0.82rem] mr-4" alt="logo">
+            <p class="text-gray-600 text-l semi-bold custom-font bold">JAVA ENTHUSIAST</p>
         </div>
     </RouterLink>
 </template>
@@ -26,6 +24,6 @@ export default defineComponent({
 
 <style scoped>
 .custom-font {
-    font-family: 'CustomFont', Cantarell, sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 </style>

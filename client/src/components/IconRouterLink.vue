@@ -1,6 +1,6 @@
 <template>
     <RouterLink :to="path" :class="[
-        'text-white',
+        'text-black',
         'hover:text-gray-400',
         'transition', 'duration-300',
         'ease-in-out',

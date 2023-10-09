@@ -1,15 +1,15 @@
 <template>
-  <header class="bg-gray-900 py-4 px-10 shadow-md sticky top-0 z-999">
+  <header class="bg-white py-4 px-10 shadow-md sticky top-0 z-999 border-b-4 border-white">
 
     <div class="flex justify-between items-center">
       <HeaderLogo />
       <!--     Desktop view -->
-      <NavBarItems additionalClass="hidden sm:flex space-x-6 flex items-center text-xl px-4" />
+      <NavBarItems additionalClass="hidden sm:flex space-x-6 flex items-center" />
 
       <!-- Phone view -->
-      <div class="sm:hidden cursor-pointer space-x-6 text-xl px-4 flex justify-center items-center">
-        <HamburgerIcon :handleOnClick="toggleAsideVisibility" />
+      <div class="sm:hidden cursor-pointer space-x-6 text-l px-4 flex justify-center items-center">
         <ShoppingCartItem />
+        <HamburgerIcon :handleOnClick="toggleAsideVisibility" />
       </div>
 
     </div>

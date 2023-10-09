@@ -23,7 +23,7 @@
 
       textClass: {
         type: String,
-        default: "text-white hover:text-gray-400",
+        default: "hover:text-gray-400 custom-font text-l",
         required: false,
       },
 
@@ -37,3 +37,9 @@
     },
   }
   </script>
+
+<style scoped>
+.custom-font {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+</style>

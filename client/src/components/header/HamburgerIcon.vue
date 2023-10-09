@@ -1,5 +1,5 @@
 <template>
-    <i @click="toggleAside" class="fas fa-bars text-white text-xl"></i>
+    <i @click="toggleAside" class="fas fa-bars text-black text-xl"></i>
 </template>
   
 <script lang="ts">

@@ -30,9 +30,10 @@ export default defineComponent({
   },
 
   setup(props) {
+    const shoppingCartStore = useShoppingCartStore()
     
     const addToCart = (product: Product) => {
-    useShoppingCartStore().methods.addItem(product)
+    shoppingCartStore.methods.addItem(product)
     };
 
     return {

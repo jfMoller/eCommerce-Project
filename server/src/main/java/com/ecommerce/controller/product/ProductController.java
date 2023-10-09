@@ -31,6 +31,11 @@ public class ProductController {
         return productService.getProducts();
     }
 
+    @GetMapping("/featured")
+    public ResponseEntity<List<Product>> getFeaturedProducts() {
+        return productService.getFeaturedProducts();
+    }
+
     @GetMapping("/{product_id}")
     public ResponseEntity<Object> getProduct(@PathVariable String product_id) {
         return productService.getProduct(product_id);

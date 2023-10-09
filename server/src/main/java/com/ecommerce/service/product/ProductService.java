@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +38,19 @@ public class ProductService {
                             "Result: \n" +
                             "Product does not exist; retrieval failed.");
         }
+    }
+
+    public ResponseEntity<List<Product>> getFeaturedProducts() {
+        List<Product> allProducts = productRepository.findAll();
+
+        List<Product> sortedProducts = allProducts.stream()
+                .sorted(Comparator.comparingInt(Product::getQuantity).reversed())
+                .toList();
+
+        List<Product> topFourProducts = sortedProducts.stream()
+                .limit(4)
+                .toList();
+        return ResponseEntity.ok(topFourProducts);
     }
 
     public ResponseEntity<Product> addProduct(Product product) {

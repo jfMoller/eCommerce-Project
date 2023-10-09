@@ -1,10 +1,10 @@
 <template>
-    <nav :class="['text-xl', props.additionalClass]">
+    <nav :class="[props.additionalClass]">
         <LoginItem v-if="!isAuthenticated" />
         <AccountItem v-else />
-        <StyledRouterLink text="Shop" path="/shop" />
-        <StyledRouterLink text="About" path="/about" />
-        <StyledRouterLink text="Contact" path="/contact" />
+        <StyledRouterLink text="SHOP" path="/shop" />
+        <StyledRouterLink text="ABOUT" path="/about" />
+        <StyledRouterLink text="CONTACT" path="/contact" />
         <ShoppingCartItem v-if="props.isShoppingCartIncluded" />
     </nav>
 </template>
