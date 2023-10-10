@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-white py-4 px-10 shadow-md sticky top-0 z-999 border-b-4 border-white">
+  <header class="bg-white py-6 px-10 sticky top-0 z-999 border-b-4 border-white custom-box-shadow">
 
     <div class="flex justify-between items-center">
       <HeaderLogo />
@@ -54,3 +54,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style scoped>
+.custom-box-shadow {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+</style>
