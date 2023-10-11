@@ -27,7 +27,7 @@
 import { computed, defineComponent } from 'vue';
 import StyledButton from '../StyledButton.vue';
 import { useShoppingCartStore } from '../../stores/shoppingCartStore';
-import type { Product } from '@/types/products'
+import type { Product } from '@/types/product'
 
 export default defineComponent({
   name: "ProductItems",
@@ -69,4 +69,4 @@ export default defineComponent({
   },
   components: { StyledButton }
 });
-</script>../../stores/shoppingCartStore
+</script>../../stores/shoppingCartStore@/types/product

@@ -1,13 +1,13 @@
 <template>
   <section>
-    <ProductCheckoutSummary v-if="amountOfCartItems > 0" />
+    <OrderSummary v-if="amountOfCartItems > 0" />
     <EmptyShoppingCartNotice v-else />
     <FeaturedProducts />
   </section>
 </template>
 
 <script lang="ts">
-import ProductCheckoutSummary from '@/components/products/ProductCheckoutSummary.vue';
+import OrderSummary from '@/components/products/OrderSummary.vue';
 import { defineComponent, computed } from 'vue';
 import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 import EmptyShoppingCartNotice from '@/components/EmptyShoppingCartNotice.vue'
@@ -16,19 +16,22 @@ import FeaturedProducts from '@/components/products/FeaturedProducts.vue';
 
 export default defineComponent({
   setup() {
+    const shoppingCartStore = useShoppingCartStore();
 
-    const amountOfCartItems = computed(() => useShoppingCartStore().methods.getTotalItemsCount())
+    const amountOfCartItems = computed(() => shoppingCartStore.methods.getTotalItemsCount())
 
     return { amountOfCartItems }
   },
 
+  
+
 
 
   components: {
-    ProductCheckoutSummary,
+    OrderSummary,
     EmptyShoppingCartNotice,
     FeaturedProducts,
 
   },
 })
-</script>@/stores/shoppingCartStore
+</script>

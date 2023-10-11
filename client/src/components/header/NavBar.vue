@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-white py-6 px-10 sticky top-0 z-999 border-b-4 border-white custom-box-shadow">
+  <header class="bg-white py-8 px-10 sticky top-0 z-999 border-b-4 border-white custom-box-shadow">
 
     <div class="flex justify-between items-center">
       <HeaderLogo />
@@ -8,8 +8,8 @@
 
       <!-- Phone view -->
       <div class="sm:hidden cursor-pointer space-x-6 text-l px-4 flex justify-center items-center">
-        <ShoppingCartItem />
         <HamburgerIcon :handleOnClick="toggleAsideVisibility" />
+        <ShoppingCartItem />
       </div>
 
     </div>

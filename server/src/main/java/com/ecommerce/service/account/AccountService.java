@@ -51,8 +51,7 @@ public class AccountService {
     }
 
     public ResponseEntity<Object> reAuthenticateUser(String token) {
-        String user_id = jwtTokenProvider.getToken_id(token);
-        User requestedUser = userDetailsService.findUser(user_id);
+        User requestedUser = userDetailsService.findUserByToken(token);
 
         if (requestedUser != null) {
             LoginCredentials credentials = new LoginCredentials(

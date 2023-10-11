@@ -1,10 +1,8 @@
 <template>
-  <footer class="bg-white text-black py-12 custom-box-shadow">
+  <footer class="bg-white text-black py-12 custom-box-shadow border-t">
     <div class="container mx-auto px-4">
 
       <div class="flex justify-between items-center mb-6">
-
-        <h4>eCommerce logo</h4>
         <FooterNavItems />
         <SocialsIcons />
 
@@ -26,9 +24,3 @@ export default {
   components: { FooterNavItems, SocialsIcons }
 }
 </script>
-
-<style scoped>
-.custom-box-shadow {
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-}
-</style>

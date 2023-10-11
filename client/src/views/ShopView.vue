@@ -11,7 +11,7 @@ import { defineComponent, onMounted, ref } from 'vue';
 import ProductCards from '@/components/products/ProductCards.vue';
 import SearchInput from '@/components/SearchInput.vue';
 import { useProductStore } from '@/stores/network/productStore';
-import type { Product } from '@/types/products';
+import type { Product } from '@/types/product';
 
 export default defineComponent({
   name: "ShopView",
@@ -30,4 +30,4 @@ export default defineComponent({
   }
 
 });
-</script>@/stores/network/productAPI@/stores/network/productStore
+</script>@/stores/network/productAPI@/stores/network/productStore@/types/product

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Product } from '@/types/products'
+import type { Product } from '@/types/product'
 
 export const useShoppingCartStore = defineStore('shoppingCart', () => {
   const states = {

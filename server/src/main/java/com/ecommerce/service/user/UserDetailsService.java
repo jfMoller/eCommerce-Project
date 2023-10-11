@@ -1,7 +1,7 @@
 package com.ecommerce.service.user;
 
+import com.ecommerce.auth.JwtTokenProvider;
 import com.ecommerce.controller.account.LoginCredentials;
-import com.ecommerce.controller.account.RegisterCredentials;
 import com.ecommerce.entity.User;
 import com.ecommerce.entity.UserDetails;
 import com.ecommerce.repository.UserRepository;
@@ -15,9 +15,12 @@ public class UserDetailsService {
 
     private final UserRepository userRepository;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Autowired
-    public UserDetailsService(UserRepository userRepository) {
+    public UserDetailsService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     public User findUser(LoginCredentials loginCredentials) {
@@ -28,18 +31,14 @@ public class UserDetailsService {
                 .orElse(null);
     }
 
-    public User findUser(RegisterCredentials registerCredentials) {
-        return userRepository.findAll().stream()
-                .filter(user -> user.getUsername().equals(registerCredentials.username()) &&
-                        user.getEmail().equals(registerCredentials.email()) &&
-                        user.getPassword().equals(registerCredentials.password()))
-                .findFirst()
-                .orElse(null);
-    }
-
     public User findUser(String user_id) {
         Optional<User> requestedUser = userRepository.findById(user_id);
         return requestedUser.orElse(null);
+    }
+
+    public User findUserByToken(String token) {
+        String user_id = jwtTokenProvider.getToken_id(token);
+        return findUser(user_id);
     }
 
     public boolean isExistingUsername(String username) {

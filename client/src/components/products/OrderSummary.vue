@@ -1,9 +1,9 @@
 <template>
   <article class="mt-10">
-    <h2 class="text-3xl font-semibold mb-6">Checkout</h2>
+    <h2 class="text-3xl font-semibold mb-6">Your order</h2>
 
     <div class="flex flex-col items-center">
-      <ProductItems :products="checkoutProducts" />
+      <ProductItems :products="orderProducts" />
 
       <div class="flex flex-col items-center mb-4">
         <h2 class="text-xl font-bold">Total cost:</h2>
@@ -11,7 +11,7 @@
       </div>
 
       <StyledButton text="Go to payment" additionalClass="rounded-md bg-blue-500 text-white hover:bg-blue-700"
-        :handleClick="() => goToPayment()" />
+        :handleClick="placeOrder" />
     </div>
   </article>
 </template>
@@ -21,22 +21,27 @@ import { defineComponent, computed } from 'vue';
 import ProductItems from './ProductItems.vue';
 import StyledButton from '../StyledButton.vue';
 import { useShoppingCartStore } from '@/stores/shoppingCartStore';
+import { useOrderStore } from '@/stores/network/orderStore';
 
 export default defineComponent({
-  name: "FeaturedProducts",
+  name: "OrderSummary",
   setup() {
-    const checkoutProducts = computed(() => useShoppingCartStore().methods.getAllItems())
+    const shoppingCartStore = useShoppingCartStore()
+    const orderStore = useOrderStore()
 
-    const totalPrice = computed(() => useShoppingCartStore().methods.getTotalPrice())
+    const orderProducts = computed(() => shoppingCartStore.methods.getAllItems())
+
+    const totalPrice = computed(() => shoppingCartStore.methods.getTotalPrice())
 
 
-    function goToPayment() {
-      const itemIds: String[] = useShoppingCartStore().methods.getItemIds()
-    console.log(itemIds)
+    async function placeOrder() {
+      const response = await orderStore.API.placeOrder();
+      console.log(response)
+     
     }
 
     return {
-      checkoutProducts, totalPrice, goToPayment
+      orderProducts, totalPrice, placeOrder
     };
   },
   components: {

@@ -1,8 +1,8 @@
 <template>
     <div :class="[additionalClass]">
         <IconRouterLink iconClass="fa-solid fa-cart-shopping" additionalClass="relative" path="/checkout" />
-        <div v-if="itemsCount > 0" class="absolute top-3 right-7">
-            <p class="p-1 h-4 bg-red-700 text-xs rounded-full text-white font-semibold text-center flex justify-center items-center">{{ itemsCount
+        <div v-if="itemsCount > 0" class="absolute top-4 right-8 sm:top-4 sm:right-4">
+            <p class="p-3 w-3 h-3 bg-red-700 text-xs rounded-full text-white font-semibold flex justify-center items-center">{{ itemsCount
             }}
             </p>
         </div>

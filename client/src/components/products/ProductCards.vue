@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import StyledButton from '../StyledButton.vue';
-import type { Product } from '@/types/products';
+import type { Product } from '@/types/product';
 import { useShoppingCartStore } from '../../stores/shoppingCartStore'
 
 export default defineComponent({
@@ -43,4 +43,4 @@ export default defineComponent({
   },
   components: { StyledButton }
 });
-</script>../../stores/shoppingCartStore
+</script>../../stores/shoppingCartStore@/types/product

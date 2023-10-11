@@ -1,8 +1,8 @@
 <template>
     <RouterLink to="/">
         <div class="flex items-center">
-            <img src="../../resources/coffee-cup-logo.jpg" class="max-h-[2rem] mt-[-0.82rem] mr-4" alt="logo">
-            <p class="text-gray-600 text-l semi-bold custom-font bold">JAVA ENTHUSIAST</p>
+            <img src="../../resources/coffee-cup-logo.jpg" class="max-h-[1.7rem] mt-[-0.75rem] mr-4" alt="logo">
+            <p class="text-gray-800 text-l semi-bold custom-font font-bold">JAVA ENTHUSIAST</p>
         </div>
     </RouterLink>
 </template>

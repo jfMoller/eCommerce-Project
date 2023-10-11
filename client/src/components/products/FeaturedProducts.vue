@@ -11,7 +11,7 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import { useProductStore } from '@/stores/network/productStore';
 import ProductCards from './ProductCards.vue';
-import type { Product } from '@/types/products';
+import type { Product } from '@/types/product';
 
 export default defineComponent({
   name: "FeaturedProducts",
@@ -32,4 +32,4 @@ export default defineComponent({
   }
 
 });
-</script>
+</script>@/types/product

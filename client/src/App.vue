@@ -9,3 +9,9 @@ import NavBar from './components/header/NavBar.vue';
 import { RouterView } from 'vue-router'
 import FooterInfo from './components/footer/FooterInfo.vue'
 </script>
+
+
+<style>
+html {
+  background-color: white;
+}</style>

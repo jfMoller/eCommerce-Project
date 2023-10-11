@@ -26,7 +26,7 @@ async function makeRequest(method: Method, endpoint: string, data?: any) {
     const jwtToken = useAuthenticationStore().methods.getJwtToken()
 
     const result = await axios.request({
-      method, url, data, headers: { Authorization: jwtToken ? jwtToken : "none" }
+      method, url, data, headers: { Authorization: jwtToken ? jwtToken : null }
     })
 
     return result.data

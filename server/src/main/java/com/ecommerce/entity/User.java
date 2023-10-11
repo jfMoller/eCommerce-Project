@@ -22,7 +22,7 @@ public class User {
 
     public Role role;
 
-    private List<Order> orders = new ArrayList<>();
+    private List<String> order_ids = new ArrayList<>();
 
     public User(String username, String email, String password, Role role) {
         this.username = username;
@@ -63,27 +63,13 @@ public class User {
         return role;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public List<String> getOrder_ids() {
+        return order_ids;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public void addOrder(String newOrder_id) {
+        order_ids.add(newOrder_id);
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "\n    _id='" + _id + '\'' +
-                ",\n    username='" + username + '\'' +
-                ",\n    email='" + email + '\'' +
-                ",\n    password='" + password + '\'' +
-                ",\n    orders=" + orders +
-                "\n}";
-    }
 }
 

@@ -40,6 +40,11 @@ public class ProductService {
         }
     }
 
+    public Product getProductById(String product_id) {
+        Optional<Product> requestedProduct = productRepository.findById(product_id);
+        return requestedProduct.orElse(null);
+    }
+
     public ResponseEntity<List<Product>> getFeaturedProducts() {
         List<Product> allProducts = productRepository.findAll();
 
