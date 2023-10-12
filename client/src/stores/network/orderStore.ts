@@ -9,7 +9,10 @@ export const useOrderStore = defineStore('orderStore', () => {
     placeOrder: async () =>
       await callPost('/orders/place', { product_ids: shoppingCartStore.methods.getItemIds() }),
 
-    getOrders: async () => await callGet('/orders/all')
+    getOngoingOrder: async () =>
+      await callPost('/orders/ongoing', { product_ids: shoppingCartStore.methods.getItemIds() }),
+
+    getPlacedOrders: async () => await callGet('/orders/all')
   }
 
   return {

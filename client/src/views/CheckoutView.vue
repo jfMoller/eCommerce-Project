@@ -1,13 +1,13 @@
 <template>
   <section>
-    <OrderSummary v-if="amountOfCartItems > 0" />
+    <OngoingOrder v-if="amountOfCartItems > 0" />
     <EmptyShoppingCartNotice v-else />
     <FeaturedProducts />
   </section>
 </template>
 
 <script lang="ts">
-import OrderSummary from '@/components/products/OrderSummary.vue';
+import OngoingOrder from '@/components/products/OngoingOrder.vue';
 import { defineComponent, computed } from 'vue';
 import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 import EmptyShoppingCartNotice from '@/components/EmptyShoppingCartNotice.vue'
@@ -28,7 +28,7 @@ export default defineComponent({
 
 
   components: {
-    OrderSummary,
+    OngoingOrder,
     EmptyShoppingCartNotice,
     FeaturedProducts,
 

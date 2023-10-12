@@ -42,7 +42,7 @@
       const orders = ref<Order[]>([]);
   
       onMounted(async () => {
-        const response = await orderStore.API.getOrders();
+        const response = await orderStore.API.getPlacedOrders();
         orders.value = response;
       });
   

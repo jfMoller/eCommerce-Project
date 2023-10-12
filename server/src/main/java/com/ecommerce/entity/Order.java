@@ -64,11 +64,11 @@ public class Order {
     }
 
     private double calculateTotalPrice() {
-        double sum = 0;
+        double price = 0;
         for (Product product : products) {
-            sum += product.getPrice();
+            price += product.getPrice();
         }
-        return sum;
+        return formatPrice(price);
     }
 
     private LocalDateTime getTimeReceived() {

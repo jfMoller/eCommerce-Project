@@ -2,7 +2,7 @@ package com.ecommerce.controller.order;
 
 
 import com.ecommerce.auth.JwtAuthProvider;
-import com.ecommerce.dto.PlaceOrderRequest;
+import com.ecommerce.dto.OrderRequest;
 import com.ecommerce.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,13 @@ public class OrderController {
         this.jwtAuthProvider = jwtAuthProvider;
     }
 
+    @PostMapping("/ongoing")
+    public Object getOngoingOrder(@RequestBody OrderRequest request) {
+        return orderService.getOngoingOrder(request.product_ids());
+    }
+
     @PostMapping("/place")
-    public ResponseEntity<Object> placeOrder(@RequestHeader("Authorization") String token, @RequestBody PlaceOrderRequest request) {
+    public ResponseEntity<Object> placeOrder(@RequestHeader("Authorization") String token, @RequestBody OrderRequest request) {
         return jwtAuthProvider.authorizeAccess(token,
                 () -> orderService.placeOrder(token, request.product_ids()));
     }

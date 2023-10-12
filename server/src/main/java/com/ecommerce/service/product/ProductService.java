@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,24 @@ public class ProductService {
     public Product getProductById(String product_id) {
         Optional<Product> requestedProduct = productRepository.findById(product_id);
         return requestedProduct.orElse(null);
+    }
+
+    public List<Product> getProductsById(String[] product_ids) {
+        List<Product> requestedProducts = new ArrayList<>();
+
+        for (String product_id : product_ids) {
+            Optional<Product> product = productRepository.findById(product_id);
+            product.ifPresent(requestedProducts::add);
+        }
+        return requestedProducts;
+    }
+
+    public double calculateTotalPrice(List<Product> products) {
+        double price = 0;
+        for (Product product : products) {
+            price += product.getPrice();
+        }
+        return Math.round(price * 100.0) / 100.0;
     }
 
     public ResponseEntity<List<Product>> getFeaturedProducts() {

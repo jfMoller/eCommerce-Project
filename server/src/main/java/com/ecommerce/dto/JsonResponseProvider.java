@@ -54,7 +54,15 @@ public class JsonResponseProvider {
         return response;
     }
 
-    private static List<Map<String, Object>> parseAsProductWithAmount(List<Product> products) {
+    public static Map<String, Object> sendOngoingOrderJson(List<Product> requestedProducts, double totalPrice) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("products", parseAsProductWithAmount(requestedProducts));
+        response.put("totalPrice", totalPrice);
+
+        return response;
+    }
+
+    public static List<Map<String, Object>> parseAsProductWithAmount(List<Product> products) {
         List<Map<String, Object>> productsWithAmounts = new ArrayList<>();
 
         for (Product product : products) {

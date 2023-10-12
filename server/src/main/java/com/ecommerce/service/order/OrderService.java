@@ -72,6 +72,13 @@ public class OrderService {
                 "The user placing this order could not be found.");
     }
 
+    public Object getOngoingOrder(String[] product_ids) {
+        List<Product> requestedProducts = productService.getProductsById(product_ids);
+        double totalPrice = productService.calculateTotalPrice(requestedProducts);
+
+        return JsonResponseProvider.sendOngoingOrderJson(requestedProducts, totalPrice);
+    }
+
 
     public List<Object> getUserOrders(String token) {
         User user = userDetailsService.findUserByToken(token);

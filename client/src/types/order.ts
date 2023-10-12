@@ -8,3 +8,8 @@ export interface Order {
   expectedDelivery: string | null
   products: { amount: number; product: Product }[]
 }
+
+export interface OngoingOrder {
+  totalPrice: number
+  products: { amount: number; product: Product }[]
+}
