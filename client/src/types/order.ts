@@ -1,11 +1,10 @@
-import type { Product } from "./product";
+import type { Product } from './product'
 
 export interface Order {
-    _id: string;
-    user_id: string;
-    products: Product[];
-    price: number;
-    status: string;
-    received: string;
-    expectedDelivery: string | null;
+  _id: string
+  price: number
+  received: string
+  status: string
+  expectedDelivery: string | null
+  products: { amount: number; product: Product }[]
 }

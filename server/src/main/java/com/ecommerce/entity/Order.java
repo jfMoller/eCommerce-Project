@@ -39,6 +39,30 @@ public class Order {
         return user_id;
     }
 
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public double getPrice() {
+        return formatPrice(price);
+    }
+
+    private double formatPrice(double price) {
+        return Math.round(price * 100.0) / 100.0;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public LocalDateTime getReceived() {
+        return received;
+    }
+
+    public LocalDateTime getExpectedDelivery() {
+        return expectedDelivery;
+    }
+
     private double calculateTotalPrice() {
         double sum = 0;
         for (Product product : products) {

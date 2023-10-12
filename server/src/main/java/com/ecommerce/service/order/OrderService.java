@@ -73,19 +73,22 @@ public class OrderService {
     }
 
 
-    public ResponseEntity<List<Order>> getUserOrders(String token) {
+    public List<Object> getUserOrders(String token) {
         User user = userDetailsService.findUserByToken(token);
-        List<Order> orders = new ArrayList<>();
+        List<Object> orders = new ArrayList<>();
 
         if (user != null) {
             List<String> order_ids = user.getOrder_ids();
 
             for (String order_id : order_ids) {
                 Optional<Order> order = orderRepository.findById(order_id);
-                order.ifPresent(orders::add);
+                if (order.isPresent()) {
+                    orders.add(JsonResponseProvider.sendUserOrderJson(order.get()));
+                }
             }
+
         }
-        return ResponseEntity.ok(orders);
+        return orders;
     }
 
 }

@@ -3,7 +3,6 @@ package com.ecommerce.controller.order;
 
 import com.ecommerce.auth.JwtAuthProvider;
 import com.ecommerce.dto.PlaceOrderRequest;
-import com.ecommerce.entity.Order;
 import com.ecommerce.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +31,7 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Order>> placeOrder(@RequestHeader("Authorization") String token) {
+    public List<Object> getUserOrders(@RequestHeader("Authorization") String token) {
         return jwtAuthProvider.authorizeAccess(token,
                 () -> orderService.getUserOrders(token));
     }
