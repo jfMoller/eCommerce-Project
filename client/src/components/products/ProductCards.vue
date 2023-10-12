@@ -7,7 +7,7 @@
       <p class="text-gray-600 mb-2">{{ product.description }}</p>
       <div class="flex justify-between items-center">
         <span class="text-xl font-semibold text-blue-600">{{ product.price }}</span>
-        <StyledButton text="Add to cart" :handleClick="() => addToCart(product)" />
+        <StyledButton text="Add to cart" :handleClick="() => addToCart(product._id)" />
       </div>
 
     </div>
@@ -32,8 +32,8 @@ export default defineComponent({
   setup(props) {
     const shoppingCartStore = useShoppingCartStore()
     
-    const addToCart = (product: Product) => {
-    shoppingCartStore.methods.addItem(product)
+    function addToCart(product_id: string) {
+    shoppingCartStore.methods.addProductId(product_id)
     };
 
     return {
@@ -43,4 +43,4 @@ export default defineComponent({
   },
   components: { StyledButton }
 });
-</script>../../stores/shoppingCartStore@/types/product
+</script>

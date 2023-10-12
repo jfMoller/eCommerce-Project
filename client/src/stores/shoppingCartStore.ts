@@ -1,30 +1,32 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Product } from '@/types/product'
 
 export const useShoppingCartStore = defineStore('shoppingCart', () => {
   const states = {
-    items: ref<Product[]>([]),
-    totalItems: ref<number>(0),
+    product_ids: ref<string[]>([]),
+    productAmount: ref<number>(0)
   }
 
   const methods = {
-    addItem: (product: Product): void => {
-      states.items.value.push(product)
-      states.totalItems.value++
+    addProductId: (product_id: string): void => {
+      states.product_ids.value.push(product_id)
+      states.productAmount.value++
     },
 
-    removeItem: (product: Product): void => {
-      const index = states.items.value.indexOf(product)
-      states.items.value.splice(index, 1)
-      states.totalItems.value--
+    removeProductId: (product_id: string): void => {
+      const index = states.product_ids.value.indexOf(product_id)
+      states.product_ids.value.splice(index, 1)
+      states.productAmount.value--
     },
 
-    getAllItems: (): Product[] => states.items.value,
+    clearProductIds: (): void => {
+      states.product_ids.value = []
+      states.productAmount.value = 0
+    },
 
-    getTotalItemsCount: (): number => states.totalItems.value,
+    getAllProductIds: (): string[] => states.product_ids.value,
 
-    getItemIds: (): string[] => states.items.value.map((item) => item._id)
+    getTotalItemsCount: (): number => states.productAmount.value
   }
 
   return {

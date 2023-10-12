@@ -6,11 +6,19 @@ export const useOrderStore = defineStore('orderStore', () => {
   const shoppingCartStore = useShoppingCartStore()
 
   const API = {
-    placeOrder: async () =>
-      await callPost('/orders/place', { product_ids: shoppingCartStore.methods.getItemIds() }),
+    placeOrder: async () => {
+      const response = await callPost('/orders/place', {
+        product_ids: shoppingCartStore.methods.getAllProductIds()
+      })
+      if (response.success) {
+        shoppingCartStore.methods.clearProductIds()
+      }
+    },
 
     getOngoingOrder: async () =>
-      await callPost('/orders/ongoing', { product_ids: shoppingCartStore.methods.getItemIds() }),
+      await callPost('/orders/ongoing', {
+        product_ids: shoppingCartStore.methods.getAllProductIds()
+      }),
 
     getPlacedOrders: async () => await callGet('/orders/all')
   }

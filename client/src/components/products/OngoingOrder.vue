@@ -17,9 +17,9 @@
               <p class="text-gray-700">{{ productEntry.amount }}</p>
             </div>
             <div class="flex flex-col">
-              <button @click="() => addProduct(productEntry.product)"
+              <button @click="() => addProduct(productEntry.product._id)"
                 class="text-center border-l border-b font-bold text-2xl px-2">+</button>
-              <button @click="() => removeProduct(productEntry.product)"
+              <button @click="() => removeProduct(productEntry.product._id)"
                 class="text-center border-l font-bold text-2xl px-2">-</button>
             </div>
           </div>
@@ -44,7 +44,6 @@ import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useOrderStore } from '@/stores/network/orderStore';
 import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 import type { OngoingOrder } from '@/types/order';
-import type { Product } from '@/types/product';
 
 export default defineComponent({
   name: 'OngoingOrder',
@@ -56,7 +55,7 @@ export default defineComponent({
     onMounted(updateOngoingOrder);
 
     watch(
-      () => shoppingCartStore.states.totalItems,
+      () => shoppingCartStore.states.productAmount,
       (newItemsState: number) => {
         if (newItemsState) {
           updateOngoingOrder();
@@ -68,12 +67,12 @@ export default defineComponent({
       ongoingOrder.value = await orderStore.API.getOngoingOrder();
     }
 
-    function addProduct(product: Product) {
-      shoppingCartStore.methods.addItem(product);
+    function addProduct(product_id: string) {
+      shoppingCartStore.methods.addProductId(product_id);
     }
 
-    function removeProduct(product: Product) {
-      shoppingCartStore.methods.removeItem(product);
+    function removeProduct(product_id: string) {
+      shoppingCartStore.methods.removeProductId(product_id);
     }
 
     function placeOrder() {
