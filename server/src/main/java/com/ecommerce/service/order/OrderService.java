@@ -68,7 +68,7 @@ public class OrderService {
         }
         return JsonResponseProvider.sendResponseEntity(
                 ResponseStatus.ERROR,
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.UNAUTHORIZED,
                 "The user placing this order could not be found.");
     }
 
@@ -89,9 +89,7 @@ public class OrderService {
 
             for (String order_id : order_ids) {
                 Optional<Order> order = orderRepository.findById(order_id);
-                if (order.isPresent()) {
-                    orders.add(JsonResponseProvider.sendUserOrderJson(order.get()));
-                }
+                order.ifPresent(newOrder -> orders.add(JsonResponseProvider.sendUserOrderJson(newOrder)));
             }
 
         }

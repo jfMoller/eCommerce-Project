@@ -11,5 +11,11 @@ export interface Order {
 
 export interface OngoingOrder {
   totalPrice: number
-  products: { amount: number; product: Product }[]
+  products: ProductGrouping[]
+}
+
+interface ProductGrouping {
+  amount: number
+  groupPrice: number
+  product: Product
 }

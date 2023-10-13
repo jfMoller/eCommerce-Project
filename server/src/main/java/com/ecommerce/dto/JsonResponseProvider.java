@@ -76,6 +76,9 @@ public class JsonResponseProvider {
                 if (existingProduct.get_id().equals(product.get_id())) {
                     int currentAmount = (int) productWithAmount.get("amount");
                     productWithAmount.put("amount", currentAmount + 1); // Increment the amount
+
+                    productWithAmount.put("groupPrice", (product.getPrice() * (int) productWithAmount.get("amount"))); // Increment the price based on amount
+
                     isMatchingProduct = true;
                     break; // Parsing complete
                 }
@@ -86,6 +89,7 @@ public class JsonResponseProvider {
                 Map<String, Object> obj = new HashMap<>();
                 obj.put("amount", 1);
                 obj.put("product", product);
+                obj.put("groupPrice", product.getPrice());
                 productsWithAmounts.add(obj);
             }
         }

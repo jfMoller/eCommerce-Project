@@ -34,10 +34,7 @@ public class ProductService {
             return ResponseEntity.ok(requestedProduct.get());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    "Requested product_id: \n" +
-                            product_id + "\n" +
-                            "Result: \n" +
-                            "Product does not exist; retrieval failed.");
+                    "Product with _id: "+ product_id + " could not be found.");
         }
     }
 
