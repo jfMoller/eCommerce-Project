@@ -23,10 +23,6 @@ export default defineComponent({
     return { amountOfCartItems }
   },
 
-  
-
-
-
   components: {
     OngoingOrder,
     EmptyShoppingCartNotice,

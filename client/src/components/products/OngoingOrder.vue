@@ -1,6 +1,9 @@
 <template>
   <h2 class="text-l font-bold mb-6 text-center uppercase">Your Shopping Cart</h2>
-  <div class="p-4 bg-white rounded shadow">
+  <div class="p-4 bg-white rounded shadow relative">
+
+    <LoadingScreen />
+
     <ul class="">
       <div v-for="productEntry in ongoingOrder?.products" :key="productEntry.product._id">
         <li class="mb-1 py-2 border-b w-full flex justify-between items-center">
@@ -13,24 +16,24 @@
             </div>
           </div>
           <div class="flex flex-col items-center sm:flex-row">
-          <div class="flex items-center border rounded-md">
-            <div class="px-3 py-3 text-center flex text-l">
-              <p class="text-gray-700">{{ productEntry.amount }}</p>
+            <div class="flex items-center border rounded-md">
+              <div class="px-3 py-3 text-center flex text-l">
+                <p class="text-gray-700">{{ productEntry.amount }}</p>
+              </div>
+
+              <div class="flex flex-col">
+                <button @click="() => addProduct(productEntry.product._id)"
+                  class="text-center border-l border-b font-bold text-2xl px-2">+</button>
+                <button @click="() => removeProduct(productEntry.product._id)"
+                  class="text-center border-l font-bold text-2xl px-2">-</button>
+              </div>
             </div>
 
-            <div class="flex flex-col">
-              <button @click="() => addProduct(productEntry.product._id)"
-                class="text-center border-l border-b font-bold text-2xl px-2">+</button>
-              <button @click="() => removeProduct(productEntry.product._id)"
-                class="text-center border-l font-bold text-2xl px-2">-</button>
+            <div class="flex justify-end w-full sm:ml-9 max-w-[2rem]">
+              <p class="font-semibold max-w-[4rem]">{{ productEntry.groupPrice }}:-</p>
             </div>
           </div>
 
-          <div class="flex justify-end w-full sm:ml-9 max-w-[2rem]">
-            <p class="font-semibold max-w-[4rem]">{{ productEntry.groupPrice }}:-</p>
-          </div>
-        </div>
-          
         </li>
       </div>
 
@@ -49,6 +52,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
+import LoadingScreen from '../LoadingScreen.vue';
 import { useOrderStore } from '@/stores/network/orderStore';
 import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 import type { OngoingOrder } from '@/types/order';
@@ -88,6 +92,8 @@ export default defineComponent({
     }
 
     return { ongoingOrder, addProduct, removeProduct, placeOrder };
-  }
+  },
+
+  components: { LoadingScreen }
 });
 </script>

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import type { Method } from 'axios'
 import { useAuthenticationStore } from '../authenticationStore'
+import { useLoadingStore } from './loadingStore'
 
 const baseUrl = 'http://localhost:8080/api'
 
@@ -21,17 +22,27 @@ export async function callDelete(endpoint: string) {
 }
 
 async function makeRequest(method: Method, endpoint: string, data?: any) {
+  setIsLoading(true)
+
   try {
     const url = `${baseUrl}${endpoint}`
     const jwtToken = useAuthenticationStore().methods.getJwtToken()
 
     const result = await axios.request({
-      method, url, data, headers: { Authorization: jwtToken ? jwtToken : null }
+      method,
+      url,
+      data,
+      headers: { Authorization: jwtToken ? jwtToken : null }
     })
 
+    setIsLoading(false)
     return result.data
-    
   } catch (error: any) {
+    setIsLoading(false)
     return error.response.data
   }
+}
+
+function setIsLoading(state: boolean) {
+  useLoadingStore().methods.setIsLoading(state)
 }
