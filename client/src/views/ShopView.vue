@@ -1,8 +1,7 @@
 <template>
   <section>
     <SearchInput :options="products" />
-    <ProductCards v-if="products" :products="products" />
-    <div v-else>Loading</div>
+    <ProductCards :products="products" />
   </section>
 </template>
 
@@ -16,7 +15,7 @@ import type { Product } from '@/types/product';
 export default defineComponent({
   name: "ShopView",
   setup() {
-    const products = ref<Product[] | null>(null);
+    const products = ref<Product[]>([]);
 
     onMounted(async () => {
       products.value = await useProductStore().API.getAllProducts();
@@ -30,4 +29,4 @@ export default defineComponent({
   }
 
 });
-</script>@/stores/network/productAPI@/stores/network/productStore@/types/product
+</script>

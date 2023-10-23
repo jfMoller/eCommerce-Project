@@ -1,10 +1,12 @@
 <template>
     <button @click="handleClick" :class="[
-        'text-white',
-        'bg-blue-600',
-        'hover:bg-blue-700',
-        'py-2 px-4',
-        'rounded-full',
+        'text-black',
+        'bg-white',
+        'hover:bg-black',
+        'hover:text-white',
+        'border border-black',
+        'py-1 px-2',
+        'rounded-md',
         'font-semibold',
         'transition duration-300',
         'ease-in-out',

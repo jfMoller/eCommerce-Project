@@ -1,13 +1,12 @@
 <template>
   <div v-if="products.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-    <div v-for="product in props.products" :key="product._id" class="bg-white p-4 shadow-md rounded-lg">
-
-      <img :src="product.imageUrl" :alt="product.name" class="w-full h-56 object-cover mb-4 rounded-md">
-      <h3 class="text-xl font-semibold mb-2">{{ product.name }}</h3>
-      <p class="text-gray-600 mb-2">{{ product.description }}</p>
-      <div class="flex justify-between items-center">
-        <span class="text-xl font-semibold text-blue-600">{{ product.price }}</span>
-        <StyledButton text="Add to cart" :handleClick="() => addToCart(product._id)" />
+    <div v-for="product in props.products" :key="product._id"
+      class="bg-white p-4 shadow-md rounded-lg flex flex-col justify-between">
+        <img :src="product.imageUrl" :alt="product.name" class="mb-4 h-[12rem] inline-block object-scale-down">
+      <h3 class="text-l text-center font-semibold mb-3">{{ product.name }}</h3>
+      <div class="flex flex-col justify-between items-center">
+        <StyledButton text="Buy now" additionalClass="mb-3" :handleClick="() => addToCart(product._id)" />
+        <span class="text-xl font-semibold text-black">{{ product.price }} :-</span>
       </div>
 
     </div>
