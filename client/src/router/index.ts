@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import SignupView from '../views/SignupView.vue'
 import AccountView from '../views/AccountView.vue'
+import ProductView from '@/views/ProductView.vue'
 import EditAccountView from '../views/EditAccountView.vue'
 import ShowAccountOrdersView from '@/views/ShowAccountOrdersView.vue'
 import { useAuthenticationStore } from '@/stores/authenticationStore'
@@ -24,6 +25,11 @@ const router = createRouter({
       path: '/shop',
       name: 'shop',
       component: () => import('../views/ShopView.vue')
+    },
+    {
+      path: '/product/:product_id',
+      name: 'productView',
+      component: ProductView,
     },
     {
       path: '/contact',

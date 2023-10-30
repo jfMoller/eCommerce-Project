@@ -1,5 +1,6 @@
 <template>
   <section>
+    <div />
     <SearchInput :options="products" />
     <ProductCards :products="products" />
   </section>
