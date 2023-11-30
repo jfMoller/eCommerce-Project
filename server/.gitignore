@@ -1,11 +1,10 @@
 HELP.md
+.idea
+.mvn/
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
-### MongoDB connection string & database ###
-/src/main/resources/application.properties
 
 ### STS ###
 .apt_generated
@@ -34,4 +33,4 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources/application.properties
+
