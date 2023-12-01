@@ -5,7 +5,7 @@
     <LoadingScreen />
 
     <ul class="">
-      <div v-for="productEntry in ongoingOrder?.products" :key="productEntry.product._id">
+      <div v-for="productEntry in ongoingOrder?.products" :key="productEntry.product.id">
         <li class="mb-1 py-2 border-b w-full flex justify-between items-center">
           <div class="flex items-center">
             <img :src="productEntry.product.imageUrl" alt="Product Image"
@@ -22,9 +22,9 @@
               </div>
 
               <div class="flex flex-col">
-                <button @click="() => addProduct(productEntry.product._id)"
+                <button @click="() => addProduct(productEntry.product.id)"
                   class="text-center border-l border-b font-bold text-2xl px-2">+</button>
-                <button @click="() => removeProduct(productEntry.product._id)"
+                <button @click="() => removeProduct(productEntry.product.id)"
                   class="text-center border-l font-bold text-2xl px-2">-</button>
               </div>
             </div>
@@ -79,12 +79,12 @@ export default defineComponent({
       ongoingOrder.value = await orderStore.API.getOngoingOrder();
     }
 
-    function addProduct(product_id: string) {
-      shoppingCartStore.methods.addProductId(product_id);
+    function addProduct(productId: string) {
+      shoppingCartStore.methods.addProductId(productId);
     }
 
-    function removeProduct(product_id: string) {
-      shoppingCartStore.methods.removeProductId(product_id);
+    function removeProduct(productId: string) {
+      shoppingCartStore.methods.removeProductId(productId);
     }
 
     function placeOrder() {

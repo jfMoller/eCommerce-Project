@@ -3,28 +3,28 @@ import { defineStore } from 'pinia'
 
 export const useShoppingCartStore = defineStore('shoppingCart', () => {
   const states = {
-    product_ids: ref<string[]>([]),
+    productIds: ref<string[]>([]),
     productAmount: ref<number>(0)
   }
 
   const methods = {
-    addProductId: (product_id: string): void => {
-      states.product_ids.value.push(product_id)
+    addProductId: (productId: string): void => {
+      states.productIds.value.push(productId)
       states.productAmount.value++
     },
 
-    removeProductId: (product_id: string): void => {
-      const index = states.product_ids.value.indexOf(product_id)
-      states.product_ids.value.splice(index, 1)
+    removeProductId: (productId: string): void => {
+      const index = states.productIds.value.indexOf(productId)
+      states.productIds.value.splice(index, 1)
       states.productAmount.value--
     },
 
     clearProductIds: (): void => {
-      states.product_ids.value = []
+      states.productIds.value = []
       states.productAmount.value = 0
     },
 
-    getAllProductIds: (): string[] => states.product_ids.value,
+    getAllProductIds: (): string[] => states.productIds.value,
 
     getTotalItemsCount: (): number => states.productAmount.value
   }

@@ -44,7 +44,7 @@ export const useAccountStore = defineStore('accountStore', () => {
 
   const API = {
     submitSignup: async (username: string, email: string, password: string): Promise<any> => {
-      const response: ResponseSuccess | ResponseError = await callPost('/account/signup', {
+      const response: ResponseSuccess | ResponseError = await callPost('/account/register', {
         username: username,
         email: email,
         password: password

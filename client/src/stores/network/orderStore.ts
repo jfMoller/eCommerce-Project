@@ -8,7 +8,7 @@ export const useOrderStore = defineStore('orderStore', () => {
   const API = {
     placeOrder: async () => {
       const response = await callPost('/orders/place', {
-        product_ids: shoppingCartStore.methods.getAllProductIds()
+        productIds: shoppingCartStore.methods.getAllProductIds()
       })
       if (response.success) {
         shoppingCartStore.methods.clearProductIds()
@@ -17,7 +17,7 @@ export const useOrderStore = defineStore('orderStore', () => {
 
     getOngoingOrder: async () =>
       await callPost('/orders/ongoing', {
-        product_ids: shoppingCartStore.methods.getAllProductIds()
+        productIds: shoppingCartStore.methods.getAllProductIds()
       }),
 
     getPlacedOrders: async () => await callGet('/orders/all')

@@ -1,7 +1,7 @@
 <template>
   <section>
     <div v-if="product" class="flex justify-center">
-      <div :key="product._id" class="bg-white p-4 w-full shadow-md rounded-lg flex">
+      <div class="bg-white p-4 w-full shadow-md rounded-lg flex">
         <img :src="product.imageUrl" :alt="product.name"
           class="mb-4 h-[12rem] inline-block object-scale-down cursor-pointer">
         <div class="flex flex-col justify-start items-start">
@@ -10,7 +10,8 @@
           <span class="text-xl font-semibold text-black">{{ product.price }} :-</span>
 
           <div class="flex flex-col justify-between items-center">
-            <StyledButton text="Add to cart" additionalClass="my-3" :handleClick="() => addToCart(product._id)" />
+            <StyledButton text="Add to cart" additionalClass="my-3"
+              :handleClick="() => addToCart(product?.id as string)" />
           </div>
         </div>
       </div>
@@ -32,17 +33,14 @@ export default defineComponent({
     const route = useRoute();
     const shoppingCartStore = useShoppingCartStore();
     const productStore = useProductStore();
-    const product_id = route.params.product_id;
-
     const product = ref<Product | null>(null);
 
     onMounted(async () => {
-      console.log(product_id)
-      product.value = await productStore.API.getProduct(product_id);
+      product.value = await productStore.API.getProduct(route.params.productId as string);
     })
 
-    function addToCart(product_id: string) {
-      shoppingCartStore.methods.addProductId(product_id)
+    function addToCart(productId: string) {
+      shoppingCartStore.methods.addProductId(productId)
     };
 
     return {

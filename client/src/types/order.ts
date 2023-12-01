@@ -1,7 +1,7 @@
 import type { Product } from './product'
 
 export interface Order {
-  _id: string
+  id: string
   price: number
   received: string
   status: string

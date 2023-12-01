@@ -1,5 +1,7 @@
 package me.code.springboot_neo4j.controllers;
 
+import me.code.springboot_neo4j.dtos.GetOngoingOrderDTO;
+import me.code.springboot_neo4j.dtos.PlaceOrderDTO;
 import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.services.OrderService;
 import me.code.springboot_neo4j.utils.JwtTokenUtil;
@@ -21,20 +23,17 @@ public class OrderController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    record GetOngoingOrderDTO(String[] productIds) {
-
-    }
     @PostMapping("/ongoing")
     public Object getOngoingOrder(@RequestBody GetOngoingOrderDTO dto) {
         return orderService.getOngoingOrder(dto.productIds());
     }
 
-    record PlaceOrderDto(String userId, String[] productIds) {
-    }
-
     @PostMapping("/place")
-    public ResponseEntity<Object> placeOrder(@RequestBody PlaceOrderDto dto) {
-        var result = orderService.placeOrder(dto.userId(), dto.productIds());
+    public ResponseEntity<Object> placeOrder(
+            @RequestHeader("Authorization") String token,
+            @RequestBody PlaceOrderDTO dto) {
+        String userId = jwtTokenUtil.getTokenId(token);
+        var result = orderService.placeOrder(userId, dto.productIds());
         return result;
     }
 
