@@ -1,7 +1,7 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dtos.EditedProductDTO;
-import me.code.springboot_neo4j.dtos.InsertProductDTO;
+import me.code.springboot_neo4j.dto.request.EditedProductDTO;
+import me.code.springboot_neo4j.dto.request.InsertProductDTO;
 import me.code.springboot_neo4j.models.Product;
 import me.code.springboot_neo4j.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

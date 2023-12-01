@@ -1,7 +1,7 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dtos.GetOngoingOrderDTO;
-import me.code.springboot_neo4j.dtos.PlaceOrderDTO;
+import me.code.springboot_neo4j.dto.request.GetOngoingOrderDTO;
+import me.code.springboot_neo4j.dto.request.PlaceOrderDTO;
 import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.services.OrderService;
 import me.code.springboot_neo4j.utils.JwtTokenUtil;

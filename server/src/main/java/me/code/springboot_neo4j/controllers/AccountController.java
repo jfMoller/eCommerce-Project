@@ -1,9 +1,10 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dtos.ChangeEmailDTO;
-import me.code.springboot_neo4j.dtos.ChangePasswordDTO;
-import me.code.springboot_neo4j.dtos.ChangeUsernameDTO;
-import me.code.springboot_neo4j.dtos.CreateUserDTO;
+import me.code.springboot_neo4j.dto.request.ChangeEmailDTO;
+import me.code.springboot_neo4j.dto.request.ChangePasswordDTO;
+import me.code.springboot_neo4j.dto.request.ChangeUsernameDTO;
+import me.code.springboot_neo4j.dto.request.CreateUserDTO;
+import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.services.AccountService;
 import me.code.springboot_neo4j.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,9 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody CreateUserDTO dto) {
-        var result = accountService.submitRegister(dto);
-        return result;
+    public ResponseEntity<Success> register(@RequestBody CreateUserDTO dto) {
+        var result = accountService.submitRegistration(dto);
+        return result.toResponseEntity();
     }
 
     @GetMapping("/details")

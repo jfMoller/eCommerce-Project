@@ -1,6 +1,6 @@
 package me.code.springboot_neo4j.utils;
 
-import me.code.springboot_neo4j.dtos.ResponseStatusDTO;
+import me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO;
 import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.models.Product;
 import me.code.springboot_neo4j.models.UserRole;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static me.code.springboot_neo4j.dtos.ResponseStatusDTO.SUCCESS;
+import static me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO.SUCCESS;
 
 public class JsonResponseProvider {
 

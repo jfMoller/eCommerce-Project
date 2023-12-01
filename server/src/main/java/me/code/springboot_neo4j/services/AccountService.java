@@ -1,14 +1,16 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dtos.ChangeUsernameDTO;
-import me.code.springboot_neo4j.dtos.CreateUserDTO;
-import me.code.springboot_neo4j.dtos.ResponseStatusDTO;
+import me.code.springboot_neo4j.dto.request.ChangeUsernameDTO;
+import me.code.springboot_neo4j.dto.request.CreateUserDTO;
+import me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO;
+import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.exceptions.types.AccountRegistrationException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.models.UserRole;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import me.code.springboot_neo4j.utils.CredentialsFormatUtil;
+import me.code.springboot_neo4j.utils.CredentialsValidatorUtil;
 import me.code.springboot_neo4j.utils.JsonResponseProvider;
-import me.code.springboot_neo4j.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,50 +23,39 @@ public class AccountService {
 
     private final UserService userService;
 
-    private final CredentialsFormatUtil credentialsFormatUtil;
+    private final CredentialsValidatorUtil credentialsValidator;
 
-    private final JwtTokenUtil jwtTokenUtil;
+    private final CredentialsFormatUtil credentialsFormatUtil;
 
     @Autowired
     public AccountService(UserRepository userRepository,
                           UserService userService,
-                          CredentialsFormatUtil credentialsFormatUtil,
-                                    JwtTokenUtil jwtTokenUtil) {
+                          CredentialsValidatorUtil credentialsValidator,
+                          CredentialsFormatUtil credentialsFormatUtil) {
         this.userRepository = userRepository;
         this.userService = userService;
+        this.credentialsValidator = credentialsValidator;
         this.credentialsFormatUtil = credentialsFormatUtil;
-        this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    public ResponseEntity<Object> submitRegister(CreateUserDTO dto) {
+    public Success submitRegistration(CreateUserDTO dto) {
+        checkForValidationErrors(dto.email(), dto.username(), dto.password());
+        try {
+            User newUser = new User(dto.email(), dto.username(), dto.password(), UserRole.REGULAR_USER);
+            userRepository.save(newUser);
 
-        ResponseEntity<Object> formattingErrorsResponse =
-                findFormattingErrors(dto);
+            return new Success(
+                    HttpStatus.CREATED,
+                    "Successfully registered a new account");
 
-        if (formattingErrorsResponse != null) {
-            return formattingErrorsResponse;
+        } catch (Exception exception) {
+            throw new AccountRegistrationException("Failed to register a new account: " + exception.getMessage());
         }
+    }
 
-        ResponseEntity<Object> preexistingCredentialsResponse =
-                findPreexistingCredentials(dto);
-
-        if (preexistingCredentialsResponse != null) {
-            return preexistingCredentialsResponse;
-        }
-
-        User newUser = new User(
-                dto.username(),
-                dto.email(),
-                dto.password(),
-                UserRole.REGULAR_USER);
-
-        userRepository.save(newUser);
-
-        return JsonResponseProvider.sendResponseEntity(
-                ResponseStatusDTO.SUCCESS,
-                HttpStatus.CREATED,
-                dto.email() +
-                        " was successfully added as a user.");
+    private void checkForValidationErrors(String email, String username, String password) {
+        credentialsValidator.findFormattingErrors(email, username, password);
+        credentialsValidator.findNonUniqueValues(email, username);
     }
 
 

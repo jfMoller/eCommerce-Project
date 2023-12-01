@@ -1,6 +1,6 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dtos.ResponseStatusDTO;
+import me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO;
 import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.models.Product;
 import me.code.springboot_neo4j.models.User;

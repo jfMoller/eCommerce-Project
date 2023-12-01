@@ -1,7 +1,7 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dtos.ResponseStatusDTO;
-import me.code.springboot_neo4j.dtos.UserLoginDTO;
+import me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO;
+import me.code.springboot_neo4j.dto.request.UserLoginDTO;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.services.UserService;
 import me.code.springboot_neo4j.utils.JsonResponseProvider;
