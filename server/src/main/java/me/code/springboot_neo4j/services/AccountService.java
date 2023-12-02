@@ -4,7 +4,9 @@ import me.code.springboot_neo4j.dto.request.ChangeUsernameDTO;
 import me.code.springboot_neo4j.dto.request.CreateUserDTO;
 import me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.dto.response.success.variant.UserDetailsSuccess;
 import me.code.springboot_neo4j.exceptions.types.AccountRegistrationException;
+import me.code.springboot_neo4j.exceptions.types.CouldNotFindUserDetailsException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.models.UserRole;
 import me.code.springboot_neo4j.repositories.UserRepository;
@@ -59,40 +61,38 @@ public class AccountService {
     }
 
 
-    public ResponseEntity<Object> getUserDetails(String userId) {
-        User user = userService.loadUserById(userId);
-        if (user != null) {
-            return JsonResponseProvider.sendUserDetailsEntity(user.getUsername(), user.getEmail());
-        }
-        return JsonResponseProvider.sendResponseEntity(
-                ResponseStatusDTO.ERROR,
-                HttpStatus.NOT_FOUND,
-                "Requested user details were not found.");
+    public Success getUserDetails(String userId) {
+        try {
+            User user = userService.loadUserById(userId);
 
+            return new UserDetailsSuccess(HttpStatus.OK,
+                    "User details were successfully retrieved",
+                    user.getEmail(), user.getUsername());
+
+        } catch (Exception exception) {
+            throw new CouldNotFindUserDetailsException(
+                    "Could not find user details for user with id: {" + userId + "}");
+        }
     }
 
-    public ResponseEntity<Object> changeUsername(String userId, ChangeUsernameDTO dto) {
+    public Success changeUsername(String userId, ChangeUsernameDTO dto) {
+        credentialsValidator.findNullUsername(dto.newUsername());
+        credentialsValidator.findUsernameFormattingError(dto.newUsername());
 
-        ResponseEntity<Object> usernameErrors = findUsernameErrors(dto.newUsername());
+        try {
+            User user = userService.loadUserById(userId);
+            user.setUsername(dto.newUsername());
+            userRepository.save(user);
 
-        if (usernameErrors != null) {
-            return usernameErrors;
+            return new Success(
+                    HttpStatus.CREATED,
+                    "The username was successfully changed");
+
+        } catch (Exception exception) {
+            System.out.println("3");
+            throw new CouldNotFindUserDetailsException(
+                    "Could not find user details for user with id: {" + userId + "}");
         }
-
-        User requestedUser = userService.loadUserById(userId);
-
-        if (requestedUser != null) {
-            requestedUser.setUsername(dto.newUsername());
-            userRepository.save(requestedUser);
-            return JsonResponseProvider.sendResponseEntity(
-                    ResponseStatusDTO.SUCCESS,
-                    HttpStatus.OK,
-                    "Username changed successfully.");
-        }
-        return JsonResponseProvider.sendResponseEntity(
-                ResponseStatusDTO.ERROR,
-                HttpStatus.BAD_REQUEST,
-                "Requested user does not exist.");
     }
 
     public ResponseEntity<Object> changeEmail(String userId, String newEmail) {

@@ -38,7 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 
-    @ExceptionHandler({AccountRegistrationException.class})
+    @ExceptionHandler({AccountRegistrationException.class, CouldNotFindUserDetailsException.class})
     public ResponseEntity<Error> handleAbstractException(Exception exception) {
         return buildResponseEntity(HttpStatus.BAD_REQUEST, exception);
     }

@@ -30,17 +30,17 @@ public class AccountController {
     }
 
     @GetMapping("/details")
-    public ResponseEntity<Object> getAccountDetails(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<Success> getAccountDetails(@RequestHeader("Authorization") String token) {
         String userId = jwtTokenUtil.getTokenId(token);
         var result = accountService.getUserDetails(userId);
-        return ResponseEntity.ok(result);
+        return result.toResponseEntity();
     }
 
     @PutMapping("/username")
-    public ResponseEntity<Object> changeUsername(@RequestHeader("Authorization") String token, @RequestBody ChangeUsernameDTO dto) {
+    public ResponseEntity<Success> changeUsername(@RequestHeader("Authorization") String token, @RequestBody ChangeUsernameDTO dto) {
         String userId = jwtTokenUtil.getTokenId(token);
         var result = accountService.changeUsername(userId, dto);
-        return result;
+        return result.toResponseEntity();
     }
 
     @PutMapping("/email")

@@ -72,16 +72,28 @@ public class CredentialsValidatorUtil {
     public void findFormattingErrors(String email, String username, String password) {
         findNullValues(email, username, password);
 
+        findEmailFormattingError(email);
+        findUsernameFormattingError(username);
+        findPasswordFormattingError(password);
+    }
+
+    public void findEmailFormattingError(String email) {
         if (hasEmailFormattingError(email)) {
             throw new EmailValidationException(
                     INVALID_EMAIL_ERROR_MESSAGE,
                     generateValidationErrorDetail(EMAIL_FIELD, email));
         }
+    }
+
+    public void findUsernameFormattingError(String username) {
         if (hasUsernameFormattingError(username)) {
             throw new UsernameValidationException(
                     INVALID_USERNAME_ERROR_MESSAGE,
                     generateValidationErrorDetail(USERNAME_FIELD, username));
         }
+    }
+
+    public void findPasswordFormattingError(String password) {
         if (hasPasswordFormattingError(password)) {
             throw new PasswordValidationException(
                     INVALID_PASSWORD_ERROR_MESSAGE,
@@ -90,23 +102,32 @@ public class CredentialsValidatorUtil {
     }
 
     public void findNullValues(String email, String username, String password) {
+        findNullEmail(email);
+        findNullUsername(username);
+        findNullPassword(password);
+    }
+
+    public void findNullEmail(String email) {
         if (email == null) {
             throw new EmailValidationException(
                     INVALID_EMAIL_ERROR_MESSAGE,
                     generateValidationErrorDetail(EMAIL_FIELD, null));
-
         }
-        if (username == null) {
-            throw new UsernameValidationException(
-                    INVALID_USERNAME_ERROR_MESSAGE,
-                    generateValidationErrorDetail(USERNAME_FIELD, null));
+    }
 
-        }
+    public void findNullPassword(String password) {
         if (password == null) {
             throw new PasswordValidationException(
                     INVALID_PASSWORD_ERROR_MESSAGE,
                     generateValidationErrorDetail(PASSWORD_FIELD, null));
+        }
+    }
 
+    public void findNullUsername(String username) {
+        if (username == null) {
+            throw new UsernameValidationException(
+                    INVALID_USERNAME_ERROR_MESSAGE,
+                    generateValidationErrorDetail(USERNAME_FIELD, null));
         }
     }
 
