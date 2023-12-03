@@ -1,12 +1,10 @@
 package me.code.springboot_neo4j.utils;
 
 import me.code.springboot_neo4j.dto.response.error.variant.ValidationErrorDetail;
-import me.code.springboot_neo4j.exceptions.types.EmailValidationException;
-import me.code.springboot_neo4j.exceptions.types.NonUniqueValueException;
-import me.code.springboot_neo4j.exceptions.types.PasswordValidationException;
-import me.code.springboot_neo4j.exceptions.types.UsernameValidationException;
+import me.code.springboot_neo4j.exceptions.types.*;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -79,7 +77,8 @@ public class CredentialsValidatorUtil {
 
     public void findEmailFormattingError(String email) {
         if (hasEmailFormattingError(email)) {
-            throw new EmailValidationException(
+            throw new ValidationException(
+                    HttpStatus.BAD_REQUEST,
                     INVALID_EMAIL_ERROR_MESSAGE,
                     generateValidationErrorDetail(EMAIL_FIELD, email));
         }
@@ -87,7 +86,8 @@ public class CredentialsValidatorUtil {
 
     public void findUsernameFormattingError(String username) {
         if (hasUsernameFormattingError(username)) {
-            throw new UsernameValidationException(
+            throw new ValidationException(
+                    HttpStatus.BAD_REQUEST,
                     INVALID_USERNAME_ERROR_MESSAGE,
                     generateValidationErrorDetail(USERNAME_FIELD, username));
         }
@@ -95,7 +95,8 @@ public class CredentialsValidatorUtil {
 
     public void findPasswordFormattingError(String password) {
         if (hasPasswordFormattingError(password)) {
-            throw new PasswordValidationException(
+            throw new ValidationException(
+                    HttpStatus.BAD_REQUEST,
                     INVALID_PASSWORD_ERROR_MESSAGE,
                     generateValidationErrorDetail(PASSWORD_FIELD, password));
         }
@@ -109,7 +110,8 @@ public class CredentialsValidatorUtil {
 
     public void findNullEmail(String email) {
         if (email == null) {
-            throw new EmailValidationException(
+            throw new ValidationException(
+                    HttpStatus.BAD_REQUEST,
                     INVALID_EMAIL_ERROR_MESSAGE,
                     generateValidationErrorDetail(EMAIL_FIELD, null));
         }
@@ -117,7 +119,8 @@ public class CredentialsValidatorUtil {
 
     public void findNullPassword(String password) {
         if (password == null) {
-            throw new PasswordValidationException(
+            throw new ValidationException(
+                    HttpStatus.BAD_REQUEST,
                     INVALID_PASSWORD_ERROR_MESSAGE,
                     generateValidationErrorDetail(PASSWORD_FIELD, null));
         }
@@ -125,7 +128,8 @@ public class CredentialsValidatorUtil {
 
     public void findNullUsername(String username) {
         if (username == null) {
-            throw new UsernameValidationException(
+            throw new ValidationException(
+                    HttpStatus.BAD_REQUEST,
                     INVALID_USERNAME_ERROR_MESSAGE,
                     generateValidationErrorDetail(USERNAME_FIELD, null));
         }
@@ -181,7 +185,8 @@ public class CredentialsValidatorUtil {
 
     public void findNonUniqueEmail(String email) {
         if (isNonUniqueEmail(email)) {
-            throw new NonUniqueValueException(
+            throw new ValidationException(
+                    HttpStatus.CONFLICT,
                     "An account with the chosen email already exists",
                     new ValidationErrorDetail(
                             "user",
@@ -193,7 +198,8 @@ public class CredentialsValidatorUtil {
 
     public void findNonUniqueUsername(String username) {
         if (isNonUniqueUsername(username)) {
-            throw new NonUniqueValueException(
+            throw new ValidationException(
+                    HttpStatus.CONFLICT,
                     "An account with the chosen username already exists",
                     new ValidationErrorDetail(
                             "user",
@@ -244,7 +250,9 @@ public class CredentialsValidatorUtil {
                                 : doesNotContainUppercase(value) ? NO_UPPERCASE_ERROR_MESSAGE
                                 : UNKNOWN_FIELD_ERROR_MESSAGE;
             }
-            default -> throw new IllegalArgumentException("Invalid variant: " + type);
+            default -> throw new UncheckedException(
+                    HttpStatus.BAD_REQUEST,
+                    "Cannot generate validation error detail");
         }
 
         return new ValidationErrorDetail("user", field, value, errorMessage);

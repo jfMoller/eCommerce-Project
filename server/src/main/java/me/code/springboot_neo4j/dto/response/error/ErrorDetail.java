@@ -1,5 +1,11 @@
 package me.code.springboot_neo4j.dto.response.error;
 
-public abstract class ErrorDetail {
+public class ErrorDetail {
+
+    private String message;
+
+    public ErrorDetail(String message) {
+        this.message = message;
+    }
 }
 

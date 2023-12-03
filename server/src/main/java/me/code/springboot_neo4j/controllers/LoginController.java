@@ -1,11 +1,11 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO;
 import me.code.springboot_neo4j.dto.request.UserLoginDTO;
+import me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO;
 import me.code.springboot_neo4j.models.User;
-import me.code.springboot_neo4j.services.UserService;
+import me.code.springboot_neo4j.security.JwtTokenUtil;
+import me.code.springboot_neo4j.services.UserAccountService;
 import me.code.springboot_neo4j.utils.JsonResponseProvider;
-import me.code.springboot_neo4j.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/account")
 public class LoginController {
-    private final UserService userService;
+    private final UserAccountService userAccountService;
     private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public LoginController(UserService userService, JwtTokenUtil jwtTokenUtil) {
-        this.userService = userService;
+    public LoginController(UserAccountService userAccountService, JwtTokenUtil jwtTokenUtil) {
+        this.userAccountService = userAccountService;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody UserLoginDTO dto) {
-        boolean isValidUser = userService.isValidUserCredentials(dto.email(), dto.password());
+        boolean isValidUser = userAccountService.isValidUserCredentials(dto.email(), dto.password());
         if (isValidUser) {
-            User user = userService.loadUserByEmail(dto.email());
-            String jwtToken = jwtTokenUtil.generateToken(user.getId(), user.getEmail(), user.getRole().toString());
+            User user = userAccountService.loadUserByEmail(dto.email());
+            String jwtToken = jwtTokenUtil.generateToken(user);
 
             return JsonResponseProvider.sendAuthenticationEntity(user.getRole(), jwtToken);
         }
@@ -39,7 +39,7 @@ public class LoginController {
     @GetMapping("/re-authenticate")
     public ResponseEntity<Object> reAuthenticate(@RequestHeader("Authorization") String token) {
         String userId = jwtTokenUtil.getTokenId(token);
-        User requestedUser = userService.loadUserById(userId);
+        User requestedUser = userAccountService.loadUserById(userId);
 
         if (requestedUser != null) {
             var credentials = new UserLoginDTO(
@@ -55,7 +55,7 @@ public class LoginController {
 
     @PostMapping("/confirm")
     public boolean isValidCredentials(@RequestBody UserLoginDTO dto) {
-       return userService.isValidUserCredentials(dto.email(), dto.password());
+       return userAccountService.isValidUserCredentials(dto.email(), dto.password());
     }
 
 }

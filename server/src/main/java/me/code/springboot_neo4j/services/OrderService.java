@@ -18,16 +18,16 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final UserService userService;
+    private final UserAccountService userAccountService;
     private final ProductService productService;
 
     @Autowired
     public OrderService(
             OrderRepository orderRepository,
-            UserService userService,
+            UserAccountService userAccountService,
             ProductService productService) {
         this.orderRepository = orderRepository;
-        this.userService = userService;
+        this.userAccountService = userAccountService;
         this.productService = productService;
     }
 
@@ -39,7 +39,7 @@ public class OrderService {
                     HttpStatus.BAD_REQUEST,
                     "No product_ids were requested.");
         }
-        User orderingUser = userService.loadUserById(userId);
+        User orderingUser = userAccountService.loadUserById(userId);
 
         if (orderingUser != null) {
             List<Product> orderedProducts = new ArrayList<>();

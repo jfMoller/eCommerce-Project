@@ -38,21 +38,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 
-    @ExceptionHandler({AccountRegistrationException.class, CouldNotFindUserDetailsException.class})
-    public ResponseEntity<Error> handleAbstractException(Exception exception) {
-        return buildResponseEntity(HttpStatus.BAD_REQUEST, exception);
+    @ExceptionHandler({UncheckedException.class})
+    public ResponseEntity<Error> handleUncheckedException(UncheckedException exception) {
+        HttpStatus status = exception.getStatus();
+        ErrorDetail errorDetail =  new ErrorDetail(exception.getMessage());
+        return buildResponseEntity(status, exception, errorDetail);
     }
 
-    @ExceptionHandler({
-            UsernameValidationException.class,
-            PasswordValidationException.class,
-            NonUniqueValueException.class,
-            InvalidCredentialsException.class})
+    @ExceptionHandler({ValidationException.class})
     public ResponseEntity<Error> handleValidationException(ValidationException exception) {
+        HttpStatus status = exception.getStatus();
         ValidationErrorDetail validationError = exception.getValidationError();
-        return buildResponseEntity(HttpStatus.CONFLICT, exception, validationError);
+        return buildResponseEntity(status, exception, validationError);
     }
-
 
     @ExceptionHandler({
             InvalidTokenException.class,
