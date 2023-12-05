@@ -9,7 +9,7 @@ public class AuthenticationSuccess extends Success {
     @JsonProperty("userRole")
     private String userRole;
 
-    @JsonProperty("jwtToken")
+    @JsonProperty("token")
     private String token;
 
     public AuthenticationSuccess(HttpStatus status, String message, String userRole, String token) {

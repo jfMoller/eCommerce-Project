@@ -31,7 +31,6 @@ export const useConnectionStore = defineStore('connectionStore', () => {
         email: email,
         password: password
       })
-
       handleLoginErrorResponse(response as ResponseError)
       useAuthenticationStore().methods.handleAuthentication(response as LoginResponseSuccess)
 
