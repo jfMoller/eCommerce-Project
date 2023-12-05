@@ -16,5 +16,8 @@ public interface ProductRepository extends Neo4jRepository<Product, String> {
     @Query("MATCH (p:Product) WHERE p.id = $id RETURN p")
     @NotNull Optional<Product> findById(@NotNull String id);
 
+    @Query("MATCH (p:Product) return p ORDER BY p.quantity DESC LIMIT $productAmount")
+    @NotNull List<Product> findProductsWithBiggestQuantity(int productAmount);
+
 
 }

@@ -44,7 +44,7 @@ public class OrderService {
         if (orderingUser != null) {
             List<Product> orderedProducts = new ArrayList<>();
             for (String product_id : productIds) {
-                orderedProducts.add(productService.getProductById(product_id));
+                orderedProducts.add(productService.loadProductById(product_id));
             }
             Order newOrder = new Order(orderingUser, orderedProducts);
             orderRepository.save(newOrder);

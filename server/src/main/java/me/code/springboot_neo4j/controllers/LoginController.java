@@ -1,11 +1,12 @@
 package me.code.springboot_neo4j.controllers;
 
 import me.code.springboot_neo4j.dto.request.UserLoginDTO;
-import me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO;
+import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.dto.response.success.variant.AuthenticationSuccess;
+import me.code.springboot_neo4j.exceptions.types.UncheckedException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.security.JwtTokenUtil;
 import me.code.springboot_neo4j.services.UserAccountService;
-import me.code.springboot_neo4j.utils.JsonResponseProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,38 +25,39 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody UserLoginDTO dto) {
-        boolean isValidUser = userAccountService.isValidUserCredentials(dto.email(), dto.password());
-        if (isValidUser) {
+    public ResponseEntity<Success> login(@RequestBody UserLoginDTO dto) {
+        if (isValidUser(dto)) {
             User user = userAccountService.loadUserByEmail(dto.email());
             String jwtToken = jwtTokenUtil.generateToken(user);
 
-            return JsonResponseProvider.sendAuthenticationEntity(user.getRole(), jwtToken);
-        }
-        return JsonResponseProvider.sendResponseEntity(
-                ResponseStatusDTO.ERROR, HttpStatus.UNAUTHORIZED, "Invalid email or password.");
+            return new AuthenticationSuccess(
+                    HttpStatus.OK,
+                    "Login successful",
+                    user.getRole().toString(),
+                    jwtToken).toResponseEntity();
+        } else throw new UncheckedException(HttpStatus.UNAUTHORIZED, "Login failed");
+    }
+
+    private boolean isValidUser(UserLoginDTO dto) {
+        return userAccountService.isValidUserCredentials(dto.email(), dto.password());
     }
 
     @GetMapping("/re-authenticate")
-    public ResponseEntity<Object> reAuthenticate(@RequestHeader("Authorization") String token) {
-        String userId = jwtTokenUtil.getTokenId(token);
-        User requestedUser = userAccountService.loadUserById(userId);
+    public ResponseEntity<Success> reAuthenticate(@RequestHeader("Authorization") String token) {
+        try {
+            String userId = jwtTokenUtil.getTokenId(token);
+            User user = userAccountService.loadUserById(userId);
 
-        if (requestedUser != null) {
-            var credentials = new UserLoginDTO(
-                    requestedUser.getEmail(), requestedUser.getPassword());
-            return login(credentials);
+            return login(new UserLoginDTO(user.getEmail(), user.getPassword()));
+
+        } catch (Exception exception) {
+            throw new UncheckedException(HttpStatus.UNAUTHORIZED, "Re-authentication failed");
         }
-
-        return JsonResponseProvider.sendResponseEntity(
-                ResponseStatusDTO.ERROR,
-                HttpStatus.UNAUTHORIZED,
-                "User with this _id could not be retrieved, re-authentication failed.");
     }
 
     @PostMapping("/confirm")
     public boolean isValidCredentials(@RequestBody UserLoginDTO dto) {
-       return userAccountService.isValidUserCredentials(dto.email(), dto.password());
+        return userAccountService.isValidUserCredentials(dto.email(), dto.password());
     }
 
 }
