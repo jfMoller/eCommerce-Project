@@ -4,7 +4,6 @@ import me.code.springboot_neo4j.dto.request.EditedProductDTO;
 import me.code.springboot_neo4j.dto.request.InsertProductDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.models.Product;
-import me.code.springboot_neo4j.security.JwtTokenUtil;
 import me.code.springboot_neo4j.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +15,10 @@ import java.util.List;
 @RequestMapping("api/products")
 public class ProductController {
     private final ProductService productService;
-    private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public ProductController(ProductService productService, JwtTokenUtil jwtTokenUtil) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @GetMapping("/all")

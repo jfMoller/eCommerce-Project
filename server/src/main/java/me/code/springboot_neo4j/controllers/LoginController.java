@@ -3,7 +3,7 @@ package me.code.springboot_neo4j.controllers;
 import me.code.springboot_neo4j.dto.request.UserLoginDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.success.variant.AuthenticationSuccess;
-import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.unchecked.UncheckedException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.security.JwtTokenUtil;
 import me.code.springboot_neo4j.services.UserAccountService;

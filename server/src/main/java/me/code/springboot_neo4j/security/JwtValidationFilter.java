@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
-import me.code.springboot_neo4j.exceptions.types.InvalidTokenException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.services.UserAccountService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

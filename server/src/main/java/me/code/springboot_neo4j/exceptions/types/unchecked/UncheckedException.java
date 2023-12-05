@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.exceptions.types;
+package me.code.springboot_neo4j.exceptions.types.unchecked;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

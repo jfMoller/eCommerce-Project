@@ -6,7 +6,7 @@ import me.code.springboot_neo4j.dto.request.ChangeUsernameDTO;
 import me.code.springboot_neo4j.dto.request.CreateUserDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.success.variant.UserDetailsSuccess;
-import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.unchecked.UncheckedException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.models.UserRole;
 import me.code.springboot_neo4j.repositories.UserRepository;

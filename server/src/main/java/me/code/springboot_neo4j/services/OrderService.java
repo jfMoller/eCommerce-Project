@@ -1,14 +1,14 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dto.response.success.ResponseStatusDTO;
+import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.dto.response.success.variant.OngoingOrderSuccess;
+import me.code.springboot_neo4j.exceptions.types.unchecked.UncheckedException;
 import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.models.Product;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.repositories.OrderRepository;
-import me.code.springboot_neo4j.utils.JsonResponseProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,42 +31,35 @@ public class OrderService {
         this.productService = productService;
     }
 
-    public ResponseEntity<Object> placeOrder(String userId, String[] productIds) {
-
-        if (productIds.length < 1) {
-            return JsonResponseProvider.sendResponseEntity(
-                    ResponseStatusDTO.ERROR,
-                    HttpStatus.BAD_REQUEST,
-                    "No product_ids were requested.");
-        }
-        User orderingUser = userAccountService.loadUserById(userId);
-
-        if (orderingUser != null) {
+    public Success placeOrder(String userId, String[] productIds) {
+        try {
+            User user = userAccountService.loadUserById(userId);
             List<Product> orderedProducts = new ArrayList<>();
-            for (String product_id : productIds) {
-                orderedProducts.add(productService.loadProductById(product_id));
+
+            for (String productId : productIds) {
+                orderedProducts.add(productService.loadProductById(productId));
             }
-            Order newOrder = new Order(orderingUser, orderedProducts);
-            orderRepository.save(newOrder);
+            orderRepository.save(new Order(user, orderedProducts));
+            return new Success(HttpStatus.OK, "The order was placed successfully");
 
-            return JsonResponseProvider.sendResponseEntity(
-                    ResponseStatusDTO.SUCCESS,
-                    HttpStatus.OK,
-                    "The order was placed successfully");
+        } catch (Exception exception) {
+            throw new UncheckedException(HttpStatus.BAD_REQUEST, "Could not place order");
         }
-        return JsonResponseProvider.sendResponseEntity(
-                ResponseStatusDTO.ERROR,
-                HttpStatus.UNAUTHORIZED,
-                "The user placing this order could not be found.");
     }
 
-    public Object getOngoingOrder(String[] product_ids) {
-        List<Product> requestedProducts = productService.getProductsById(product_ids);
-        double totalPrice = productService.calculateTotalPrice(requestedProducts);
+    public OngoingOrderSuccess getOngoingOrder(String[] productIds) {
+        try {
+            List<Product> products = productService.getProductsById(productIds);
+            double totalPrice = productService.calculateTotalPrice(products);
 
-        return JsonResponseProvider.sendOngoingOrderJson(requestedProducts, totalPrice);
+            return new OngoingOrderSuccess(
+                    HttpStatus.OK,
+                    "Ongoing order retrieved successfully",
+                    products, totalPrice);
+        } catch (Exception exception) {
+            throw new UncheckedException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing order");
+        }
     }
-
 
     public List<Order> getUsersOrders(String userId) {
         return findOrdersByUserId(userId);

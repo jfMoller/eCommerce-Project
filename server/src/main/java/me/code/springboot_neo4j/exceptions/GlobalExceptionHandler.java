@@ -4,7 +4,9 @@ import jakarta.servlet.ServletException;
 import me.code.springboot_neo4j.dto.response.error.Error;
 import me.code.springboot_neo4j.dto.response.error.ErrorDetail;
 import me.code.springboot_neo4j.dto.response.error.variant.ValidationErrorDetail;
-import me.code.springboot_neo4j.exceptions.types.*;
+import me.code.springboot_neo4j.exceptions.types.checked.CheckedException;
+import me.code.springboot_neo4j.exceptions.types.unchecked.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.unchecked.ValidationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -38,10 +40,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 
+    @ExceptionHandler({CheckedException.class})
+    public ResponseEntity<Error> handleCheckedException(CheckedException exception) {
+        HttpStatus status = exception.getStatus();
+        ErrorDetail errorDetail = new ErrorDetail(exception.getMessage());
+        return buildResponseEntity(status, exception, errorDetail);
+    }
+
     @ExceptionHandler({UncheckedException.class})
     public ResponseEntity<Error> handleUncheckedException(UncheckedException exception) {
         HttpStatus status = exception.getStatus();
-        ErrorDetail errorDetail =  new ErrorDetail(exception.getMessage());
+        ErrorDetail errorDetail = new ErrorDetail(exception.getMessage());
         return buildResponseEntity(status, exception, errorDetail);
     }
 
@@ -51,13 +60,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ValidationErrorDetail validationError = exception.getValidationError();
         return buildResponseEntity(status, exception, validationError);
     }
-
-    @ExceptionHandler({
-            InvalidTokenException.class,
-            LoginFailureException.class,
-            AuthenticationFailureException.class})
-    public ResponseEntity<Error> handleFailedAuthenticationException(Exception exception) {
-        return buildResponseEntity(HttpStatus.UNAUTHORIZED, exception);
-    }
-
 }
