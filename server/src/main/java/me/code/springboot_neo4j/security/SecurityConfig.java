@@ -25,12 +25,8 @@ public class SecurityConfig {
         security.csrf(AbstractHttpConfigurer::disable)
                 .addFilterAfter(new JwtValidationFilter(jwtTokenUtil, userAccountService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(
-                        authorize -> authorize.requestMatchers(
-                                "/api/account/register",
-                                        "/api/account/login",
-                                        "/api/products/**",
-                                        "/api/orders/**").permitAll()
-                        .anyRequest().authenticated());
+                        authorize -> authorize
+                        .anyRequest().permitAll());
         return security.build();
     }
 

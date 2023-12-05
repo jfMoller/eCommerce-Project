@@ -6,7 +6,7 @@ import me.code.springboot_neo4j.dto.request.ChangeUsernameDTO;
 import me.code.springboot_neo4j.dto.request.CreateUserDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.success.variant.UserDetailsSuccess;
-import me.code.springboot_neo4j.exceptions.types.unchecked.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.UncheckedException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.models.UserRole;
 import me.code.springboot_neo4j.repositories.UserRepository;
@@ -150,22 +150,6 @@ public class UserAccountService implements UserDetailsService {
 
     public boolean isValidUserCredentials(String email, String password) {
         return userRepository.isValidCredentials(email, password);
-    }
-
-    public boolean isExistingEmail(String email) {
-        return userRepository.isExistingEmail(email);
-    }
-
-    public boolean isExistingUsername(String username) {
-        return userRepository.isExistingUsername(username);
-    }
-
-    public boolean isUsersCurrentEmail(String userId, String email) {
-        return userRepository.isUsersCurrentEmail(userId, email);
-    }
-
-    public boolean isUsersCurrentPassword(String userId, String password) {
-        return userRepository.isUsersCurrentPassword(userId, password);
     }
 
     public User loadUserById(String userId) {

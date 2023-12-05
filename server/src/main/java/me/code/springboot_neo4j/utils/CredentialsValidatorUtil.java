@@ -1,8 +1,8 @@
 package me.code.springboot_neo4j.utils;
 
 import me.code.springboot_neo4j.dto.response.error.variant.ValidationErrorDetail;
-import me.code.springboot_neo4j.exceptions.types.unchecked.UncheckedException;
-import me.code.springboot_neo4j.exceptions.types.unchecked.ValidationException;
+import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.variant.ValidationException;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

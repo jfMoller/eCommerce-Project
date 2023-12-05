@@ -2,7 +2,7 @@ package me.code.springboot_neo4j.services;
 
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.success.variant.OngoingOrderSuccess;
-import me.code.springboot_neo4j.exceptions.types.unchecked.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.UncheckedException;
 import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.models.Product;
 import me.code.springboot_neo4j.models.User;
