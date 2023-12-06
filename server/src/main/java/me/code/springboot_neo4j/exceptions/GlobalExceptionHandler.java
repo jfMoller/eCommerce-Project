@@ -1,5 +1,6 @@
 package me.code.springboot_neo4j.exceptions;
 
+import jakarta.servlet.ServletException;
 import me.code.springboot_neo4j.dto.response.error.Error;
 import me.code.springboot_neo4j.dto.response.error.ErrorDetail;
 import me.code.springboot_neo4j.dto.response.error.variant.ValidationErrorDetail;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -24,7 +27,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return error.toResponseEntity();
     }
 
-    @ExceptionHandler({Exception.class})
+    @ExceptionHandler({Exception.class, ServletException.class, IOException.class})
     public ResponseEntity<Error> handleException(Exception exception) {
         ErrorDetail errorDetail = new ErrorDetail(exception.getMessage());
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, exception, errorDetail);

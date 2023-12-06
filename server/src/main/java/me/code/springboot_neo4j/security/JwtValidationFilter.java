@@ -85,8 +85,8 @@ public class JwtValidationFilter extends OncePerRequestFilter {
     }
 
     private User getUser(String token) {
-        String username = jwtTokenUtil.getTokenUsername(token);
-        return this.userAccountService.loadUserByUsername(username);
+        String userId = jwtTokenUtil.getTokenId(token);
+        return this.userAccountService.loadUserById(userId);
     }
 
     private UsernamePasswordAuthenticationToken getAuthToken(User user) {
