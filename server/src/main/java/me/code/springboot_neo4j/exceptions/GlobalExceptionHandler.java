@@ -3,7 +3,7 @@ package me.code.springboot_neo4j.exceptions;
 import jakarta.servlet.ServletException;
 import me.code.springboot_neo4j.dto.response.error.Error;
 import me.code.springboot_neo4j.dto.response.error.ErrorDetail;
-import me.code.springboot_neo4j.dto.response.error.variant.ValidationErrorDetail;
+import me.code.springboot_neo4j.dto.response.error.detailvariant.ValidationErrorDetail;
 import me.code.springboot_neo4j.exceptions.types.UncheckedException;
 import me.code.springboot_neo4j.exceptions.types.variant.ValidationException;
 import org.springframework.core.Ordered;
@@ -20,6 +20,10 @@ import java.io.IOException;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private ResponseEntity<Error> buildResponseEntity(HttpStatus status, Throwable exception) {
+        return new Error(status, exception).toResponseEntity();
+    }
+
     private <T extends ErrorDetail> ResponseEntity<Error> buildResponseEntity(
             HttpStatus status, Throwable exception, T errorDetail) {
         Error error = new Error(status, exception);
@@ -27,10 +31,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return error.toResponseEntity();
     }
 
-    @ExceptionHandler({Exception.class, ServletException.class, IOException.class})
+    @ExceptionHandler({Exception.class, IOException.class, ServletException.class})
     public ResponseEntity<Error> handleException(Exception exception) {
-        ErrorDetail errorDetail = new ErrorDetail(exception.getMessage());
-        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, exception, errorDetail);
+        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 
     @ExceptionHandler({UncheckedException.class})

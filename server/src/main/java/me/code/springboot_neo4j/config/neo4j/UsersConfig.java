@@ -1,36 +1,36 @@
 package me.code.springboot_neo4j.config.neo4j;
 
-import me.code.springboot_neo4j.models.User;
+import me.code.springboot_neo4j.dto.request.CreateUserDTO;
 import me.code.springboot_neo4j.repositories.UserRepository;
+import me.code.springboot_neo4j.services.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static me.code.springboot_neo4j.models.UserRole.ADMIN;
-import static me.code.springboot_neo4j.models.UserRole.REGULAR_USER;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class UsersConfig {
 
     private final UserRepository userRepository;
+    private final UserAccountService userAccountService;
 
     @Autowired
-    public UsersConfig(UserRepository userRepository) {
+    public UsersConfig(UserRepository userRepository, UserAccountService userAccountService) {
         this.userRepository = userRepository;
+        this.userAccountService = userAccountService;
     }
+
 
     public void createDefaultUsers() {
         if (userRepository.count() == 0) {
-            createUser(
-                    new User("user@user.com", "John Doe", "password",
-                            REGULAR_USER));
-            createUser(
-                    new User("admin@admin.com", "Jane Doe", "password",
-                            ADMIN));
+            createMockUsers(new ArrayList<>(List.of(new CreateUserDTO("JohnDoe", "user@user.com", "Password"))));
         }
     }
 
-    private void createUser(User user) {
-        userRepository.save(user);
-        System.out.println("UsersConfig created a new user: " + user);
+    private void createMockUsers(List<CreateUserDTO> mockDtos) {
+        for (var mockDto : mockDtos) {
+            userAccountService.submitRegistration(mockDto);
+        }
     }
 }

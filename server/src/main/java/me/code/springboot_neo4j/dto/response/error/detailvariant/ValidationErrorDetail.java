@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.dto.response.error.variant;
+package me.code.springboot_neo4j.dto.response.error.detailvariant;
 
 import lombok.Getter;
 import me.code.springboot_neo4j.dto.response.error.ErrorDetail;
