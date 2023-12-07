@@ -59,7 +59,7 @@ export default defineComponent({
 
             if ('success' in response) {
                 setTimeout(async () => {
-                    await connectionStore.API.submitRelog('EditAccountView');
+                    await connectionStore.API.submitRelog(newPassword.value, 'EditAccountView');
                 }, 2000);
             }
             closeConfirmation();

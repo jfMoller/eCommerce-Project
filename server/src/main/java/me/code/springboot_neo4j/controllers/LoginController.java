@@ -6,7 +6,7 @@ import me.code.springboot_neo4j.dto.response.success.variant.AuthenticationSucce
 import me.code.springboot_neo4j.exceptions.types.UncheckedException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.security.JwtTokenUtil;
-import me.code.springboot_neo4j.services.LoginValidator;
+import me.code.springboot_neo4j.services.LoginValidationService;
 import me.code.springboot_neo4j.services.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,18 +22,18 @@ public class LoginController {
 
     private final AuthenticationProvider authenticationProvider;
     private final UserAccountService userAccountService;
-    private final LoginValidator loginValidator;
+    private final LoginValidationService loginValidationService;
     private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     public LoginController(
             AuthenticationProvider authenticationProvider,
             UserAccountService userAccountService,
-            LoginValidator loginValidator,
+            LoginValidationService loginValidationService,
             JwtTokenUtil jwtTokenUtil) {
         this.authenticationProvider = authenticationProvider;
         this.userAccountService = userAccountService;
-        this.loginValidator = loginValidator;
+        this.loginValidationService = loginValidationService;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
@@ -76,20 +76,7 @@ public class LoginController {
     }
 
     private void validateCredentials(UserLoginDTO dto) {
-        loginValidator.validateUserCredentials(dto);
-    }
-
-    @GetMapping("/re-authenticate")
-    public ResponseEntity<Success> reAuthenticate(@RequestHeader("Authorization") String token) {
-        try {
-            String userId = jwtTokenUtil.getTokenId(token);
-            User user = userAccountService.loadUserById(userId);
-
-            return login(new UserLoginDTO(user.getEmail(), user.getPassword()));
-
-        } catch (Exception exception) {
-            throw new UncheckedException(HttpStatus.UNAUTHORIZED, "Re-authentication failed");
-        }
+        loginValidationService.validateUserCredentials(dto);
     }
 
     @PostMapping("/confirm")

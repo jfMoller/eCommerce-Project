@@ -45,13 +45,14 @@ export default defineComponent({
             isConfirmationVisible.value = false;
         }
 
-        async function handleChangeUsername() {
+        async function handleChangeUsername(password: string) {
             const response = await accountStore.API.changeUsername(newUsername.value);
             handleResponseMessage()
 
             if ('success' in response) {
+
                 setTimeout(async () => {
-                    await connectionStore.API.submitRelog('EditAccountView');
+                    await connectionStore.API.submitRelog(password, 'EditAccountView');
                 }, 2000);
             }
             closeConfirmation();

@@ -45,13 +45,15 @@ export default defineComponent({
             isConfirmationVisible.value = false;
         }
 
-        async function handleChangeEmail() {
+        async function handleChangeEmail(password: string) {
             const response = await accountStore.API.changeEmail(newEmail.value);
             handleResponseMessage()
 
             if ('success' in response) {
+                accountStore.states.email = newEmail.value;
+                
                 setTimeout(async () => {
-                    await connectionStore.API.submitRelog('EditAccountView');
+                    await connectionStore.API.submitRelog(password, 'EditAccountView');
                 }, 2000);
             }
             closeConfirmation();

@@ -149,7 +149,8 @@ public class UserAccountService implements UserDetailsService {
     }
 
     public boolean isValidUserCredentials(String email, String password) {
-        return userRepository.isValidCredentials(email, password);
+        User user = loadUserByEmail(email);
+        return passwordEncoder.matches(password, user.getPassword());
     }
 
     public User loadUserById(String userId) {

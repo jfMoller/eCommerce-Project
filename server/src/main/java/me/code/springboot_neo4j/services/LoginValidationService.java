@@ -6,14 +6,14 @@ import me.code.springboot_neo4j.exceptions.types.variant.ValidationException;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class LoginValidator {
+@Service
+public class LoginValidationService {
     private final UserRepository userRepository;
 
     @Autowired
-    public LoginValidator(UserRepository userRepository) {
+    public LoginValidationService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

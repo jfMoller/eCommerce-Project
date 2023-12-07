@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { callGet, callPost } from './requests'
+import { callPost } from './requests'
 import { ref } from 'vue'
 import { useAuthenticationStore } from '../authenticationStore'
 import { useAccountStore } from './accountStore'
@@ -41,12 +41,11 @@ export const useConnectionStore = defineStore('connectionStore', () => {
       return response
     },
 
-    submitLogout: async () => useAuthenticationStore().methods.handleRevokeAuthentication(),
+    submitRelog: async (password: string, routerOriginName: string) => {
+      const email = useAccountStore().states.email as string
 
-    submitRelog: async (routerOriginName: string) => {
-      const response: LoginResponseSuccess | ResponseError = await callGet(
-        '/account/re-authenticate'
-      )
+      console.log(email)
+      const response: LoginResponseSuccess | ResponseError = await API.submitLogin(email, password)
 
       if ('success' in response) {
         useAuthenticationStore().methods.handleRevokeAuthentication()
@@ -56,7 +55,9 @@ export const useConnectionStore = defineStore('connectionStore', () => {
         )
       }
       return response as ResponseError
-    }
+    },
+
+    submitLogout: async () => useAuthenticationStore().methods.handleRevokeAuthentication()
   }
 
   function handleLoginErrorResponse(response: any) {

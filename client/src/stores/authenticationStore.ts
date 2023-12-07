@@ -11,7 +11,7 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
 
   const methods = {
     handleAuthentication: async (response: LoginResponseSuccess, routerOriginName?: string) => {
-console.log(response)
+
       if (response.success && response.token) {
 
         storeJwtToken(response.token)
