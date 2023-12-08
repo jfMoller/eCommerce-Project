@@ -66,8 +66,17 @@ public class OrderService {
     }
 
     public List<Order> findOrdersByUserId(String userId) {
-        return orderRepository.findOrdersByUserId(userId).orElseThrow(
-                () -> new RuntimeException("Can not find orders with user id: " + userId));
+        return orderRepository.findOrdersWithProductsByUserId(userId).orElseThrow(
+                () -> new UncheckedException(
+                        HttpStatus.NOT_FOUND,
+                        "Could not find orders placed by user with id: " + userId));
+    }
+
+    public List<Product> findProductsByOrderId(String orderId) {
+        return orderRepository.findProductsByOrderId(orderId).orElseThrow(
+                () -> new UncheckedException(
+                        HttpStatus.NOT_FOUND,
+                        "Could not find product in order with id: " + orderId));
     }
 }
 

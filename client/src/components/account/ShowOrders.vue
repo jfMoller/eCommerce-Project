@@ -9,7 +9,7 @@
           </div>
           <div class="flex justify-between">
             <div>
-              <div v-for="item in order.products" :key="item.product._id">
+              <div v-for="item in order.products" :key="item.product.id">
                 <div class="mb-1 py-2">
                   <img
                     :src="item.product.imageUrl"
@@ -43,6 +43,7 @@
   
       onMounted(async () => {
         const response = await orderStore.API.getPlacedOrders();
+        console.log(response)
         orders.value = response;
       });
   

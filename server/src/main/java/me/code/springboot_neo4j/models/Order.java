@@ -2,6 +2,7 @@ package me.code.springboot_neo4j.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Node("Order")
 public class Order {
@@ -20,7 +22,7 @@ public class Order {
     String id;
     @Relationship("PLACED_BY")
     User user;
-    @Relationship("ORDERED")
+    @Relationship(type = "CONTAINS", direction = Relationship.Direction.INCOMING)
     List<Product> products;
     private double price;
     private OrderStatus status;
