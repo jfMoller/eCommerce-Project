@@ -51,9 +51,10 @@ export default defineComponent({
 
             if ('success' in response) {
                 accountStore.states.email = newEmail.value;
-                
+
                 setTimeout(async () => {
                     await connectionStore.API.submitRelog(password, 'EditAccountView');
+                    clearResponseMessage()
                 }, 2000);
             }
             closeConfirmation();
@@ -69,6 +70,10 @@ export default defineComponent({
             else {
                 responseMessageColor.value = "text-green-700"
             }
+        }
+
+        function clearResponseMessage() {
+            changeEmailResponse.value = null
         }
 
         return { newEmail, openConfirmation, closeConfirmation, handleChangeEmail, changeEmailResponse, responseMessageColor, isConfirmationVisible }

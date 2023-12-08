@@ -253,10 +253,10 @@ public class CredentialsValidatorUtil {
             }
             default -> throw new UncheckedException(
                     HttpStatus.BAD_REQUEST,
-                    "Cannot generate validation error detail");
+                    "Could not generate validation error detail");
         }
 
-        return new ValidationErrorDetail("user", field, value, errorMessage);
+        return new ValidationErrorDetail(errorMessage, "user", field, (!type.equals("password") ? value : "Hidden"));
     }
 
 }

@@ -113,12 +113,14 @@ public class UserAccountService implements UserDetailsService {
     }
 
     public Success changePassword(String userId, ChangePasswordDTO dto) {
+        System.out.println(dto.newPassword());
         credentialsValidator.findNullPassword(dto.newPassword());
         credentialsValidator.findPasswordFormattingError(dto.newPassword());
 
         try {
             User user = loadUserById(userId);
-            user.setPassword(dto.newPassword());
+            String encryptedPassword = passwordEncoder.encode(dto.newPassword());
+            user.setPassword(encryptedPassword);
             userRepository.save(user);
 
             return new Success(

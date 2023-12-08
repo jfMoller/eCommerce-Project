@@ -45,17 +45,18 @@ public class LoginValidationService {
 
     private ValidationErrorDetail getValidationErrorDetail() {
         return new ValidationErrorDetail(
+                "Is not a valid password",
                 "JSON",
                 "password",
-                "{hidden}",
-                "Is not a valid password");
+                "Hidden"
+                );
     }
 
     private ValidationErrorDetail getValidationErrorDetail(String email) {
         return new ValidationErrorDetail(
+                "Is not a valid email",
                 "JSON",
                 "email",
-                email,
-                "Is not a valid email");
+                email);
     }
 }

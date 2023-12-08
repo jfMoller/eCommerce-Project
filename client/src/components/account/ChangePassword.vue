@@ -60,12 +60,12 @@ export default defineComponent({
             if ('success' in response) {
                 setTimeout(async () => {
                     await connectionStore.API.submitRelog(newPassword.value, 'EditAccountView');
+                    clearResponseMessage()
+                    newPassword.value = '';
+                    confirmNewPassword.value = '';
                 }, 2000);
             }
             closeConfirmation();
-
-            newPassword.value = '';
-            confirmNewPassword.value = '';
         }
 
         function handleResponseMessage() {
@@ -77,6 +77,10 @@ export default defineComponent({
             else {
                 responseMessageColor.value = "text-green-700"
             }
+        }
+
+        function clearResponseMessage() {
+            changePasswordResponse.value = null
         }
 
         return { newPassword, confirmNewPassword, openConfirmation, closeConfirmation, handleChangePassword, changePasswordResponse, responseMessageColor, isConfirmationVisible }

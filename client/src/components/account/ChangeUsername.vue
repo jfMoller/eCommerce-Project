@@ -53,6 +53,7 @@ export default defineComponent({
 
                 setTimeout(async () => {
                     await connectionStore.API.submitRelog(password, 'EditAccountView');
+                    clearResponseMessage()
                 }, 2000);
             }
             closeConfirmation();
@@ -68,6 +69,10 @@ export default defineComponent({
             else {
                 responseMessageColor.value = "text-green-700"
             }
+        }
+
+        function clearResponseMessage() {
+            changeUsernameResponse.value = null
         }
 
         return { newUsername, openConfirmation, closeConfirmation, handleChangeUsername, changeUsernameResponse, responseMessageColor, isConfirmationVisible }
