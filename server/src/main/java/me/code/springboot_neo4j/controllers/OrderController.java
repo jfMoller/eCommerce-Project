@@ -4,7 +4,7 @@ import me.code.springboot_neo4j.dto.request.GetOngoingOrderDTO;
 import me.code.springboot_neo4j.dto.request.PlaceOrderDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.success.variant.OngoingOrderSuccess;
-import me.code.springboot_neo4j.models.Order;
+import me.code.springboot_neo4j.dto.response.success.variant.PlacedOrder;
 import me.code.springboot_neo4j.security.JwtTokenUtil;
 import me.code.springboot_neo4j.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    public List<Order> getUserOrders(@RequestHeader("Authorization") String token) {
+    public List<PlacedOrder> getUserOrders(@RequestHeader("Authorization") String token) {
         var userId = jwtTokenUtil.getTokenId(token);
         return orderService.getUsersOrders(userId);
     }

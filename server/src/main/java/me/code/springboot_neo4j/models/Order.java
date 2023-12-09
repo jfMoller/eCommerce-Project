@@ -20,9 +20,9 @@ public class Order {
     @Id
     @GeneratedValue(UUIDStringGenerator.class)
     String id;
-    @Relationship("PLACED_BY")
+    @Relationship(value = "PLACED_BY")
     User user;
-    @Relationship(type = "CONTAINS", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "CONTAINS")
     List<Product> products;
     private double price;
     private OrderStatus status;
@@ -66,7 +66,20 @@ public class Order {
         return LocalDateTime.now();
     }
 
-    enum OrderStatus {
+    public enum OrderStatus {
         PENDING, PROCESSING, SHIPPED, DELIVERED
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", user=" + user +
+                ", products=" + products +
+                ", price=" + price +
+                ", status=" + status +
+                ", received=" + received +
+                ", expectedDelivery=" + expectedDelivery +
+                '}';
     }
 }

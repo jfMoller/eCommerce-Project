@@ -33,17 +33,17 @@
   <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
   import { useOrderStore } from '@/stores/network/orderStore';
-  import type { Order } from '@/types/order';
+  import type { PlacedOrder } from '@/types/order';
   
   export default defineComponent({
     name: 'ShowOrders',
     setup() {
       const orderStore = useOrderStore();
-      const orders = ref<Order[]>([]);
+      const orders = ref<PlacedOrder[]>([]);
   
       onMounted(async () => {
         const response = await orderStore.API.getPlacedOrders();
-        console.log(response)
+  console.log(response)
         orders.value = response;
       });
   

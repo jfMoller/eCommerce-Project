@@ -2,6 +2,7 @@ package me.code.springboot_neo4j.services;
 
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.success.variant.OngoingOrderSuccess;
+import me.code.springboot_neo4j.dto.response.success.variant.PlacedOrder;
 import me.code.springboot_neo4j.exceptions.types.UncheckedException;
 import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.models.Product;
@@ -61,8 +62,16 @@ public class OrderService {
         }
     }
 
-    public List<Order> getUsersOrders(String userId) {
-        return findOrdersByUserId(userId);
+    public List<PlacedOrder> getUsersOrders(String userId) {
+        List<Order> orders = findOrdersByUserId(userId);
+        List<PlacedOrder> placedOrders = new ArrayList<>();
+
+        for (Order order : orders) {
+            System.out.println(order);
+            placedOrders.add(new PlacedOrder(order));
+        }
+        System.out.println(placedOrders);
+        return placedOrders;
     }
 
     public List<Order> findOrdersByUserId(String userId) {
@@ -70,13 +79,6 @@ public class OrderService {
                 () -> new UncheckedException(
                         HttpStatus.NOT_FOUND,
                         "Could not find orders placed by user with id: " + userId));
-    }
-
-    public List<Product> findProductsByOrderId(String orderId) {
-        return orderRepository.findProductsByOrderId(orderId).orElseThrow(
-                () -> new UncheckedException(
-                        HttpStatus.NOT_FOUND,
-                        "Could not find product in order with id: " + orderId));
     }
 }
 

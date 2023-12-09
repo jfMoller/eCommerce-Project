@@ -19,3 +19,24 @@ interface ProductGrouping {
   groupPrice: number
   product: Product
 }
+
+export interface PlacedOrder {
+  id: string;
+  user: string;
+  products: {
+    amount: number;
+    product: {
+      id: string;
+      name: string;
+      description: string;
+      imageUrl: string;
+      price: number;
+      quantity: number;
+    };
+    groupPrice: number;
+  }[];
+  price: number;
+  status: string;
+  received: string;
+  expectedDelivery: string | null;
+}
