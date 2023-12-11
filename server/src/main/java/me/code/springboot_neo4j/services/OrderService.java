@@ -1,13 +1,16 @@
 package me.code.springboot_neo4j.services;
 
+import jakarta.transaction.Transactional;
+import me.code.springboot_neo4j.dto.response.entity.OngoingOrder;
+import me.code.springboot_neo4j.dto.response.entity.PlacedOrder;
 import me.code.springboot_neo4j.dto.response.success.Success;
-import me.code.springboot_neo4j.dto.response.success.variant.OngoingOrderSuccess;
-import me.code.springboot_neo4j.dto.response.success.variant.PlacedOrder;
 import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.models.GroupedProduct;
 import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.models.Product;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.repositories.OrderRepository;
+import me.code.springboot_neo4j.utils.ProductGroupingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,7 @@ public class OrderService {
         this.productService = productService;
     }
 
+    @Transactional
     public Success placeOrder(String userId, String[] productIds) {
         try {
             User user = userAccountService.loadUserById(userId);
@@ -40,7 +44,11 @@ public class OrderService {
             for (String productId : productIds) {
                 orderedProducts.add(productService.loadProductById(productId));
             }
-            orderRepository.save(new Order(user, orderedProducts));
+
+            List<GroupedProduct> groupedProducts = ProductGroupingUtil.parseAsProductGroups(orderedProducts);
+            System.out.println("2");
+            orderRepository.save(new Order(user, groupedProducts));
+            System.out.println("3");
             return new Success(HttpStatus.OK, "The order was placed successfully");
 
         } catch (Exception exception) {
@@ -48,34 +56,31 @@ public class OrderService {
         }
     }
 
-    public OngoingOrderSuccess getOngoingOrder(String[] productIds) {
+    public OngoingOrder getOngoingOrder(String[] productIds) {
         try {
             List<Product> products = productService.getProductsById(productIds);
             double totalPrice = productService.calculateTotalPrice(products);
 
-            return new OngoingOrderSuccess(
-                    HttpStatus.OK,
-                    "Ongoing order retrieved successfully",
-                    products, totalPrice);
+            return new OngoingOrder(products, totalPrice);
+
         } catch (Exception exception) {
-            throw new UncheckedException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing order");
+            throw new UncheckedException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing entity");
         }
     }
 
     public List<PlacedOrder> getUsersOrders(String userId) {
         List<Order> orders = findOrdersByUserId(userId);
-        List<PlacedOrder> placedOrders = new ArrayList<>();
+        List<PlacedOrder> dtos = new ArrayList<>();
 
-        for (Order order : orders) {
-            System.out.println(order);
-            placedOrders.add(new PlacedOrder(order));
+        for (var order : orders) {
+            dtos.add(new PlacedOrder(order));
         }
-        System.out.println(placedOrders);
-        return placedOrders;
+
+        return dtos;
     }
 
     public List<Order> findOrdersByUserId(String userId) {
-        return orderRepository.findOrdersWithProductsByUserId(userId).orElseThrow(
+        return orderRepository.findOrdersByUserId(userId).orElseThrow(
                 () -> new UncheckedException(
                         HttpStatus.NOT_FOUND,
                         "Could not find orders placed by user with id: " + userId));

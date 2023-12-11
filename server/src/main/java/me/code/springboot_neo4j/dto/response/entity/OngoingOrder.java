@@ -1,16 +1,14 @@
-package me.code.springboot_neo4j.dto.response.success.variant;
+package me.code.springboot_neo4j.dto.response.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.models.Product;
-import org.springframework.http.HttpStatus;
+import java.util.List;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class OngoingOrderSuccess extends Success {
+public class OngoingOrder {
 
     @JsonProperty("products")
     private List<Map<String, Object>> products;
@@ -18,8 +16,7 @@ public class OngoingOrderSuccess extends Success {
     @JsonProperty("totalPrice")
     private double totalPrice;
 
-    public OngoingOrderSuccess(HttpStatus status, String message, List<Product> products, double totalPrice) {
-        super(status, message);
+    public OngoingOrder(List<Product> products, double totalPrice) {
         this.products = parseAsProductWithAmount(products);
         this.totalPrice = totalPrice;
     }
@@ -46,7 +43,7 @@ public class OngoingOrderSuccess extends Success {
                 }
             }
 
-            // If a product is unique in an order
+            // If a product is unique in an entity
             if (!isMatchingProduct) {
                 Map<String, Object> obj = new HashMap<>();
                 obj.put("amount", 1);

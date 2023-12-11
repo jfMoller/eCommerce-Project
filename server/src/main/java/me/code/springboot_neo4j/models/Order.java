@@ -17,29 +17,27 @@ import java.util.List;
 @NoArgsConstructor
 @Node("Order")
 public class Order {
-    @Id
-    @GeneratedValue(UUIDStringGenerator.class)
+    @Id @GeneratedValue(UUIDStringGenerator.class)
     String id;
+
     @Relationship(value = "PLACED_BY")
-    User user;
+    private User user;
+
     @Relationship(type = "CONTAINS")
-    List<Product> products;
+    private List<GroupedProduct> products;
+
     private double price;
     private OrderStatus status;
     private LocalDateTime received;
     private LocalDateTime expectedDelivery;
 
-    public Order(User user, List<Product> products) {
+    public Order(User user, List<GroupedProduct> products) {
         this.user = user;
         this.products = products;
-        this.price = calculateTotalPrice();
+        this.price = getTotalPrice();
         this.status = OrderStatus.PENDING;
         this.received = getTimeReceived();
         this.expectedDelivery = null;
-    }
-
-    private double formatPrice(double price) {
-        return Math.round(price * 100.0) / 100.0;
     }
 
     public OrderStatus getStatus() {
@@ -54,14 +52,6 @@ public class Order {
         return expectedDelivery;
     }
 
-    private double calculateTotalPrice() {
-        double price = 0;
-        for (Product product : products) {
-            price += product.getPrice();
-        }
-        return formatPrice(price);
-    }
-
     private LocalDateTime getTimeReceived() {
         return LocalDateTime.now();
     }
@@ -70,11 +60,24 @@ public class Order {
         PENDING, PROCESSING, SHIPPED, DELIVERED
     }
 
+    public double getTotalPrice() {
+        double sum = 0;
+
+        for (var group : products) {
+            sum += group.getGroupPrice();
+        }
+
+        return formatPrice(sum);
+    }
+
+    private double formatPrice(double price) {
+        return Math.round(price * 100.0) / 100.0;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
                 "id='" + id + '\'' +
-                ", user=" + user +
                 ", products=" + products +
                 ", price=" + price +
                 ", status=" + status +
