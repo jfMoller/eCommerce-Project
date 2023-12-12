@@ -25,7 +25,6 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
     private final ProductDetailRepository productDetailRepository;
     private final UserAccountService userAccountService;
     private final ProductService productService;
@@ -38,7 +37,6 @@ public class OrderService {
             UserAccountService userAccountService,
             ProductService productService) {
         this.orderRepository = orderRepository;
-        this.userRepository = userRepository;
         this.productDetailRepository = productDetailRepository;
         this.userAccountService = userAccountService;
         this.productService = productService;
@@ -81,7 +79,7 @@ public class OrderService {
         List<PlacedOrder> dtos = new ArrayList<>();
 
         for (var order : orders) {
-            dtos.add(new PlacedOrder(order.getOrder()));
+            dtos.add(new PlacedOrder(order.getOrder(), order.getDetails()));
         }
         return dtos;
     }

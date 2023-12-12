@@ -21,22 +21,17 @@ interface ProductGrouping {
 }
 
 export interface PlacedOrder {
-  id: string;
-  user: string;
-  products: {
-    amount: number;
-    product: {
-      id: string;
-      name: string;
-      description: string;
-      imageUrl: string;
-      price: number;
-      quantity: number;
-    };
-    groupPrice: number;
-  }[];
-  price: number;
-  status: string;
-  received: string;
-  expectedDelivery: string | null;
+  id: string
+  price: number
+  status: string
+  received: string
+  expectedDelivery: string | null
+  productDetails: ProductDetails[]
+}
+
+interface ProductDetails {
+  id: string
+  product: Product
+  amount: number
+  groupPrice: number
 }
