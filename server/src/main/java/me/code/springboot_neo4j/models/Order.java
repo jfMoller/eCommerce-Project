@@ -20,18 +20,18 @@ public class Order {
     @Id @GeneratedValue(UUIDStringGenerator.class)
     String id;
 
-    @Relationship(value = "PLACED_BY")
-    private User user;
+    @Relationship(type = "PLACED_BY")
+    User user;
 
     @Relationship(type = "INCLUDES")
-    private List<ProductDetails> details;
+    private List<ProductDetail> details;
 
     private double price;
     private OrderStatus status;
     private LocalDateTime received;
     private LocalDateTime expectedDelivery;
 
-    public Order(User user, List<ProductDetails> details) {
+    public Order(User user, List<ProductDetail> details) {
         this.user = user;
         this.details = details;
         this.price = getTotalPrice();

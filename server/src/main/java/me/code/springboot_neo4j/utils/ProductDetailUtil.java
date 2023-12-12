@@ -1,23 +1,23 @@
 package me.code.springboot_neo4j.utils;
 
 import lombok.Getter;
-import me.code.springboot_neo4j.models.ProductDetails;
+import me.code.springboot_neo4j.models.ProductDetail;
 import me.code.springboot_neo4j.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class ProductDetailsUtil {
+public class ProductDetailUtil {
 
-    public static List<ProductDetails> parseAsProductDetails(List<Product> orderedProducts) {
+    public static List<ProductDetail> parseAsProductDetails(List<Product> orderedProducts) {
         System.out.println(orderedProducts);
-        List<ProductDetails> groupedProducts = new ArrayList<>();
+        List<ProductDetail> groupedProducts = new ArrayList<>();
         System.out.println(groupedProducts);
         for (Product orderedProduct : orderedProducts) {
             boolean isMatchingProduct = false;
 
-            for (ProductDetails groupedProduct : groupedProducts) {
+            for (ProductDetail groupedProduct : groupedProducts) {
                 var productInGroup = groupedProduct.getProduct();
 
                 if (productInGroup.getId().equals(orderedProduct.getId())) {
@@ -32,7 +32,7 @@ public class ProductDetailsUtil {
 
             if (!isMatchingProduct) {
                 // If the product is not in any existing group, create a new group
-                var newOrderDetails = new ProductDetails(orderedProduct, 1);
+                var newOrderDetails = new ProductDetail(orderedProduct, 1);
                 newOrderDetails.setGroupPrice(orderedProduct.getPrice());
                 groupedProducts.add(newOrderDetails);
             }
@@ -40,7 +40,7 @@ public class ProductDetailsUtil {
         return groupedProducts;
     }
 
-    public static double getTotalPrice(List<ProductDetails> details) {
+    public static double getTotalPrice(List<ProductDetail> details) {
         double sum = 0;
 
         for (var detail : details) {
