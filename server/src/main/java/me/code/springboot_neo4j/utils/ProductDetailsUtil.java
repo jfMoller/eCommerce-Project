@@ -1,23 +1,23 @@
 package me.code.springboot_neo4j.utils;
 
 import lombok.Getter;
-import me.code.springboot_neo4j.models.GroupedProduct;
+import me.code.springboot_neo4j.models.ProductDetails;
 import me.code.springboot_neo4j.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class ProductGroupingUtil {
+public class ProductDetailsUtil {
 
-    public static List<GroupedProduct> parseAsProductGroups(List<Product> orderedProducts) {
+    public static List<ProductDetails> parseAsProductDetails(List<Product> orderedProducts) {
         System.out.println(orderedProducts);
-        List<GroupedProduct> groupedProducts = new ArrayList<>();
+        List<ProductDetails> groupedProducts = new ArrayList<>();
         System.out.println(groupedProducts);
         for (Product orderedProduct : orderedProducts) {
             boolean isMatchingProduct = false;
 
-            for (GroupedProduct groupedProduct : groupedProducts) {
+            for (ProductDetails groupedProduct : groupedProducts) {
                 var productInGroup = groupedProduct.getProduct();
 
                 if (productInGroup.getId().equals(orderedProduct.getId())) {
@@ -32,19 +32,19 @@ public class ProductGroupingUtil {
 
             if (!isMatchingProduct) {
                 // If the product is not in any existing group, create a new group
-                var newGroupedProduct = new GroupedProduct(orderedProduct, 1);
-                newGroupedProduct.setGroupPrice(orderedProduct.getPrice());
-                groupedProducts.add(newGroupedProduct);
+                var newOrderDetails = new ProductDetails(orderedProduct, 1);
+                newOrderDetails.setGroupPrice(orderedProduct.getPrice());
+                groupedProducts.add(newOrderDetails);
             }
         }
         return groupedProducts;
     }
 
-    public static double getTotalPrice(List<GroupedProduct> groupedProducts) {
+    public static double getTotalPrice(List<ProductDetails> details) {
         double sum = 0;
 
-        for (var group : groupedProducts) {
-            sum += group.getGroupPrice();
+        for (var detail : details) {
+            sum += detail.getGroupPrice();
         }
 
         return formatPrice(sum);

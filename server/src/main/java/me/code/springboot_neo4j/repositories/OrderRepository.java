@@ -1,7 +1,6 @@
 package me.code.springboot_neo4j.repositories;
 
 import me.code.springboot_neo4j.models.Order;
-import me.code.springboot_neo4j.models.Product;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
@@ -13,11 +12,7 @@ public interface OrderRepository extends Neo4jRepository<Order, String> {
     @Query("MATCH (o:Order) WHERE o.id = $id RETURN o")
     @NotNull Optional<Order> findById(@NotNull String id);
 
-    @Query("MATCH (p:Product)<-[:CONTAINS]-(o:Order) WHERE o.id = $orderId RETURN p")
-    Optional<List<Product>> findProductsByOrderId(String orderId);
-
-    @Query("MATCH x = (u:User {id: $userId})<-[:PLACED_BY]-(o:Order)" +
-            "-[:CONTAINS]->(pg:GroupedProduct)-[:REFERS_TO]->(p:Product) RETURN x")
+    @Query("MATCH (:User {id: $userId})<-[:PLACED_BY]-(orders:Order) RETURN orders")
     Optional<List<Order>> findOrdersByUserId(String userId);
 
 }

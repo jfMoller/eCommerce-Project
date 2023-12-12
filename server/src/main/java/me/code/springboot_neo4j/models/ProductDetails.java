@@ -5,16 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class GroupedProduct {
+@Node("ProductDetails")
+public class ProductDetails {
 
-    @Id
-    @GeneratedValue(UUIDStringGenerator.class)
+    @Id @GeneratedValue(UUIDStringGenerator.class)
     String id;
 
     @Relationship("REFERS_TO")
@@ -23,7 +24,7 @@ public class GroupedProduct {
     private int amount;
     private double groupPrice;
 
-    public GroupedProduct(Product product, int amount) {
+    public ProductDetails(Product product, int amount) {
         this.product = product;
         this.amount = amount;
         this.groupPrice = product.getPrice() * amount;

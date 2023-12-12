@@ -8,6 +8,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 import java.util.Optional;
 
 public interface UserRepository extends Neo4jRepository<User, String> {
+
     @Query("MATCH (u:User) WHERE u.id = $id RETURN u")
     @NotNull Optional<User> findById(@NotNull String id);
 

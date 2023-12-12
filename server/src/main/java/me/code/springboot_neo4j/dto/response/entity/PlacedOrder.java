@@ -1,12 +1,14 @@
 package me.code.springboot_neo4j.dto.response.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import me.code.springboot_neo4j.models.GroupedProduct;
+import lombok.Setter;
 import me.code.springboot_neo4j.models.Order;
+import me.code.springboot_neo4j.models.ProductDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Setter
 public class PlacedOrder {
 
     @JsonProperty("id")
@@ -24,8 +26,8 @@ public class PlacedOrder {
     @JsonProperty("expectedDelivery")
     private LocalDateTime expectedDelivery;
 
-    @JsonProperty("products")
-    private List<GroupedProduct> groupedProducts;
+    @JsonProperty("productDetails")
+    private List<ProductDetails> productDetails;
 
     public PlacedOrder(Order order) {
         this.id = order.getId();
@@ -33,7 +35,7 @@ public class PlacedOrder {
         this.status = order.getStatus();
         this.received = order.getReceived();
         this.expectedDelivery = order.getExpectedDelivery();
-        this.groupedProducts = order.getProducts();
+        this.productDetails = order.getDetails();
     }
 
 }

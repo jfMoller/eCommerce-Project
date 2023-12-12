@@ -23,17 +23,17 @@ public class Order {
     @Relationship(value = "PLACED_BY")
     private User user;
 
-    @Relationship(type = "CONTAINS")
-    private List<GroupedProduct> products;
+    @Relationship(type = "INCLUDES")
+    private List<ProductDetails> details;
 
     private double price;
     private OrderStatus status;
     private LocalDateTime received;
     private LocalDateTime expectedDelivery;
 
-    public Order(User user, List<GroupedProduct> products) {
+    public Order(User user, List<ProductDetails> details) {
         this.user = user;
-        this.products = products;
+        this.details = details;
         this.price = getTotalPrice();
         this.status = OrderStatus.PENDING;
         this.received = getTimeReceived();
@@ -63,8 +63,8 @@ public class Order {
     public double getTotalPrice() {
         double sum = 0;
 
-        for (var group : products) {
-            sum += group.getGroupPrice();
+        for (var detail : details) {
+            sum += detail.getGroupPrice();
         }
 
         return formatPrice(sum);
@@ -78,7 +78,7 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "id='" + id + '\'' +
-                ", products=" + products +
+                ", details=" + details +
                 ", price=" + price +
                 ", status=" + status +
                 ", received=" + received +
