@@ -90,8 +90,8 @@ public class JwtValidationFilter extends OncePerRequestFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthToken(User user) {
-        return new UsernamePasswordAuthenticationToken(
-                user.getUsername(), user.getPassword(), user.getAuthorities());
+        // setting user as the first arg makes the User object available through @AuthenticationPrincipal in controllers
+        return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
     }
 
     private void handleFilterChainException(Exception exception) throws ServletException, IOException {

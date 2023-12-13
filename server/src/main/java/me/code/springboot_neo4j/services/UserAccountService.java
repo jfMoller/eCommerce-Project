@@ -57,10 +57,8 @@ public class UserAccountService implements UserDetailsService {
     }
 
 
-    public Success getUserDetails(String userId) {
+    public Success getUserDetails(User user) {
         try {
-            User user = loadUserById(userId);
-
             return new UserDetailsSuccess(HttpStatus.OK,
                     "User details were successfully retrieved",
                     user.getEmail(), user.getUsername());
@@ -72,12 +70,11 @@ public class UserAccountService implements UserDetailsService {
         }
     }
 
-    public Success changeUsername(String userId, ChangeUsernameDTO dto) {
+    public Success changeUsername(User user, ChangeUsernameDTO dto) {
         credentialsValidator.findNullUsername(dto.newUsername());
         credentialsValidator.findUsernameFormattingError(dto.newUsername());
 
         try {
-            User user = loadUserById(userId);
             user.setUsername(dto.newUsername());
             userRepository.save(user);
 
@@ -92,12 +89,11 @@ public class UserAccountService implements UserDetailsService {
         }
     }
 
-    public Success changeEmail(String userId, ChangeEmailDTO dto) {
+    public Success changeEmail(User user, ChangeEmailDTO dto) {
         credentialsValidator.findNullEmail(dto.newEmail());
         credentialsValidator.findEmailFormattingError(dto.newEmail());
 
         try {
-            User user = loadUserById(userId);
             user.setEmail(dto.newEmail());
             userRepository.save(user);
 
@@ -112,13 +108,12 @@ public class UserAccountService implements UserDetailsService {
         }
     }
 
-    public Success changePassword(String userId, ChangePasswordDTO dto) {
+    public Success changePassword(User user, ChangePasswordDTO dto) {
         System.out.println(dto.newPassword());
         credentialsValidator.findNullPassword(dto.newPassword());
         credentialsValidator.findPasswordFormattingError(dto.newPassword());
 
         try {
-            User user = loadUserById(userId);
             String encryptedPassword = passwordEncoder.encode(dto.newPassword());
             user.setPassword(encryptedPassword);
             userRepository.save(user);
@@ -134,9 +129,8 @@ public class UserAccountService implements UserDetailsService {
         }
     }
 
-    public Success deleteAccount(String userId) {
+    public Success deleteAccount(User user) {
         try {
-            User user = loadUserById(userId);
             userRepository.deleteById(user.getId());
 
             return new Success(
