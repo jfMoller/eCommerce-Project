@@ -9,16 +9,14 @@ import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.models.Product;
 import me.code.springboot_neo4j.models.ProductDetail;
 import me.code.springboot_neo4j.models.User;
-import me.code.springboot_neo4j.models.objects.OrderDTO;
 import me.code.springboot_neo4j.repositories.OrderRepository;
 import me.code.springboot_neo4j.repositories.ProductDetailRepository;
-import me.code.springboot_neo4j.repositories.UserRepository;
 import me.code.springboot_neo4j.utils.ProductDetailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -32,7 +30,6 @@ public class OrderService {
     @Autowired
     public OrderService(
             OrderRepository orderRepository,
-            UserRepository userRepository,
             ProductDetailRepository productDetailRepository,
             UserAccountService userAccountService,
             ProductService productService) {
@@ -43,14 +40,11 @@ public class OrderService {
     }
 
     @Transactional
-    public Success placeOrder(String userId, String[] productIds) {
+    public Success placeOrder(User user, String[] productIds) {
         try {
-            User user = userAccountService.loadUserById(userId);
-            List<Product> orderedProducts = new ArrayList<>();
-
-            for (String productId : productIds) {
-                orderedProducts.add(productService.loadProductById(productId));
-            }
+            List<Product> orderedProducts = Arrays.stream(productIds)
+                    .map(productService::loadProductById)
+                    .toList();
 
             List<ProductDetail> productDetails = ProductDetailUtil.parseAsProductDetails(orderedProducts);
             orderRepository.save(new Order(user, productDetails));
@@ -75,27 +69,19 @@ public class OrderService {
     }
 
     public List<PlacedOrder> getUsersOrders(String userId) {
-        List<OrderDTO> orders = findOrdersByUserId(userId);
-        List<PlacedOrder> dtos = new ArrayList<>();
+        List<Order> orders = findOrdersByUserId(userId);
 
-        for (var order : orders) {
-            dtos.add(new PlacedOrder(order.getOrder(), order.getDetails()));
-        }
-        return dtos;
+        return orders.stream()
+                .map(PlacedOrder::new)
+                .toList();
     }
 
-    public List<OrderDTO> findOrdersByUserId(String userId) {
+    public List<Order> findOrdersByUserId(String userId) {
         return orderRepository.findOrdersByUserId(userId).orElseThrow(
                 () -> new UncheckedException(
                         HttpStatus.NOT_FOUND,
                         "Could not find orders placed by user with id: " + userId));
     }
 
-    public List<ProductDetail> findProductDetailsByOrderId(String orderId) {
-        return productDetailRepository.findDetailsByOrderId(orderId).orElseThrow(
-                () -> new UncheckedException(
-                        HttpStatus.NOT_FOUND,
-                        "Could not find product details for order with id: " + orderId));
-    }
 }
 

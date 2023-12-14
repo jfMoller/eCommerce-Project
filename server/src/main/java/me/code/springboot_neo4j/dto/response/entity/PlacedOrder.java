@@ -29,13 +29,13 @@ public class PlacedOrder {
     @JsonProperty("productDetails")
     private List<ProductDetail> productDetails;
 
-    public PlacedOrder(Order order, List<ProductDetail> details) {
+    public PlacedOrder(Order order) {
         this.id = order.getId();
         this.price = order.getPrice();
         this.status = order.getStatus();
         this.received = order.getReceived();
         this.expectedDelivery = order.getExpectedDelivery();
-        this.productDetails = details;
+        this.productDetails = order.getDetails();
     }
 
 }

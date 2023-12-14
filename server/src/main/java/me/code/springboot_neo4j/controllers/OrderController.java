@@ -2,13 +2,14 @@ package me.code.springboot_neo4j.controllers;
 
 import me.code.springboot_neo4j.dto.request.GetOngoingOrderDTO;
 import me.code.springboot_neo4j.dto.request.PlaceOrderDTO;
-import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.entity.OngoingOrder;
 import me.code.springboot_neo4j.dto.response.entity.PlacedOrder;
-import me.code.springboot_neo4j.security.JwtTokenUtil;
+import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +18,10 @@ import java.util.List;
 @RequestMapping("api/orders")
 public class OrderController {
     private final OrderService orderService;
-    private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public OrderController(OrderService orderService, JwtTokenUtil jwtTokenUtil) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
-        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @PostMapping("/ongoing")
@@ -31,16 +30,14 @@ public class OrderController {
     }
 
     @PostMapping("/place")
-    public ResponseEntity<Success> placeOrder(@RequestHeader("Authorization") String token, @RequestBody PlaceOrderDTO dto) {
-        String userId = jwtTokenUtil.getTokenId(token);
-        var result = orderService.placeOrder(userId, dto.productIds());
+    public ResponseEntity<Success> placeOrder(@AuthenticationPrincipal User user, @RequestBody PlaceOrderDTO dto) {
+        var result = orderService.placeOrder(user, dto.productIds());
         return result.toResponseEntity();
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PlacedOrder>> getUserOrders(@RequestHeader("Authorization") String token) {
-        var userId = jwtTokenUtil.getTokenId(token);
-        List<PlacedOrder> result = orderService.getUsersOrders(userId);
+    public ResponseEntity<List<PlacedOrder>> getUserOrders(@AuthenticationPrincipal User user) {
+        List<PlacedOrder> result = orderService.getUsersOrders(user.getId());
         return ResponseEntity.ok(result);
     }
 }
