@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
-import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.services.UserAccountService;
 import org.springframework.http.HttpStatus;
@@ -44,7 +44,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
             continueFilterChainWithAuthentication(token, securityFilterChain, request, response);
 
         } else {
-            throw new UncheckedException(HttpStatus.UNAUTHORIZED, "The provided token is not valid.");
+            throw new CustomRuntimeException(HttpStatus.UNAUTHORIZED, "The provided token is not valid.");
         }
     }
 

@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import me.code.springboot_neo4j.dto.response.entity.OngoingOrder;
 import me.code.springboot_neo4j.dto.response.entity.PlacedOrder;
 import me.code.springboot_neo4j.dto.response.success.Success;
-import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.models.Order;
 import me.code.springboot_neo4j.models.Product;
 import me.code.springboot_neo4j.models.ProductDetail;
@@ -52,7 +52,7 @@ public class OrderService {
             return new Success(HttpStatus.OK, "The order was placed successfully");
 
         } catch (Exception exception) {
-            throw new UncheckedException(HttpStatus.BAD_REQUEST, "Could not place order");
+            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not place order");
         }
     }
 
@@ -64,7 +64,7 @@ public class OrderService {
             return new OngoingOrder(products, totalPrice);
 
         } catch (Exception exception) {
-            throw new UncheckedException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing entity");
+            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing entity");
         }
     }
 
@@ -78,7 +78,7 @@ public class OrderService {
 
     public List<Order> findOrdersByUserId(String userId) {
         return orderRepository.findOrdersByUserId(userId).orElseThrow(
-                () -> new UncheckedException(
+                () -> new CustomRuntimeException(
                         HttpStatus.NOT_FOUND,
                         "Could not find orders placed by user with id: " + userId));
     }

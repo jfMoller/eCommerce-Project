@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepository extends Neo4jRepository<Order, String> {
+
     @Query("MATCH (o:Order) WHERE o.id = $id RETURN o")
     @NotNull Optional<Order> findById(@NotNull String id);
 

@@ -1,7 +1,7 @@
 package me.code.springboot_neo4j.utils;
 
 import me.code.springboot_neo4j.dto.response.error.detailvariant.ValidationErrorDetail;
-import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.exceptions.types.variant.ValidationException;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -251,7 +251,7 @@ public class CredentialsValidatorUtil {
                                 : doesNotContainUppercase(value) ? NO_UPPERCASE_ERROR_MESSAGE
                                 : UNKNOWN_FIELD_ERROR_MESSAGE;
             }
-            default -> throw new UncheckedException(
+            default -> throw new CustomRuntimeException(
                     HttpStatus.BAD_REQUEST,
                     "Could not generate validation error detail");
         }

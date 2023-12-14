@@ -3,7 +3,7 @@ package me.code.springboot_neo4j.services;
 import me.code.springboot_neo4j.dto.request.EditedProductDTO;
 import me.code.springboot_neo4j.dto.request.InsertProductDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
-import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.models.Product;
 import me.code.springboot_neo4j.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class ProductService {
         try {
             return loadProductById(productId);
         } catch (Exception exception) {
-            throw new UncheckedException(HttpStatus.NOT_FOUND, "Could not find requested product");
+            throw new CustomRuntimeException(HttpStatus.NOT_FOUND, "Could not find requested product");
         }
     }
 
@@ -63,7 +63,7 @@ public class ProductService {
             Product product = new Product(dto.name(), dto.description(), dto.imageUrl(), dto.price(), dto.quantity());
             return productRepository.save(product);
         } catch (Exception exception) {
-            throw new UncheckedException(HttpStatus.BAD_REQUEST, "Could not create product");
+            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not create product");
         }
     }
 
@@ -72,7 +72,7 @@ public class ProductService {
             productRepository.deleteById(productId);
             return new Success(HttpStatus.OK, "The product was deleted successfully");
         } else {
-            throw new UncheckedException(HttpStatus.BAD_REQUEST, "Could not delete product");
+            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not delete product");
         }
     }
 
@@ -91,11 +91,11 @@ public class ProductService {
             productRepository.save(product);
             return new Success(HttpStatus.OK, "The product was edited successfully");
 
-        } else throw new UncheckedException(HttpStatus.BAD_REQUEST, "Failed to edit the product");
+        } else throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Failed to edit the product");
     }
 
     public Product loadProductById(String productId) {
         return productRepository.findById(productId).orElseThrow(
-                () -> new UncheckedException(HttpStatus.NOT_FOUND, "Product with id: " + productId + " not found"));
+                () -> new CustomRuntimeException(HttpStatus.NOT_FOUND, "Product with id: " + productId + " not found"));
     }
 }

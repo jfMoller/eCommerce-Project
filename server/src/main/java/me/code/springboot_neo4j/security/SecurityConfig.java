@@ -27,7 +27,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/api/account/register", "/api/account/login",
-                                "api/products/**").permitAll()
+                                "api/products/all", "api/products/featured", "api/products/{productId}",
+                                "api/orders/ongoing").permitAll()
                         .anyRequest().authenticated());
         return security.build();
     }

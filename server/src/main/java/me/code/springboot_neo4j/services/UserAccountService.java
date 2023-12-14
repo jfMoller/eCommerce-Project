@@ -6,7 +6,7 @@ import me.code.springboot_neo4j.dto.request.ChangeUsernameDTO;
 import me.code.springboot_neo4j.dto.request.CreateUserDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.success.variant.UserDetailsSuccess;
-import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.models.User;
 import me.code.springboot_neo4j.models.UserRole;
 import me.code.springboot_neo4j.repositories.UserRepository;
@@ -45,7 +45,7 @@ public class UserAccountService implements UserDetailsService {
                     "Successfully registered a new account");
 
         } catch (Exception exception) {
-            throw new UncheckedException(
+            throw new CustomRuntimeException(
                     HttpStatus.BAD_REQUEST,
                     "Could not register a new account");
         }
@@ -64,7 +64,7 @@ public class UserAccountService implements UserDetailsService {
                     user.getEmail(), user.getUsername());
 
         } catch (Exception exception) {
-            throw new UncheckedException(
+            throw new CustomRuntimeException(
                     HttpStatus.BAD_REQUEST,
                     "Could not fetch user details");
         }
@@ -83,7 +83,7 @@ public class UserAccountService implements UserDetailsService {
                     "The username was successfully changed");
 
         } catch (Exception exception) {
-            throw new UncheckedException(
+            throw new CustomRuntimeException(
                     HttpStatus.BAD_REQUEST,
                     "Could not change username");
         }
@@ -102,7 +102,7 @@ public class UserAccountService implements UserDetailsService {
                     "The email was successfully changed");
 
         } catch (Exception exception) {
-            throw new UncheckedException(
+            throw new CustomRuntimeException(
                     HttpStatus.BAD_REQUEST,
                     "Could not change email");
         }
@@ -123,7 +123,7 @@ public class UserAccountService implements UserDetailsService {
                     "The password was successfully changed");
 
         } catch (Exception exception) {
-            throw new UncheckedException(
+            throw new CustomRuntimeException(
                     HttpStatus.BAD_REQUEST,
                     "Could not change password");
         }
@@ -138,7 +138,7 @@ public class UserAccountService implements UserDetailsService {
                     "The account was successfully deleted");
 
         } catch (Exception exception) {
-            throw new UncheckedException(
+            throw new CustomRuntimeException(
                     HttpStatus.BAD_REQUEST,
                     "Could not delete account");
         }
@@ -151,14 +151,14 @@ public class UserAccountService implements UserDetailsService {
 
     public User loadUserById(String userId) {
         return userRepository.findById(userId).orElseThrow(
-                () -> new UncheckedException(
+                () -> new CustomRuntimeException(
                         HttpStatus.NOT_FOUND,
                         "Could not find user with id: " + userId));
     }
 
     public User loadUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
-                () -> new UncheckedException(
+                () -> new CustomRuntimeException(
                         HttpStatus.NOT_FOUND,
                         "Could not find user with email: " + email));
     }
@@ -166,7 +166,7 @@ public class UserAccountService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(
-                () -> new UncheckedException(
+                () -> new CustomRuntimeException(
                         HttpStatus.NOT_FOUND,
                         "Could not find user with username: " + username));
     }

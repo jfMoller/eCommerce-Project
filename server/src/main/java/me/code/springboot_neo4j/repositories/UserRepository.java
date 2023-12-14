@@ -30,13 +30,5 @@ public interface UserRepository extends Neo4jRepository<User, String> {
     @Query("MATCH (u:User) WHERE u.email = $email AND u.password = $password RETURN COUNT(u) = 0")
     boolean isInvalidPassword(String email, String password);
 
-    @Query("MATCH (u:User) WHERE u.id = $userId AND u.email = $email RETURN COUNT(u) > 0")
-    boolean isUsersCurrentEmail(String userId, String email);
-
-    @Query("MATCH (u:User) WHERE u.id = $userId AND u.password = $password RETURN COUNT(u) > 0")
-    boolean isUsersCurrentPassword(String userId, String password);
-
-    @Query("MATCH (u:User) WHERE u.email = $email AND u.password = $password RETURN COUNT(u) > 0")
-    boolean isValidCredentials(String email, String password);
 }
 

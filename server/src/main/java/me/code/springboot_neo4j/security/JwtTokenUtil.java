@@ -13,9 +13,6 @@ import java.io.InputStream;
 import java.security.Key;
 import java.util.Map;
 
-/**
- * Utility class for handling JWT (JSON Web Token) operations, such as token generation, validation, and retrieval of claims.
- */
 @Component
 @NoArgsConstructor
 public class JwtTokenUtil {

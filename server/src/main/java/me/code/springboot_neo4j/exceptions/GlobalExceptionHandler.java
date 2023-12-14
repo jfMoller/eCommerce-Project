@@ -4,7 +4,7 @@ import jakarta.servlet.ServletException;
 import me.code.springboot_neo4j.dto.response.error.Error;
 import me.code.springboot_neo4j.dto.response.error.ErrorDetail;
 import me.code.springboot_neo4j.dto.response.error.detailvariant.ValidationErrorDetail;
-import me.code.springboot_neo4j.exceptions.types.UncheckedException;
+import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.exceptions.types.variant.ValidationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -36,8 +36,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, exception);
     }
 
-    @ExceptionHandler({UncheckedException.class})
-    public ResponseEntity<Error> handleUncheckedException(UncheckedException exception) {
+    @ExceptionHandler({CustomRuntimeException.class})
+    public ResponseEntity<Error> handleUncheckedException(CustomRuntimeException exception) {
         HttpStatus status = exception.getStatus();
         ErrorDetail errorDetail = new ErrorDetail(exception.getMessage());
         return buildResponseEntity(status, exception, errorDetail);
