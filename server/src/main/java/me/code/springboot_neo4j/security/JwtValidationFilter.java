@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
-import me.code.springboot_neo4j.models.User;
+import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.services.UserAccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,6 +71,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
     private void setAuthenticationContext(String token) {
         User user = getUser(token);
         var authToken = getAuthToken(user);
+
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 

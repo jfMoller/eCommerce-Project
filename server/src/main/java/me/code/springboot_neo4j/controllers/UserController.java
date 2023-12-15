@@ -1,6 +1,6 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.models.User;
+import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

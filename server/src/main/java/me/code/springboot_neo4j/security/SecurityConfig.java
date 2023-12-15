@@ -1,5 +1,6 @@
 package me.code.springboot_neo4j.security;
 
+import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import me.code.springboot_neo4j.services.UserAccountService;
 import me.code.springboot_neo4j.utils.CredentialsValidatorUtil;
@@ -20,15 +21,30 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    public static final String[] PUBLIC_URLS = {
+            "/api/account/register",
+            "/api/account/login",
+            "/api/products/all",
+            "/api/products/featured",
+            "/api/products/{productId}",
+            "/api/orders/ongoing"
+    };
+
+    public static final String[] ADMIN_URLS = {
+            "/api/products/insert",
+            "/api/products/edit/{productId}",
+            "/api/products/delete/{productId}"
+    };
+
+    public static final String ADMIN_ROLE = User.Role.ADMIN.toString();
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security, UserAccountService userAccountService, JwtTokenUtil jwtTokenUtil) throws Exception {
         security.csrf(AbstractHttpConfigurer::disable)
                 .addFilterAfter(new JwtValidationFilter(jwtTokenUtil, userAccountService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(
-                                "/api/account/register", "/api/account/login",
-                                "api/products/all", "api/products/featured", "api/products/{productId}",
-                                "api/orders/ongoing").permitAll()
+                        .requestMatchers(ADMIN_URLS).hasAuthority(ADMIN_ROLE)
+                        .requestMatchers(PUBLIC_URLS).permitAll()
                         .anyRequest().authenticated());
         return security.build();
     }

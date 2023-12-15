@@ -1,7 +1,7 @@
 package me.code.springboot_neo4j.dto.response.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import me.code.springboot_neo4j.models.Product;
+import me.code.springboot_neo4j.models.nodes.Product;
 import java.util.List;
 
 import java.util.ArrayList;

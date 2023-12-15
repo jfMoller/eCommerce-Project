@@ -7,8 +7,7 @@ import me.code.springboot_neo4j.dto.request.CreateUserDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.success.variant.UserDetailsSuccess;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
-import me.code.springboot_neo4j.models.User;
-import me.code.springboot_neo4j.models.UserRole;
+import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import me.code.springboot_neo4j.utils.CredentialsValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class UserAccountService implements UserDetailsService {
         checkForValidationErrors(dto.email(), dto.username(), dto.password());
         try {
             String encryptedPassword = passwordEncoder.encode(dto.password());
-            User newUser = new User(dto.email(), dto.username(), encryptedPassword, UserRole.REGULAR_USER);
+            User newUser = new User(dto.email(), dto.username(), encryptedPassword, User.Role.USER);
             userRepository.save(newUser);
 
             return new Success(

@@ -4,7 +4,7 @@ import me.code.springboot_neo4j.dto.request.EditedProductDTO;
 import me.code.springboot_neo4j.dto.request.InsertProductDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
-import me.code.springboot_neo4j.models.Product;
+import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

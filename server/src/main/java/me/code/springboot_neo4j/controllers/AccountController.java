@@ -5,7 +5,7 @@ import me.code.springboot_neo4j.dto.request.ChangePasswordDTO;
 import me.code.springboot_neo4j.dto.request.ChangeUsernameDTO;
 import me.code.springboot_neo4j.dto.request.CreateUserDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
-import me.code.springboot_neo4j.models.User;
+import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.services.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

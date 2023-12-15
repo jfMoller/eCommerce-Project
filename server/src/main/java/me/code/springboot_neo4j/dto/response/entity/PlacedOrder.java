@@ -2,8 +2,8 @@ package me.code.springboot_neo4j.dto.response.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Setter;
-import me.code.springboot_neo4j.models.Order;
-import me.code.springboot_neo4j.models.ProductDetail;
+import me.code.springboot_neo4j.models.nodes.Order;
+import me.code.springboot_neo4j.models.nodes.ProductDetail;
 
 import java.time.LocalDateTime;
 import java.util.List;

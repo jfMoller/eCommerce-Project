@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.models;
+package me.code.springboot_neo4j.models.nodes;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

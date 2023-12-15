@@ -1,6 +1,6 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.models.User;
+import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

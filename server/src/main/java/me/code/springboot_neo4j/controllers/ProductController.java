@@ -3,7 +3,7 @@ package me.code.springboot_neo4j.controllers;
 import me.code.springboot_neo4j.dto.request.EditedProductDTO;
 import me.code.springboot_neo4j.dto.request.InsertProductDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
-import me.code.springboot_neo4j.models.Product;
+import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

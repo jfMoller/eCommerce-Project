@@ -1,8 +1,8 @@
 package me.code.springboot_neo4j.utils;
 
 import lombok.Getter;
-import me.code.springboot_neo4j.models.ProductDetail;
-import me.code.springboot_neo4j.models.Product;
+import me.code.springboot_neo4j.models.nodes.ProductDetail;
+import me.code.springboot_neo4j.models.nodes.Product;
 
 import java.util.ArrayList;
 import java.util.List;

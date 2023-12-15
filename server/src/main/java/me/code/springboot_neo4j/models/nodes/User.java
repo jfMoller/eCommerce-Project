@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.models;
+package me.code.springboot_neo4j.models.nodes;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -25,9 +25,9 @@ public class User implements UserDetails {
     private String email;
     private String username;
     private String password;
-    private UserRole role;
+    private Role role;
 
-    public User(String email, String username, String password, UserRole role) {
+    public User(String email, String username, String password, Role role) {
         this.email = email;
         this.username = username;
         this.password = password;
@@ -36,7 +36,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(role.toString()));
+        return List.of(new SimpleGrantedAuthority(role.toString()));
     }
 
     @Override
@@ -69,4 +69,15 @@ public class User implements UserDetails {
                 ", role=" + role +
                 '}';
     }
+
+    public enum Role {
+        USER,
+        ADMIN;
+
+        @Override
+        public String toString() {
+            return this.name();
+        }
+    }
+
 }

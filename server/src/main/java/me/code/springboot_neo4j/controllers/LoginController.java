@@ -4,7 +4,7 @@ import me.code.springboot_neo4j.dto.request.UserLoginDTO;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.dto.response.success.variant.AuthenticationSuccess;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
-import me.code.springboot_neo4j.models.User;
+import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.security.JwtTokenUtil;
 import me.code.springboot_neo4j.services.LoginValidationService;
 import me.code.springboot_neo4j.services.UserAccountService;

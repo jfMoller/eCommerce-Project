@@ -1,8 +1,7 @@
 package me.code.springboot_neo4j.config.neo4j;
 
 import me.code.springboot_neo4j.dto.request.CreateUserDTO;
-import me.code.springboot_neo4j.models.User;
-import me.code.springboot_neo4j.models.UserRole;
+import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import me.code.springboot_neo4j.services.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class UsersConfig {
     private void createMockAdmins(List<CreateUserDTO> mockDtos) {
         for (var mockDto : mockDtos) {
             String encryptedPassword = passwordEncoder.encode(mockDto.password());
-            User admin = new User(mockDto.email(), mockDto.username(), encryptedPassword, UserRole.ADMIN);
+            User admin = new User(mockDto.email(), mockDto.username(), encryptedPassword, User.Role.ADMIN);
 
             userRepository.save(admin);
             System.out.println("UsersConfig created a new admin user: " + mockDto.email());

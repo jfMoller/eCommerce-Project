@@ -1,6 +1,6 @@
 package me.code.springboot_neo4j.repositories;
 
-import me.code.springboot_neo4j.models.Product;
+import me.code.springboot_neo4j.models.nodes.Product;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;

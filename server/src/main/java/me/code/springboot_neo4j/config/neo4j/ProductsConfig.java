@@ -1,6 +1,6 @@
 package me.code.springboot_neo4j.config.neo4j;
 
-import me.code.springboot_neo4j.models.Product;
+import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

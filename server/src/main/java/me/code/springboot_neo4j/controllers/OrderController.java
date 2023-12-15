@@ -5,7 +5,7 @@ import me.code.springboot_neo4j.dto.request.PlaceOrderDTO;
 import me.code.springboot_neo4j.dto.response.entity.OngoingOrder;
 import me.code.springboot_neo4j.dto.response.entity.PlacedOrder;
 import me.code.springboot_neo4j.dto.response.success.Success;
-import me.code.springboot_neo4j.models.User;
+import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
