@@ -10,8 +10,6 @@ import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.models.nodes.ProductDetail;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.OrderRepository;
-import me.code.springboot_neo4j.repositories.ProductDetailRepository;
-import me.code.springboot_neo4j.utils.ProductDetailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,19 +21,13 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductDetailRepository productDetailRepository;
-    private final UserAccountService userAccountService;
     private final ProductService productService;
 
     @Autowired
     public OrderService(
             OrderRepository orderRepository,
-            ProductDetailRepository productDetailRepository,
-            UserAccountService userAccountService,
             ProductService productService) {
         this.orderRepository = orderRepository;
-        this.productDetailRepository = productDetailRepository;
-        this.userAccountService = userAccountService;
         this.productService = productService;
     }
 
@@ -46,7 +38,7 @@ public class OrderService {
                     .map(productService::loadProductById)
                     .toList();
 
-            List<ProductDetail> productDetails = ProductDetailUtil.parseAsProductDetails(orderedProducts);
+            List<ProductDetail> productDetails = ProductDetail.generateProductDetails(orderedProducts);
             orderRepository.save(new Order(user, productDetails));
 
             return new Success(HttpStatus.OK, "The order was placed successfully");
