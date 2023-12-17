@@ -5,6 +5,7 @@ import me.code.springboot_neo4j.dto.response.error.Error;
 import me.code.springboot_neo4j.dto.response.error.ErrorDetail;
 import me.code.springboot_neo4j.dto.response.error.detailvariant.ValidationErrorDetail;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
+import me.code.springboot_neo4j.exceptions.types.variant.OrderException;
 import me.code.springboot_neo4j.exceptions.types.variant.ValidationException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -48,5 +49,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = exception.getStatus();
         ValidationErrorDetail validationError = exception.getValidationError();
         return buildResponseEntity(status, exception, validationError);
+    }
+
+    @ExceptionHandler({OrderException.class})
+    public ResponseEntity<Error> handleOrderException(OrderException exception) {
+        HttpStatus status = exception.getStatus();
+        var orderErrorDetail = exception.getOrderErrorDetail();
+        return buildResponseEntity(status, exception, orderErrorDetail);
     }
 }
