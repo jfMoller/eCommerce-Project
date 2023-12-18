@@ -24,14 +24,14 @@ public class Order {
     User user;
 
     @Relationship(type = "INCLUDES")
-    private List<ProductDetail> details;
+    private List<ProductDetails> details;
 
     private double price;
     private OrderStatus status;
     private LocalDateTime received;
     private LocalDateTime expectedDelivery;
 
-    public Order(User user, List<ProductDetail> details) {
+    public Order(User user, List<ProductDetails> details) {
         this.user = user;
         this.details = details;
         this.price = getTotalPrice();

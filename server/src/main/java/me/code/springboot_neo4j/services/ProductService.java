@@ -98,4 +98,5 @@ public class ProductService {
         return productRepository.findById(productId).orElseThrow(
                 () -> new CustomRuntimeException(HttpStatus.NOT_FOUND, "Product with id: " + productId + " not found"));
     }
+
 }

@@ -9,15 +9,13 @@ import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.exceptions.types.variant.OrderException;
 import me.code.springboot_neo4j.models.nodes.Order;
 import me.code.springboot_neo4j.models.nodes.Product;
-import me.code.springboot_neo4j.models.nodes.ProductDetail;
+import me.code.springboot_neo4j.models.nodes.ProductDetails;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.OrderRepository;
-import me.code.springboot_neo4j.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,17 +23,17 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
     private final ProductService productService;
+    private final ProductDetailsService productDetailsService;
 
     @Autowired
     public OrderService(
             OrderRepository orderRepository,
-            ProductRepository productRepository,
-            ProductService productService) {
+            ProductService productService,
+            ProductDetailsService productDetailsService) {
         this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
         this.productService = productService;
+        this.productDetailsService = productDetailsService;
     }
 
     @Transactional
@@ -45,11 +43,13 @@ public class OrderService {
                     .map(productService::loadProductById)
                     .toList();
 
-            List<ProductDetail> productDetails = ProductDetail.generateProductDetails(orderedProducts);
-            List<OrderErrorDetail.ProductError> unavailableProducts = checkProductAvailability(productDetails);
-            boolean isContainingUnavailableProducts = unavailableProducts != null;
+            List<ProductDetails> productDetails =
+                    productDetailsService.generateProductDetails(orderedProducts);
 
-            if (isContainingUnavailableProducts) {
+            List<OrderErrorDetail.UnavailableProduct> unavailableProducts =
+                    productDetailsService.findUnavailableProducts(productDetails);
+
+            if (hasUnavailableProducts(unavailableProducts)) {
                 throw new OrderException(
                         HttpStatus.BAD_REQUEST,
                         "Could not place order",
@@ -63,45 +63,30 @@ public class OrderService {
             return new Success(HttpStatus.OK, "The order was placed successfully");
 
         } catch (OrderException exception) {
-            throw new OrderException(
-                    exception.getStatus(),
-                    exception.getMessage(),
-                    exception.getOrderErrorDetail());
+            throw new OrderException(exception.getStatus(), exception.getMessage(), exception.getOrderErrorDetail());
+
         } catch (Exception exception) {
             throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not place order");
         }
     }
 
-    private List<OrderErrorDetail.ProductError> checkProductAvailability(List<ProductDetail> productDetails) {
-        List<OrderErrorDetail.ProductError> unavailableProducts = new ArrayList<>();
-
-        productDetails.forEach(detail -> {
-            Product targetProduct = detail.getProduct();
-            int requestedAmount = detail.getAmount();
-            int availableAmount = targetProduct.getQuantity();
-
-            if ((availableAmount - requestedAmount) >= 0) {
-                targetProduct.setQuantity(availableAmount - requestedAmount);
-                productRepository.save(targetProduct);
-            } else {
-                unavailableProducts.add(
-                        new OrderErrorDetail.ProductError(
-                                "Requested amount not available",
-                                targetProduct.getId(),
-                                availableAmount,
-                                requestedAmount));
-            }
-        });
-
-        return unavailableProducts.size() > 0 ? unavailableProducts : null;
+    private boolean hasUnavailableProducts(List<OrderErrorDetail.UnavailableProduct> unavailableProducts) {
+        return !unavailableProducts.isEmpty();
     }
 
     public OngoingOrder getOngoingOrder(String[] productIds) {
         try {
-            List<Product> products = productService.getProductsById(productIds);
-            double totalPrice = productService.calculateTotalPrice(products);
+            List<Product> products = Arrays.stream(productIds)
+                    .map(productService::loadProductById)
+                    .toList();
 
-            return new OngoingOrder(products, totalPrice);
+            List<ProductDetails> productDetails =
+                    productDetailsService.generateProductDetails(products);
+
+            double totalPrice =
+                    productDetailsService.getTotalPrice(productDetails);
+
+            return new OngoingOrder(productDetails, totalPrice);
 
         } catch (Exception exception) {
             throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing entity");

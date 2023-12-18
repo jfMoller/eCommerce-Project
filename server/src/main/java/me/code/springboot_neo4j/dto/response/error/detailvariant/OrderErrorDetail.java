@@ -11,23 +11,23 @@ import java.util.List;
 public class OrderErrorDetail extends ErrorDetail {
 
     @AllArgsConstructor
-    public static class ProductError {
+    public static class UnavailableProduct {
         @JsonProperty("errorMessage")
         private String errorMessage;
 
         @JsonProperty("productId")
         private String productId;
 
-        @JsonProperty("availableAmount")
-        private int availableAmount;
-
         @JsonProperty("requestedAmount")
         private int requestedAmount;
+
+        @JsonProperty("availableAmount")
+        private int availableAmount;
     }
 
-    private List<ProductError> unavailableProducts;
+    private List<UnavailableProduct> unavailableProducts;
 
-    public OrderErrorDetail(String message, List<ProductError> unavailableProducts) {
+    public OrderErrorDetail(String message, List<UnavailableProduct> unavailableProducts) {
         super(message);
         this.unavailableProducts = unavailableProducts;
     }

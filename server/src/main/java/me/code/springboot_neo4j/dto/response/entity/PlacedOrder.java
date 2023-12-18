@@ -3,7 +3,7 @@ package me.code.springboot_neo4j.dto.response.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Setter;
 import me.code.springboot_neo4j.models.nodes.Order;
-import me.code.springboot_neo4j.models.nodes.ProductDetail;
+import me.code.springboot_neo4j.models.nodes.ProductDetails;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +27,7 @@ public class PlacedOrder {
     private LocalDateTime expectedDelivery;
 
     @JsonProperty("productDetails")
-    private List<ProductDetail> productDetails;
+    private List<ProductDetails> productDetails;
 
     public PlacedOrder(Order order) {
         this.id = order.getId();
