@@ -87,16 +87,7 @@ public class OrderService {
             double totalPrice =
                     productDetailsService.getTotalPrice(productsInCart);
 
-            var ongoingOrder = new OngoingOrder(productsInCart, totalPrice);
-
-            List<UnavailableProduct> unavailableProducts =
-                    productDetailsService.findUnavailableProducts(productsInCart);
-
-            if (hasUnavailableProducts(unavailableProducts)) {
-                ongoingOrder.setUnavailableProducts(unavailableProducts);
-            }
-
-            return ongoingOrder;
+            return new OngoingOrder(productsInCart, totalPrice);
 
         } catch (Exception exception) {
             throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing order");

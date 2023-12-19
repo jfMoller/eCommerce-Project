@@ -9,14 +9,11 @@ import java.util.List;
 @Setter
 public class OngoingOrder {
 
-    @JsonProperty("products")
+    @JsonProperty("productDetails")
     private List<ProductDetails> productDetails;
 
     @JsonProperty("totalPrice")
     private double totalPrice;
-
-    @JsonProperty("unavailableProducts")
-    private List<UnavailableProduct> unavailableProducts;
 
     public OngoingOrder(List<ProductDetails> productDetails, double totalPrice) {
         this.productDetails = productDetails;

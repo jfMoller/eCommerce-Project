@@ -4,4 +4,12 @@ export interface Product {
   description: string
   imageUrl: string
   price: number
+  quantity: number
+}
+
+export interface UnavailableProduct {
+  message: string;
+  productId: string;
+  requestedAmount: number;
+  availableAmount: number;
 }

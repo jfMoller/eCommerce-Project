@@ -1,4 +1,4 @@
-import type { Product } from './product'
+import type { Product, UnavailableProduct } from './product'
 
 export interface Order {
   id: string
@@ -11,7 +11,8 @@ export interface Order {
 
 export interface OngoingOrder {
   totalPrice: number
-  products: ProductGrouping[]
+  productDetails: ProductGrouping[]
+  unavailableProducts: UnavailableProduct[]
 }
 
 interface ProductGrouping {
