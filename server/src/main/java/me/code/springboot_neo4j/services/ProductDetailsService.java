@@ -1,6 +1,6 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dto.response.error.detailvariant.OrderErrorDetail;
+import me.code.springboot_neo4j.dto.response.entity.UnavailableProduct;
 import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.models.nodes.ProductDetails;
 import me.code.springboot_neo4j.repositories.ProductRepository;
@@ -61,8 +61,8 @@ public class ProductDetailsService {
         return Math.round(sum * 100.0) / 100.0;
     }
 
-    public List<OrderErrorDetail.UnavailableProduct> findUnavailableProducts(List<ProductDetails> productDetails) {
-        List<OrderErrorDetail.UnavailableProduct> unavailableProducts = new ArrayList<>();
+    public List<UnavailableProduct> findUnavailableProducts(List<ProductDetails> productDetails) {
+        List<UnavailableProduct> unavailableProducts = new ArrayList<>();
 
         productDetails.forEach(detail -> {
             Product targetProduct = detail.getProduct();
@@ -74,7 +74,7 @@ public class ProductDetailsService {
                 productRepository.save(targetProduct);
             } else {
                 unavailableProducts.add(
-                        new OrderErrorDetail.UnavailableProduct(
+                        new UnavailableProduct(
                                 "Requested amount not available",
                                 targetProduct.getId(),
                                 requestedAmount,
@@ -84,4 +84,5 @@ public class ProductDetailsService {
 
         return unavailableProducts;
     }
+
 }

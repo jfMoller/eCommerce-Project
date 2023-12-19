@@ -3,6 +3,7 @@ package me.code.springboot_neo4j.services;
 import jakarta.transaction.Transactional;
 import me.code.springboot_neo4j.dto.response.entity.OngoingOrder;
 import me.code.springboot_neo4j.dto.response.entity.PlacedOrder;
+import me.code.springboot_neo4j.dto.response.entity.UnavailableProduct;
 import me.code.springboot_neo4j.dto.response.error.detailvariant.OrderErrorDetail;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
@@ -46,7 +47,7 @@ public class OrderService {
             List<ProductDetails> productDetails =
                     productDetailsService.generateProductDetails(orderedProducts);
 
-            List<OrderErrorDetail.UnavailableProduct> unavailableProducts =
+            List<UnavailableProduct> unavailableProducts =
                     productDetailsService.findUnavailableProducts(productDetails);
 
             if (hasUnavailableProducts(unavailableProducts)) {
@@ -70,7 +71,7 @@ public class OrderService {
         }
     }
 
-    private boolean hasUnavailableProducts(List<OrderErrorDetail.UnavailableProduct> unavailableProducts) {
+    private boolean hasUnavailableProducts(List<UnavailableProduct> unavailableProducts) {
         return !unavailableProducts.isEmpty();
     }
 
@@ -80,16 +81,25 @@ public class OrderService {
                     .map(productService::loadProductById)
                     .toList();
 
-            List<ProductDetails> productDetails =
+            List<ProductDetails> productsInCart =
                     productDetailsService.generateProductDetails(products);
 
             double totalPrice =
-                    productDetailsService.getTotalPrice(productDetails);
+                    productDetailsService.getTotalPrice(productsInCart);
 
-            return new OngoingOrder(productDetails, totalPrice);
+            var ongoingOrder = new OngoingOrder(productsInCart, totalPrice);
+
+            List<UnavailableProduct> unavailableProducts =
+                    productDetailsService.findUnavailableProducts(productsInCart);
+
+            if (hasUnavailableProducts(unavailableProducts)) {
+                ongoingOrder.setUnavailableProducts(unavailableProducts);
+            }
+
+            return ongoingOrder;
 
         } catch (Exception exception) {
-            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing entity");
+            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing order");
         }
     }
 
