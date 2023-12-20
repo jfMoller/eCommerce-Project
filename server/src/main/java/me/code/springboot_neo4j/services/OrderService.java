@@ -59,6 +59,8 @@ public class OrderService {
                                 unavailableProducts));
             }
 
+            productDetailsService.updateProductQuantities(productDetails);
+
             orderRepository.save(new Order(user, productDetails));
 
             return new Success(HttpStatus.OK, "The order was placed successfully");

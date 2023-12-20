@@ -1,17 +1,26 @@
 package me.code.springboot_neo4j.services;
 
-import lombok.NoArgsConstructor;
 import me.code.springboot_neo4j.dto.response.entity.UnavailableProduct;
 import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.models.nodes.ProductDetails;
+import me.code.springboot_neo4j.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@NoArgsConstructor
 public class ProductDetailsService {
+
+    private ProductService productService;
+    private ProductRepository productRepository;
+
+    @Autowired
+    public ProductDetailsService(ProductService productService, ProductRepository productRepository) {
+        this.productService = productService;
+        this.productRepository = productRepository;
+    }
 
     public List<ProductDetails> generateProductDetails(List<Product> orderedProducts) {
         List<ProductDetails> productDetails = new ArrayList<>();
@@ -57,7 +66,7 @@ public class ProductDetailsService {
         productDetails.forEach(detail -> {
             Product targetProduct = detail.getProduct();
             int requestedAmount = detail.getAmount();
-            int availableAmount = targetProduct.getQuantity();
+            int availableAmount = productService.loadProductById(targetProduct.getId()).getQuantity();
 
             if ((availableAmount - requestedAmount) < 0) {
                 unavailableProducts.add(
@@ -70,6 +79,15 @@ public class ProductDetailsService {
         });
 
         return unavailableProducts;
+    }
+
+    public void updateProductQuantities(List<ProductDetails> productDetails) {
+        productDetails.forEach(details -> {
+            var targetProduct = details.getProduct();
+            targetProduct.setQuantity(targetProduct.getQuantity() - details.getAmount());
+
+            productRepository.save(targetProduct);
+        });
     }
 
 }

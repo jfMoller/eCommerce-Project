@@ -10,8 +10,7 @@
           <span class="text-xl font-semibold text-black">{{ product.price }} :-</span>
 
           <div class="flex flex-col justify-between items-center">
-            <StyledButton text="Add to cart" additionalClass="my-3"
-              :handleClick="() => addToCart(product?.id as string)" />
+           <BuyNowButton :product="product" />
           </div>
         </div>
       </div>
@@ -22,10 +21,10 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import type { Product } from '@/types/product';
-import StyledButton from '@/components/StyledButton.vue';
 import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 import { useProductStore } from '@/stores/network/productStore';
 import { useRoute } from 'vue-router';
+import BuyNowButton from '@/components/products/BuyNowButton.vue';
 
 export default defineComponent({
   name: "ProductView",
@@ -48,8 +47,8 @@ export default defineComponent({
     };
   },
   components: {
-    StyledButton
-  }
+    BuyNowButton
+}
 
 });
 </script>

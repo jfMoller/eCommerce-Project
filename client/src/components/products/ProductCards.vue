@@ -6,7 +6,7 @@
         @click="() => showProductView(product.id)">
       <h3 class="text-l text-center font-semibold mb-3">{{ product.name }}</h3>
       <div class="flex flex-col justify-between items-center">
-        <StyledButton text="Buy now" additionalClass="mb-3" :handleClick="() => addToCart(product.id)" />
+        <BuyNowButton :product="product" />
         <span class="text-xl font-semibold text-black">{{ product.price }} :-</span>
       </div>
 
@@ -18,11 +18,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import StyledButton from '../StyledButton.vue';
 import type { Product } from '@/types/product';
 import { useShoppingCartStore } from '../../stores/shoppingCartStore'
 import PlaceholderCards from './PlaceholderCards.vue';
 import router from '@/router';
+import BuyNowButton from './BuyNowButton.vue';
 
 export default defineComponent({
   name: "ProductCards",
@@ -50,6 +50,6 @@ export default defineComponent({
       addToCart
     };
   },
-  components: { StyledButton, PlaceholderCards }
+  components: { BuyNowButton, PlaceholderCards }
 });
 </script>

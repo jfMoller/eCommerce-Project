@@ -43,10 +43,10 @@ export default defineComponent({
     const groupedProducts = computed(() => {
       const grouped: Record<string, Product[]> = {};
       props.products.forEach(product => {
-        if (grouped[product._id]) {
-          grouped[product._id].push(product);
+        if (grouped[product.id]) {
+          grouped[product.id].push(product);
         } else {
-          grouped[product._id] = [product];
+          grouped[product.id] = [product];
         }
       });
       return grouped;

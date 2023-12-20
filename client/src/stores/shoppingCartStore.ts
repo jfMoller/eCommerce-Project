@@ -8,7 +8,7 @@ export const useShoppingCartStore = defineStore('shoppingCart', () => {
   }
 
   const methods = {
-    addProductId: (productId: string): void => {
+    addProductId: async (productId: string): Promise<void> => {
       states.productIds.value.push(productId)
       states.productAmount.value++
     },
