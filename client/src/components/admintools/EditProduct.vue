@@ -4,8 +4,8 @@
 
     <div class="mb-4">
       <label for="products" class="block text-gray-700 font-bold mb-2">Product:</label>
-      <select v-model="selectedProductId" class="border w-full p-2 rounded">
-        <option v-for="product in products" :key="product.id" :value="product.id" @click="() => loadProduct(product.id)">
+      <select v-model="selectedProductId" class="border w-full p-2 rounded" @change="loadProduct(selectedProductId)">
+        <option v-for="product in products" :key="product.id" :value="product.id">
           {{ product.name }}
         </option>
       </select>
@@ -55,8 +55,9 @@ export default defineComponent({
     onMounted(async () => {
       products.value = await productStore.API.getAllProducts();
 
-      if (products.value.length > 0) {
+        if (products.value.length > 0) {
         selectedProductId.value = products.value[0].id;
+
         loadProduct(selectedProductId.value);
       }
     });
@@ -72,6 +73,7 @@ export default defineComponent({
     });
 
     async function loadProduct(productId: string) {
+      console.log(productId)
       selectedProductId.value = productId;
 
       
