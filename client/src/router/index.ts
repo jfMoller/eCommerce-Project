@@ -9,6 +9,9 @@ import ShowAccountOrdersView from '@/views/ShowAccountOrdersView.vue'
 import { useAuthenticationStore } from '@/stores/authenticationStore'
 import AdminToolsView from '@/views/admin/AdminToolsView.vue'
 import HandleProductsView from '@/views/admin/HandleProductsView.vue'
+import AddProduct from '@/components/admintools/AddProduct.vue'
+import EditProduct from '@/components/admintools/EditProduct.vue'
+import DeleteProduct from '@/components/admintools/DeleteProduct.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -95,7 +98,25 @@ const router = createRouter({
         {
           path: 'products',
           name: 'HandleProductsView',
-          component: HandleProductsView
+          component: HandleProductsView,
+          redirect: '/admintools/products/add',
+          children: [
+            {
+              path: 'add',
+              name: 'AddProduct',
+              component: AddProduct
+            },
+            {
+              path: 'edit',
+              name: 'EditProduct',
+              component: EditProduct
+            },
+            {
+              path: 'delete',
+              name: 'DeleteProduct',
+              component: DeleteProduct
+            }
+          ]
         }
       ]
     },
