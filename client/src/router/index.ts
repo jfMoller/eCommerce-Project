@@ -7,6 +7,8 @@ import ProductView from '@/views/ProductView.vue'
 import EditAccountView from '../views/EditAccountView.vue'
 import ShowAccountOrdersView from '@/views/ShowAccountOrdersView.vue'
 import { useAuthenticationStore } from '@/stores/authenticationStore'
+import AdminToolsView from '@/views/admin/AdminToolsView.vue'
+import HandleProductsView from '@/views/admin/HandleProductsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,7 +31,7 @@ const router = createRouter({
     {
       path: '/product/:productId',
       name: 'productView',
-      component: ProductView,
+      component: ProductView
     },
     {
       path: '/contact',
@@ -74,6 +76,28 @@ const router = createRouter({
       path: '/checkout',
       name: 'checkout',
       component: () => import('../views/CheckoutView.vue')
+    },
+    {
+      path: '/admintools',
+      name: 'admintools',
+      component: AdminToolsView,
+      beforeEnter: (to, from, next) => {
+        if (
+          useAuthenticationStore().states.isAuthenticated &&
+          useAuthenticationStore().states.isAdmin
+        ) {
+          next()
+        } else {
+          next('/login')
+        }
+      },
+      children: [
+        {
+          path: 'products',
+          name: 'HandleProductsView',
+          component: HandleProductsView
+        }
+      ]
     },
     { path: '/:catchAll(.*)', redirect: '/' }
   ]

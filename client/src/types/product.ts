@@ -13,3 +13,11 @@ export interface UnavailableProduct {
   requestedAmount: number;
   availableAmount: number;
 }
+
+export interface CreateProductDto {
+  name: string
+  description: string
+  imageUrl: string
+  price: number
+  quantity: number
+}

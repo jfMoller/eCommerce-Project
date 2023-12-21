@@ -1,5 +1,6 @@
 <template>
     <nav :class="[props.additionalClass]">
+        <AdminToolsItem v-if="isAuthenticated && hasAdminRole" />
         <LoginItem v-if="!isAuthenticated" />
         <AccountItem v-else />
         <StyledRouterLink text="SHOP" path="/shop" />
@@ -16,6 +17,7 @@ import ShoppingCartItem from './ShoppingCartItem.vue';
 import { defineComponent, computed } from 'vue';
 import { useAuthenticationStore } from '@/stores/authenticationStore';
 import AccountItem from './AccountItem.vue';
+import AdminToolsItem from '../admintools/AdminToolsItem.vue';
 
 export default defineComponent({
     props: {
@@ -31,15 +33,17 @@ export default defineComponent({
     },
     setup(props) {
         const isAuthenticated = computed(() => useAuthenticationStore().states.isAuthenticated)
+        const hasAdminRole = computed(() => useAuthenticationStore().states.isAdmin)
 
-        return { isAuthenticated, props }
+        return { isAuthenticated, hasAdminRole, props }
     },
 
     components: {
-        LoginItem,
-        StyledRouterLink,
-        ShoppingCartItem,
-        AccountItem
-    },
+    LoginItem,
+    StyledRouterLink,
+    ShoppingCartItem,
+    AccountItem,
+    AdminToolsItem
+},
 })
 </script>
