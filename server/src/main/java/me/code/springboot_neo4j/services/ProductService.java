@@ -85,6 +85,7 @@ public class ProductService {
             Product product = loadProductById(productId);
 
             product.setName(dto.name());
+            product.setDescription(dto.description());
             product.setPrice(dto.price());
             product.setQuantity(dto.quantity());
 

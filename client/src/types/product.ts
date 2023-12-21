@@ -21,3 +21,11 @@ export interface CreateProductDto {
   price: number
   quantity: number
 }
+
+export interface EditProductDto {
+  name: string
+  description: string
+  imageUrl: string
+  price: number
+  quantity: number
+}
