@@ -7,7 +7,7 @@ import me.code.springboot_neo4j.dtos.responses.entities.UnavailableProductDTO;
 import me.code.springboot_neo4j.dtos.responses.error.details.OrderErrorDetail;
 import me.code.springboot_neo4j.dtos.responses.success.Success;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
-import me.code.springboot_neo4j.exceptions.types.variant.OrderException;
+import me.code.springboot_neo4j.exceptions.types.variants.OrderException;
 import me.code.springboot_neo4j.models.nodes.Order;
 import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.models.nodes.ProductDetails;

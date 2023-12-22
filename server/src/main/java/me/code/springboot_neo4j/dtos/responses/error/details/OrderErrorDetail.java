@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 public class OrderErrorDetail extends ErrorDetail {
 
-    private List<UnavailableProductDTO> unavailableProducts;
+    private final List<UnavailableProductDTO> unavailableProducts;
 
     public OrderErrorDetail(String message, List<UnavailableProductDTO> unavailableProducts) {
         super(message);

@@ -6,9 +6,9 @@ import me.code.springboot_neo4j.dtos.responses.error.ErrorDetail;
 @Getter
 public class ValidationErrorDetail extends ErrorDetail {
 
-    private String targetObject;
-    private String targetField;
-    private String rejectedValue;
+    private final String targetObject;
+    private final String targetField;
+    private final String rejectedValue;
 
     public ValidationErrorDetail(
             String message,

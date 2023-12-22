@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.exceptions.types.variant;
+package me.code.springboot_neo4j.exceptions.types.variants;
 
 import lombok.Getter;
 import me.code.springboot_neo4j.dtos.responses.error.details.OrderErrorDetail;
