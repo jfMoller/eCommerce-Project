@@ -1,9 +1,6 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dto.request.ChangeEmailDTO;
-import me.code.springboot_neo4j.dto.request.ChangePasswordDTO;
-import me.code.springboot_neo4j.dto.request.ChangeUsernameDTO;
-import me.code.springboot_neo4j.dto.request.CreateUserDTO;
+import me.code.springboot_neo4j.dto.request.*;
 import me.code.springboot_neo4j.dto.response.success.Success;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.services.UserAccountService;
@@ -14,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/account")
-public class AccountController {
+public class UserAccountController {
 
     private final UserAccountService userAccountService;
 
     @Autowired
-    public AccountController(UserAccountService userAccountService) {
+    public UserAccountController(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
     }
 
@@ -57,6 +54,11 @@ public class AccountController {
     public ResponseEntity<Success> deleteAccount(@AuthenticationPrincipal User user) {
         var result = userAccountService.deleteAccount(user);
         return result.toResponseEntity();
+    }
+
+    @PostMapping("/confirm")
+    public boolean isValidCredentials(@RequestBody UserLoginDTO dto) {
+        return userAccountService.isValidUserCredentials(dto.email(), dto.password());
     }
 
 }

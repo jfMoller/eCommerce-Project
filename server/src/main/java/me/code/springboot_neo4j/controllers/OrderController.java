@@ -25,8 +25,9 @@ public class OrderController {
     }
 
     @PostMapping("/ongoing")
-    public OngoingOrder getOngoingOrder(@RequestBody GetOngoingOrderDTO dto) {
-        return orderService.getOngoingOrder(dto.productIds());
+    public ResponseEntity<OngoingOrder> getOngoingOrder(@RequestBody GetOngoingOrderDTO dto) {
+        var result = orderService.getOngoingOrder(dto.productIds());
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/place")
@@ -37,7 +38,7 @@ public class OrderController {
 
     @GetMapping("/all")
     public ResponseEntity<List<PlacedOrder>> getUserOrders(@AuthenticationPrincipal User user) {
-        List<PlacedOrder> result = orderService.getUsersOrders(user.getId());
+        var result = orderService.getUsersOrders(user.getId());
         return ResponseEntity.ok(result);
     }
 }

@@ -23,17 +23,20 @@ public class ProductController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Product>> getProducts() {
-        return ResponseEntity.ok(productService.getProducts());
+        var result = productService.getProducts();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/featured")
     public ResponseEntity<List<Product>> getFeaturedProducts() {
-        return ResponseEntity.ok(productService.getFeaturedProducts());
+        var result = productService.getFeaturedProducts();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable String productId) {
-        return ResponseEntity.ok(productService.getProduct(productId));
+        var result = productService.getProduct(productId);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/insert")

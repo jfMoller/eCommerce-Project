@@ -58,7 +58,7 @@ public class LoginController {
 
     private User authenticateUser(UserLoginDTO dto) {
         User user = userAccountService.loadUserByEmail(dto.email());
-        Authentication token = new UsernamePasswordAuthenticationToken(user.getUsername(), dto.password());
+        var token = new UsernamePasswordAuthenticationToken(user.getUsername(), dto.password());
         Authentication result = authenticationProvider.authenticate(token);
 
         if (isNotAuthenticated(result)) {
@@ -77,11 +77,6 @@ public class LoginController {
 
     private void validateCredentials(UserLoginDTO dto) {
         loginValidationService.validateUserCredentials(dto);
-    }
-
-    @PostMapping("/confirm")
-    public boolean isValidCredentials(@RequestBody UserLoginDTO dto) {
-        return userAccountService.isValidUserCredentials(dto.email(), dto.password());
     }
 
 }
