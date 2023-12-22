@@ -21,7 +21,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(UUIDStringGenerator.class)
-    String id;
+    private String id;
     private String email;
     private String username;
     private String password;

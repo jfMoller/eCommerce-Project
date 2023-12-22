@@ -13,9 +13,10 @@ public interface OrderRepository extends Neo4jRepository<Order, String> {
     @Query("MATCH (o:Order) WHERE o.id = $id RETURN o")
     @NotNull Optional<Order> findById(@NotNull String id);
 
+    // Returns a populated list of the User's orders
     @Query("MATCH (user:User {id: $userId})<-[pb:PLACED_BY]-(order:Order)-[includes:INCLUDES]->(d:ProductDetails)-[refersTo:REFERS_TO]->(p:Product) " +
-            "WITH order, COLLECT(includes) AS includes, collect(d) AS details, COLLECT(refersTo) AS refersTo, collect(p) AS products " +
-            "RETURN order, includes, details, refersTo, products")
+            "WITH order, COLLECT(includes) AS includes, collect(d) AS productDetails, COLLECT(refersTo) AS refersTo, collect(p) AS products " +
+            "RETURN order, includes, productDetails, refersTo, products")
     Optional<List<Order>> findOrdersByUserId(String userId);
 
 }

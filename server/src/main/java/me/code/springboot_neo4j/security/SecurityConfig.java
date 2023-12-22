@@ -21,22 +21,27 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    public static final String[] PUBLIC_URLS = {
-            "/api/account/register",
-            "/api/account/login",
-            "/api/products/all",
-            "/api/products/featured",
-            "/api/products/{productId}",
-            "/api/orders/ongoing"
+    private static final String API_PATH = "/api";
+    private static final String ACCOUNT_PATH = API_PATH + "/account";
+    private static final String PRODUCTS_PATH = API_PATH + "/products";
+    private static final String ORDERS_PATH = API_PATH + "/orders";
+
+    private static final String[] PUBLIC_URLS = {
+            ACCOUNT_PATH + "/register",
+            ACCOUNT_PATH + "/login",
+            PRODUCTS_PATH + "/all",
+            PRODUCTS_PATH + "/featured",
+            PRODUCTS_PATH + "/{productId}",
+            ORDERS_PATH + "/ongoing"
     };
 
-    public static final String[] ADMIN_URLS = {
-            "/api/products/insert",
-            "/api/products/edit/{productId}",
-            "/api/products/delete/{productId}"
+    private static final String[] ADMIN_URLS = {
+            PRODUCTS_PATH + "/add",
+            PRODUCTS_PATH + "/edit/{productId}",
+            PRODUCTS_PATH + "/delete/{productId}"
     };
 
-    public static final String ADMIN_ROLE = User.Role.ADMIN.toString();
+    private static final String ADMIN_ROLE = User.Role.ADMIN.toString();
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security, UserAccountService userAccountService, JwtTokenUtil jwtTokenUtil) throws Exception {

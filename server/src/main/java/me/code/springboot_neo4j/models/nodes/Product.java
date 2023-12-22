@@ -15,9 +15,10 @@ import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 @NoArgsConstructor
 @Node("Product")
 public class Product {
+
     @Id
     @GeneratedValue(UUIDStringGenerator.class)
-    String id;
+    private String id;
     private String name;
     private String description;
     private String imageUrl;
@@ -30,17 +31,5 @@ public class Product {
         this.imageUrl = imageUrl;
         this.price = price;
         this.quantity = quantity;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", price=" + price +
-                ", quantity=" + quantity +
-                '}';
     }
 }

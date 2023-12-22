@@ -17,72 +17,41 @@ import java.util.List;
 @NoArgsConstructor
 @Node("Order")
 public class Order {
-    @Id @GeneratedValue(UUIDStringGenerator.class)
-    String id;
+
+    @Id
+    @GeneratedValue(UUIDStringGenerator.class)
+    private String id;
+    private double price;
+    private Status status;
+    private LocalDateTime received;
+    private LocalDateTime expectedDelivery;
 
     @Relationship(type = "PLACED_BY")
     User user;
 
     @Relationship(type = "INCLUDES")
-    private List<ProductDetails> details;
+    private List<ProductDetails> productDetails;
 
-    private double price;
-    private OrderStatus status;
-    private LocalDateTime received;
-    private LocalDateTime expectedDelivery;
-
-    public Order(User user, List<ProductDetails> details) {
+    public Order(User user, List<ProductDetails> productDetails) {
         this.user = user;
-        this.details = details;
+        this.productDetails = productDetails;
         this.price = getTotalPrice();
-        this.status = OrderStatus.PENDING;
-        this.received = getTimeReceived();
+        this.status = Status.PENDING;
+        this.received = LocalDateTime.now();
         this.expectedDelivery = null;
     }
 
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getReceived() {
-        return received;
-    }
-
-    public LocalDateTime getExpectedDelivery() {
-        return expectedDelivery;
-    }
-
-    private LocalDateTime getTimeReceived() {
-        return LocalDateTime.now();
-    }
-
-    public enum OrderStatus {
-        PENDING, PROCESSING, SHIPPED, DELIVERED
-    }
-
     public double getTotalPrice() {
-        double sum = 0;
-
-        for (var detail : details) {
-            sum += detail.getGroupPrice();
-        }
-
-        return formatPrice(sum);
+        return formatPrice(productDetails.stream()
+                .mapToDouble(ProductDetails::getGroupPrice)
+                .sum());
     }
 
     private double formatPrice(double price) {
         return Math.round(price * 100.0) / 100.0;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id='" + id + '\'' +
-                ", details=" + details +
-                ", price=" + price +
-                ", status=" + status +
-                ", received=" + received +
-                ", expectedDelivery=" + expectedDelivery +
-                '}';
+    public enum Status {
+        PENDING, PROCESSING, SHIPPED, DELIVERED
     }
 }

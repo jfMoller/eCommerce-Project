@@ -49,7 +49,7 @@ public class LoginValidationService {
                 "JSON",
                 "password",
                 "Hidden"
-                );
+        );
     }
 
     private ValidationErrorDetail getValidationErrorDetail(String email) {

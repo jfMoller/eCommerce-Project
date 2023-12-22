@@ -91,7 +91,8 @@ public class JwtValidationFilter extends OncePerRequestFilter {
     }
 
     private UsernamePasswordAuthenticationToken getAuthToken(User principal) {
-        // setting user as the first arg makes the User object available through @AuthenticationPrincipal in controllers
+        /* The User object is being set as the first argument to make the user available
+         through @AuthenticationPrincipal in the controllers */
         return new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), principal.getAuthorities());
     }
 

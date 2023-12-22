@@ -19,13 +19,12 @@ public class ProductDetails {
 
     @Id
     @GeneratedValue(UUIDStringGenerator.class)
-    String id;
+    private String id;
+    private int amount;
+    private double groupPrice;
 
     @Relationship(value = "REFERS_TO", direction = Relationship.Direction.OUTGOING)
     private Product product;
-
-    private int amount;
-    private double groupPrice;
 
     public ProductDetails(Product product, int amount) {
         this.product = product;
@@ -33,13 +32,4 @@ public class ProductDetails {
         this.groupPrice = product.getPrice() * amount;
     }
 
-    @Override
-    public String toString() {
-        return "ProductDetails{" +
-                "id='" + id + '\'' +
-                ", product=" + product +
-                ", amount=" + amount +
-                ", groupPrice=" + groupPrice +
-                '}';
-    }
 }

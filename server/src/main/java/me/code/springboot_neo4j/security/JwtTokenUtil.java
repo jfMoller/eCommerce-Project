@@ -20,19 +20,20 @@ public class JwtTokenUtil {
     private static final String CONFIG_FILE = "secrets-config.yml";
     private static final String JWT_SECRET = "jwt-secret";
 
+    private static final String CLAIM_ID = "id";
+    private static final String CLAIM_ROLE = "role";
+
     private final String secret = getJwtSecret();
     private final Key key = Keys.hmacShaKeyFor(secret.getBytes());
 
     public String generateToken(User user) {
         String id = user.getId();
-        String username = user.getUsername();
         String role = user.getRole().toString();
 
         return Jwts.builder()
                 .setSubject(id)
-                .claim("id", id)
-                .claim("username", username)
-                .claim("role", role)
+                .claim(CLAIM_ID, id)
+                .claim(CLAIM_ROLE, role)
                 .signWith(key)
                 .compact();
     }
@@ -47,10 +48,6 @@ public class JwtTokenUtil {
         } catch (JwtException jwtException) {
             return false;
         }
-    }
-
-    public String getTokenUsername(String token) {
-        return getTokenClaim(token, "username");
     }
 
     public String getTokenId(String token) {
