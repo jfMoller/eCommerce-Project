@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.dto.response.entity;
+package me.code.springboot_neo4j.dtos.responses.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
-public class PlacedOrder {
+public class PlacedOrderDTO {
 
     @JsonProperty("id")
     String id;
@@ -29,7 +29,7 @@ public class PlacedOrder {
     @JsonProperty("productDetails")
     private List<ProductDetails> productDetails;
 
-    public PlacedOrder(Order order) {
+    public PlacedOrderDTO(Order order) {
         this.id = order.getId();
         this.price = order.getPrice();
         this.status = order.getStatus();

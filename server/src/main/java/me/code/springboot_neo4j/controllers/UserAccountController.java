@@ -1,7 +1,7 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dto.request.*;
-import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.dtos.requests.*;
+import me.code.springboot_neo4j.dtos.responses.success.Success;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.services.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;

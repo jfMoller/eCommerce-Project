@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.dto.response.success;
+package me.code.springboot_neo4j.dtos.responses.success;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

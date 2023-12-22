@@ -1,7 +1,7 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dto.request.UserLoginDTO;
-import me.code.springboot_neo4j.dto.response.error.detailvariant.ValidationErrorDetail;
+import me.code.springboot_neo4j.dtos.requests.UserLoginDTO;
+import me.code.springboot_neo4j.dtos.responses.error.details.ValidationErrorDetail;
 import me.code.springboot_neo4j.exceptions.types.variant.ValidationException;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

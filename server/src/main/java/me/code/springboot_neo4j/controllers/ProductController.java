@@ -1,8 +1,8 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dto.request.EditedProductDTO;
-import me.code.springboot_neo4j.dto.request.InsertProductDTO;
-import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.dtos.requests.EditedProductDTO;
+import me.code.springboot_neo4j.dtos.requests.AddProductDTO;
+import me.code.springboot_neo4j.dtos.responses.success.Success;
 import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +39,8 @@ public class ProductController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/insert")
-    public ResponseEntity<Product> insertProduct(@RequestBody InsertProductDTO dto) {
+    @PostMapping("/add")
+    public ResponseEntity<Product> addProduct(@RequestBody AddProductDTO dto) {
         var result = productService.insertProduct(dto);
         return ResponseEntity.ok(result);
     }

@@ -1,9 +1,9 @@
 package me.code.springboot_neo4j.exceptions;
 
 import jakarta.servlet.ServletException;
-import me.code.springboot_neo4j.dto.response.error.Error;
-import me.code.springboot_neo4j.dto.response.error.ErrorDetail;
-import me.code.springboot_neo4j.dto.response.error.detailvariant.ValidationErrorDetail;
+import me.code.springboot_neo4j.dtos.responses.error.Error;
+import me.code.springboot_neo4j.dtos.responses.error.ErrorDetail;
+import me.code.springboot_neo4j.dtos.responses.error.details.ValidationErrorDetail;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.exceptions.types.variant.OrderException;
 import me.code.springboot_neo4j.exceptions.types.variant.ValidationException;

@@ -1,7 +1,7 @@
 package me.code.springboot_neo4j.exceptions.types.variant;
 
 import lombok.Getter;
-import me.code.springboot_neo4j.dto.response.error.detailvariant.ValidationErrorDetail;
+import me.code.springboot_neo4j.dtos.responses.error.details.ValidationErrorDetail;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import org.springframework.http.HttpStatus;
 

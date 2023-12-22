@@ -1,11 +1,11 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dto.request.ChangeEmailDTO;
-import me.code.springboot_neo4j.dto.request.ChangePasswordDTO;
-import me.code.springboot_neo4j.dto.request.ChangeUsernameDTO;
-import me.code.springboot_neo4j.dto.request.CreateUserDTO;
-import me.code.springboot_neo4j.dto.response.success.Success;
-import me.code.springboot_neo4j.dto.response.success.variant.UserDetailsSuccess;
+import me.code.springboot_neo4j.dtos.requests.ChangeEmailDTO;
+import me.code.springboot_neo4j.dtos.requests.ChangePasswordDTO;
+import me.code.springboot_neo4j.dtos.requests.ChangeUsernameDTO;
+import me.code.springboot_neo4j.dtos.requests.CreateUserDTO;
+import me.code.springboot_neo4j.dtos.responses.success.Success;
+import me.code.springboot_neo4j.dtos.responses.success.variants.UserDetailsSuccess;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.UserRepository;

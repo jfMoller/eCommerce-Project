@@ -1,8 +1,8 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dto.request.EditedProductDTO;
-import me.code.springboot_neo4j.dto.request.InsertProductDTO;
-import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.dtos.requests.EditedProductDTO;
+import me.code.springboot_neo4j.dtos.requests.AddProductDTO;
+import me.code.springboot_neo4j.dtos.responses.success.Success;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.repositories.ProductRepository;
@@ -58,7 +58,7 @@ public class ProductService {
         return productRepository.findProductsWithBiggestQuantity(productAmount);
     }
 
-    public Product insertProduct(InsertProductDTO dto) {
+    public Product insertProduct(AddProductDTO dto) {
         try {
             Product product = new Product(dto.name(), dto.description(), dto.imageUrl(), dto.price(), dto.quantity());
             return productRepository.save(product);

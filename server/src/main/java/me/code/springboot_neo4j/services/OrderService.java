@@ -1,11 +1,11 @@
 package me.code.springboot_neo4j.services;
 
 import jakarta.transaction.Transactional;
-import me.code.springboot_neo4j.dto.response.entity.OngoingOrder;
-import me.code.springboot_neo4j.dto.response.entity.PlacedOrder;
-import me.code.springboot_neo4j.dto.response.entity.UnavailableProduct;
-import me.code.springboot_neo4j.dto.response.error.detailvariant.OrderErrorDetail;
-import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.dtos.responses.entities.OngoingOrderDTO;
+import me.code.springboot_neo4j.dtos.responses.entities.PlacedOrderDTO;
+import me.code.springboot_neo4j.dtos.responses.entities.UnavailableProductDTO;
+import me.code.springboot_neo4j.dtos.responses.error.details.OrderErrorDetail;
+import me.code.springboot_neo4j.dtos.responses.success.Success;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.exceptions.types.variant.OrderException;
 import me.code.springboot_neo4j.models.nodes.Order;
@@ -47,16 +47,16 @@ public class OrderService {
             List<ProductDetails> productDetails =
                     productDetailsService.generateProductDetails(orderedProducts);
 
-            List<UnavailableProduct> unavailableProducts =
+            List<UnavailableProductDTO> unavailableProductDTOS =
                     productDetailsService.findUnavailableProducts(productDetails);
 
-            if (hasUnavailableProducts(unavailableProducts)) {
+            if (hasUnavailableProducts(unavailableProductDTOS)) {
                 throw new OrderException(
                         HttpStatus.BAD_REQUEST,
                         "Could not place order",
                         new OrderErrorDetail(
                                 "The order contains unavailable products",
-                                unavailableProducts));
+                                unavailableProductDTOS));
             }
 
             productDetailsService.updateProductQuantities(productDetails);
@@ -73,11 +73,11 @@ public class OrderService {
         }
     }
 
-    private boolean hasUnavailableProducts(List<UnavailableProduct> unavailableProducts) {
-        return !unavailableProducts.isEmpty();
+    private boolean hasUnavailableProducts(List<UnavailableProductDTO> unavailableProductDTOS) {
+        return !unavailableProductDTOS.isEmpty();
     }
 
-    public OngoingOrder getOngoingOrder(String[] productIds) {
+    public OngoingOrderDTO getOngoingOrder(String[] productIds) {
         try {
             List<Product> products = Arrays.stream(productIds)
                     .map(productService::loadProductById)
@@ -89,18 +89,18 @@ public class OrderService {
             double totalPrice =
                     productDetailsService.getTotalPrice(productsInCart);
 
-            return new OngoingOrder(productsInCart, totalPrice);
+            return new OngoingOrderDTO(productsInCart, totalPrice);
 
         } catch (Exception exception) {
             throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not retrieve ongoing order");
         }
     }
 
-    public List<PlacedOrder> getUsersOrders(String userId) {
+    public List<PlacedOrderDTO> getUsersOrders(String userId) {
         List<Order> orders = findOrdersByUserId(userId);
 
         return orders.stream()
-                .map(PlacedOrder::new)
+                .map(PlacedOrderDTO::new)
                 .toList();
     }
 

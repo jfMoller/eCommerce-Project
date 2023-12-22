@@ -1,6 +1,6 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dto.response.entity.UnavailableProduct;
+import me.code.springboot_neo4j.dtos.responses.entities.UnavailableProductDTO;
 import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.models.nodes.ProductDetails;
 import me.code.springboot_neo4j.repositories.ProductRepository;
@@ -60,8 +60,8 @@ public class ProductDetailsService {
         return Math.round(sum * 100.0) / 100.0;
     }
 
-    public List<UnavailableProduct> findUnavailableProducts(List<ProductDetails> productDetails) {
-        List<UnavailableProduct> unavailableProducts = new ArrayList<>();
+    public List<UnavailableProductDTO> findUnavailableProducts(List<ProductDetails> productDetails) {
+        List<UnavailableProductDTO> unavailableProductDTOS = new ArrayList<>();
 
         productDetails.forEach(detail -> {
             Product targetProduct = detail.getProduct();
@@ -69,8 +69,8 @@ public class ProductDetailsService {
             int availableAmount = productService.loadProductById(targetProduct.getId()).getQuantity();
 
             if ((availableAmount - requestedAmount) < 0) {
-                unavailableProducts.add(
-                        new UnavailableProduct(
+                unavailableProductDTOS.add(
+                        new UnavailableProductDTO(
                                 "Requested amount not available",
                                 targetProduct.getId(),
                                 requestedAmount,
@@ -78,7 +78,7 @@ public class ProductDetailsService {
             }
         });
 
-        return unavailableProducts;
+        return unavailableProductDTOS;
     }
 
     public void updateProductQuantities(List<ProductDetails> productDetails) {

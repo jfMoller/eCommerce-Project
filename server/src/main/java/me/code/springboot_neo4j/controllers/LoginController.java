@@ -1,8 +1,8 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dto.request.UserLoginDTO;
-import me.code.springboot_neo4j.dto.response.success.Success;
-import me.code.springboot_neo4j.dto.response.success.variant.AuthenticationSuccess;
+import me.code.springboot_neo4j.dtos.requests.UserLoginDTO;
+import me.code.springboot_neo4j.dtos.responses.success.Success;
+import me.code.springboot_neo4j.dtos.responses.success.variants.AuthenticationSuccess;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.security.JwtTokenUtil;
@@ -62,7 +62,7 @@ public class LoginController {
         Authentication result = authenticationProvider.authenticate(token);
 
         if (isNotAuthenticated(result)) {
-            throw new CustomRuntimeException(HttpStatus.UNAUTHORIZED, "Could not authenticate login request");
+            throw new CustomRuntimeException(HttpStatus.UNAUTHORIZED, "Could not authenticate login requests");
         }
         return user;
     }

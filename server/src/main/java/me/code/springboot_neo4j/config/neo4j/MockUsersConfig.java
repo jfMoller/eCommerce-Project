@@ -1,6 +1,6 @@
 package me.code.springboot_neo4j.config.neo4j;
 
-import me.code.springboot_neo4j.dto.request.CreateUserDTO;
+import me.code.springboot_neo4j.dtos.requests.CreateUserDTO;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import me.code.springboot_neo4j.services.UserAccountService;

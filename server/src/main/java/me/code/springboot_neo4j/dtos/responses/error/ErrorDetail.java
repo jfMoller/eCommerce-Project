@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.dto.response.error;
+package me.code.springboot_neo4j.dtos.responses.error;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

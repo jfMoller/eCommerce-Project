@@ -1,7 +1,7 @@
-package me.code.springboot_neo4j.dto.response.success.variant;
+package me.code.springboot_neo4j.dtos.responses.success.variants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.dtos.responses.success.Success;
 import org.springframework.http.HttpStatus;
 
 public class AuthenticationSuccess extends Success {

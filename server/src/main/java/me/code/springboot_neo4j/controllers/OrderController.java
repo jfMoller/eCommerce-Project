@@ -1,10 +1,10 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dto.request.GetOngoingOrderDTO;
-import me.code.springboot_neo4j.dto.request.PlaceOrderDTO;
-import me.code.springboot_neo4j.dto.response.entity.OngoingOrder;
-import me.code.springboot_neo4j.dto.response.entity.PlacedOrder;
-import me.code.springboot_neo4j.dto.response.success.Success;
+import me.code.springboot_neo4j.dtos.requests.GetOngoingOrderDTO;
+import me.code.springboot_neo4j.dtos.requests.PlaceOrderDTO;
+import me.code.springboot_neo4j.dtos.responses.entities.OngoingOrderDTO;
+import me.code.springboot_neo4j.dtos.responses.entities.PlacedOrderDTO;
+import me.code.springboot_neo4j.dtos.responses.success.Success;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class OrderController {
     }
 
     @PostMapping("/ongoing")
-    public ResponseEntity<OngoingOrder> getOngoingOrder(@RequestBody GetOngoingOrderDTO dto) {
+    public ResponseEntity<OngoingOrderDTO> getOngoingOrder(@RequestBody GetOngoingOrderDTO dto) {
         var result = orderService.getOngoingOrder(dto.productIds());
         return ResponseEntity.ok(result);
     }
@@ -37,7 +37,7 @@ public class OrderController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<PlacedOrder>> getUserOrders(@AuthenticationPrincipal User user) {
+    public ResponseEntity<List<PlacedOrderDTO>> getUserOrders(@AuthenticationPrincipal User user) {
         var result = orderService.getUsersOrders(user.getId());
         return ResponseEntity.ok(result);
     }

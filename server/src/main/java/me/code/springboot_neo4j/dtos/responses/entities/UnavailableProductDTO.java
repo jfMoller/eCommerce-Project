@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.dto.response.entity;
+package me.code.springboot_neo4j.dtos.responses.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UnavailableProduct {
+public class UnavailableProductDTO {
     @JsonProperty("message")
     private String message;
 
