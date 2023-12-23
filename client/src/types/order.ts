@@ -6,19 +6,13 @@ export interface Order {
   received: string
   status: string
   expectedDelivery: string | null
-  products: { amount: number; product: Product }[]
+  items: OrderItem[]
 }
 
 export interface OngoingOrder {
   totalPrice: number
-  productDetails: ProductGrouping[]
-  unavailableProducts: UnavailableProduct[]
-}
-
-interface ProductGrouping {
-  amount: number
-  groupPrice: number
-  product: Product
+  items: OrderItem[]
+  unavailableProducts?: UnavailableProduct[]
 }
 
 export interface PlacedOrder {
@@ -27,12 +21,12 @@ export interface PlacedOrder {
   status: string
   received: string
   expectedDelivery: string | null
-  productDetails: ProductDetails[]
+  items: OrderItem[]
 }
 
-interface ProductDetails {
+interface OrderItem {
   id: string
   product: Product
   amount: number
-  groupPrice: number
+  price: number
 }

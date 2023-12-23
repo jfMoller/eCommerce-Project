@@ -5,35 +5,35 @@
     <LoadingScreen />
 
     <ul class="">
-      <div v-for="details in ongoingOrder?.productDetails" :key="details.product.id">
+      <div v-for="item in ongoingOrder?.items" :key="item.product.id">
         <li class="mb-1 py-2 border-b w-full flex justify-between items-center">
           <div class="flex items-center">
-            <img :src="details.product.imageUrl" alt="Product Image"
+            <img :src="item.product.imageUrl" alt="Product Image"
               class="max-w-[4rem] sm:max-w-[5rem] inline-block mr-5" />
             <div>
-              <span class="font-bold">{{ details.product.name }}</span>
-              - {{ details.product.price }}
+              <span class="font-bold">{{ item.product.name }}</span>
+              - {{ item.product.price }}
             </div>
           </div>
           <div class="flex flex-col items-center sm:flex-row">
             <div class="flex items-center border rounded-md">
               <div class="px-3 py-3 text-center flex text-l">
 
-                <p class="text-gray-700">{{ details.amount }}</p>
+                <p class="text-gray-700">{{ item.amount }}</p>
               </div>
 
               <div class="flex flex-col">
-                <button @click="() => addProduct(details.product.id)"
-                  :disabled="details.amount >= details.product.quantity"
+                <button @click="() => addProduct(item.product.id)"
+                  :disabled="item.amount >= item.product.quantity"
                   class="text-center border-l border-b font-bold text-2xl px-2"
-                  :class="{ 'bg-gray-100 text-gray-400 cursor-not-allowed': details.amount >= details.product.quantity }">+</button>
-                <button @click="() => removeProduct(details.product.id)"
+                  :class="{ 'bg-gray-100 text-gray-400 cursor-not-allowed': item.amount >= item.product.quantity }">+</button>
+                <button @click="() => removeProduct(item.product.id)"
                   class="text-center border-l font-bold text-2xl px-2">-</button>
               </div>
             </div>
 
             <div class="flex justify-end w-full sm:ml-9 max-w-[2rem]">
-              <p class="font-semibold max-w-[4rem]">{{ details.groupPrice }}:-</p>
+              <p class="font-semibold max-w-[4rem]">{{ item.price }}:-</p>
             </div>
 
           </div>

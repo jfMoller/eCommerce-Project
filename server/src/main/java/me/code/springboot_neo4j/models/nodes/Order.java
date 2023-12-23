@@ -30,11 +30,11 @@ public class Order {
     User user;
 
     @Relationship(type = "INCLUDES")
-    private List<ProductDetails> productDetails;
+    private List<OrderItem> items;
 
-    public Order(User user, List<ProductDetails> productDetails) {
+    public Order(User user, List<OrderItem> items) {
         this.user = user;
-        this.productDetails = productDetails;
+        this.items = items;
         this.price = getTotalPrice();
         this.status = Status.PENDING;
         this.received = LocalDateTime.now();
@@ -42,8 +42,8 @@ public class Order {
     }
 
     public double getTotalPrice() {
-        return formatPrice(productDetails.stream()
-                .mapToDouble(ProductDetails::getGroupPrice)
+        return formatPrice(items.stream()
+                .mapToDouble(OrderItem::getPrice)
                 .sum());
     }
 

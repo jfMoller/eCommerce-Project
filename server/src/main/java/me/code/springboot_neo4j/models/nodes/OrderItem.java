@@ -14,22 +14,22 @@ import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Node("ProductDetails")
-public class ProductDetails {
+@Node("OrderItem")
+public class OrderItem {
 
     @Id
     @GeneratedValue(UUIDStringGenerator.class)
     private String id;
     private int amount;
-    private double groupPrice;
+    private double price;
 
     @Relationship(value = "REFERS_TO", direction = Relationship.Direction.OUTGOING)
     private Product product;
 
-    public ProductDetails(Product product, int amount) {
+    public OrderItem(Product product, int amount) {
         this.product = product;
         this.amount = amount;
-        this.groupPrice = product.getPrice() * amount;
+        this.price = product.getPrice() * amount;
     }
 
 }

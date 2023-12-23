@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UnavailableProductDTO {
+
     @JsonProperty("message")
     private String message;
 
