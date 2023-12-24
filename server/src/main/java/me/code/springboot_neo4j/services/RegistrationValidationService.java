@@ -1,4 +1,4 @@
-package me.code.springboot_neo4j.utils;
+package me.code.springboot_neo4j.services;
 
 import me.code.springboot_neo4j.dtos.responses.error.details.ValidationErrorDetail;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
@@ -6,65 +6,18 @@ import me.code.springboot_neo4j.exceptions.types.variants.ValidationException;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class CredentialsValidatorUtil {
+import static me.code.springboot_neo4j.services.RegistrationValidationConstants.*;
 
-    // Lower and upper bound for username length
-    private final static int USERNAME_MIN_LENGTH = 3;
-    private final static int USERNAME_MAX_LENGTH = 14;
-
-    // Lower and upper bound for password length
-    private final static int PASSWORD_MIN_LENGTH = 6;
-    private final static int PASSWORD_MAX_LENGTH = 17;
-
-    // Field names; used to assign the targeted field when generating validation error details
-    private final static String EMAIL_FIELD = "email";
-    private final static String USERNAME_FIELD = "username";
-    private final static String PASSWORD_FIELD = "password";
-
-    // Regex patterns; used for format validation of user credentials
-    private static final String EMAIL_FORMAT_REGEX = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
-    private final static String NON_ALPHANUMERIC_REGEX = ".*[^a-zA-Z0-9].*";
-    private final static String UPPERCASE_REGEX = ".*[A-Z].*";
-
-    // Exception error messages; determines the primary message passed as part of exceptions
-    private final static String INVALID_USERNAME_ERROR_MESSAGE =
-            String.format("The username must be between %s-%s characters long, and must not include non-alphanumeric characters",
-                    USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH);
-
-    private final static String INVALID_EMAIL_ERROR_MESSAGE = "The email must be formatted correctly, for example: example@email.com";
-
-    private final static String INVALID_PASSWORD_ERROR_MESSAGE =
-            String.format("The password must be between %s-%s characters long, and must include at least one uppercase letter",
-                    PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH);
-
-    // Error details messages; determines the message passed as part of the ValidationErrorDetail
-    private final static String INVALID_USERNAME_LENGTH_ERROR_MESSAGE =
-            String.format("Must be between %s-%s characters long", USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH);
-
-    private final static String INVALID_PASSWORD_LENGTH_ERROR_MESSAGE =
-            String.format("Must be between %s-%s characters long", PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH);
-
-    private final static String NON_ALPHANUMERIC_ERROR_MESSAGE = "Contains non-alphanumeric characters";
-
-    private final static String NO_UPPERCASE_ERROR_MESSAGE = "Does not contain any uppercase characters";
-
-    private final static String NULL_FIELD_ERROR_MESSAGE = "The chosen value is null";
-
-    private final static String BLANK_FIELD_ERROR_MESSAGE = "The chosen value is blank";
-
-    private final static String UNKNOWN_FIELD_ERROR_MESSAGE = "The chosen value is blank";
-
-    private final static String NON_UNIQUE_EMAIL_ERROR_MESSAGE = "Is not a unique email";
-
-    private final static String NON_UNIQUE_USERNAME_ERROR_MESSAGE = "Is not a unique username";
+@Service
+public class RegistrationValidationService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public CredentialsValidatorUtil(UserRepository userRepository) {
+    public RegistrationValidationService(
+            UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

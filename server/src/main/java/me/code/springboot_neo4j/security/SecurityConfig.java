@@ -3,7 +3,7 @@ package me.code.springboot_neo4j.security;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.UserRepository;
 import me.code.springboot_neo4j.services.UserAccountService;
-import me.code.springboot_neo4j.utils.CredentialsValidatorUtil;
+import me.code.springboot_neo4j.services.RegistrationValidationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -68,8 +68,8 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            CredentialsValidatorUtil credentialsValidatorUtil) {
-        return new UserAccountService(userRepository, passwordEncoder, credentialsValidatorUtil);
+            RegistrationValidationService registrationValidationService) {
+        return new UserAccountService(userRepository, passwordEncoder, registrationValidationService);
     }
 
     @Bean

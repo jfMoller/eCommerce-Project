@@ -9,7 +9,6 @@ import me.code.springboot_neo4j.dtos.responses.success.variants.UserDetailsSucce
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.UserRepository;
-import me.code.springboot_neo4j.utils.CredentialsValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,12 +20,12 @@ public class UserAccountService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CredentialsValidatorUtil credentialsValidator;
+    private final RegistrationValidationService credentialsValidator;
 
     @Autowired
     public UserAccountService(UserRepository userRepository,
                               PasswordEncoder passwordEncoder,
-                              CredentialsValidatorUtil credentialsValidator) {
+                              RegistrationValidationService credentialsValidator) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.credentialsValidator = credentialsValidator;
@@ -108,7 +107,6 @@ public class UserAccountService implements UserDetailsService {
     }
 
     public Success changePassword(User user, ChangePasswordDTO dto) {
-        System.out.println(dto.newPassword());
         credentialsValidator.findNullPassword(dto.newPassword());
         credentialsValidator.findPasswordFormattingError(dto.newPassword());
 

@@ -38,24 +38,6 @@ public class ProductService {
         }
     }
 
-    public List<Product> getProductsById(String[] productIds) {
-        List<Product> products = new ArrayList<>();
-
-        for (String productId : productIds) {
-            Product product = loadProductById(productId);
-            products.add(product);
-        }
-        return products;
-    }
-
-    public double calculateTotalPrice(List<Product> products) {
-        double price = 0;
-        for (Product product : products) {
-            price += product.getPrice();
-        }
-        return Math.round(price * 100.0) / 100.0;
-    }
-
     public List<Product> getFeaturedProducts() {
         int productAmount = 4;
         return productRepository.findProductsWithBiggestQuantity(productAmount);
