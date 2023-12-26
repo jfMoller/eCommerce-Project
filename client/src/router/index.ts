@@ -1,17 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
 import SignupView from '../views/SignupView.vue'
 import AccountView from '../views/AccountView.vue'
 import ProductView from '@/views/ProductView.vue'
+import ContactView from '@/views/ContactView.vue'
 import EditAccountView from '../views/EditAccountView.vue'
 import ShowAccountOrdersView from '@/views/ShowAccountOrdersView.vue'
 import { useAuthenticationStore } from '@/stores/authenticationStore'
+import { useShoppingCartStore } from '@/stores/shoppingCartStore'
 import AdminToolsView from '@/views/admin/AdminToolsView.vue'
 import HandleProductsView from '@/views/admin/HandleProductsView.vue'
 import AddProduct from '@/components/admintools/AddProduct.vue'
 import EditProduct from '@/components/admintools/EditProduct.vue'
 import DeleteProduct from '@/components/admintools/DeleteProduct.vue'
+import CheckoutView from '@/views/CheckoutView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,7 +28,7 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue')
+      component: AboutView
     },
     {
       path: '/shop',
@@ -39,7 +43,7 @@ const router = createRouter({
     {
       path: '/contact',
       name: 'contact',
-      component: () => import('../views/ContactView.vue')
+      component: ContactView
     },
     {
       path: '/login',
@@ -78,7 +82,14 @@ const router = createRouter({
     {
       path: '/checkout',
       name: 'checkout',
-      component: () => import('../views/CheckoutView.vue')
+      component: CheckoutView,
+      beforeEnter: (to, from, next) => {
+        if (useShoppingCartStore().states.productAmount > 0) {
+          next()
+        } else {
+          next('/shop')
+        }
+      }
     },
     {
       path: '/admintools',

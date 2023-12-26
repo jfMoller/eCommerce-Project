@@ -3,7 +3,7 @@
     <div class="bg-white rounded-md shadow-sm font-semibold space-x-4 p-4 mb-1">
       <div class="flex justify-start items-center space-x-4 text-l">
         <router-link :to="{ name: 'HandleProductsView' }" class="text-blue-700 hover:text-blue-500">
-          Handle products
+          Products
         </router-link>
       </div>
     </div>
