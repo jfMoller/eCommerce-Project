@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <PlaceholderCards v-else />
+  <PlaceholderCards v-else :placeholderAmount=props.placeholderAmount />
 </template>
 
 <script lang="ts">
@@ -26,6 +26,10 @@ import BuyNowButton from './BuyNowButton.vue';
 export default defineComponent({
   name: "ProductCards",
   props: {
+    placeholderAmount: {
+      type: Number,
+      required: true,
+    },
     products: {
       type: Array<Product>,
       required: true,

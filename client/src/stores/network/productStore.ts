@@ -6,8 +6,12 @@ export const useProductStore = defineStore('productStore', () => {
   const API = {
     getAllProducts: async (): Promise<Product[]> => await callGet('/products/all'),
 
-    getProduct: async (productId: string | null): Promise<Product> => await callGet(`/products/${productId}`),
-    
+    getProduct: async (productId: string | null): Promise<Product> =>
+      await callGet(`/products/${productId}`),
+
+    getSearchedProducts: async (searchInput: string): Promise<Product[]> =>
+      await callGet(`/products/search/${searchInput}`),
+
     getFeaturedProducts: async (): Promise<Product[]> => await callGet('/products/featured')
   }
 

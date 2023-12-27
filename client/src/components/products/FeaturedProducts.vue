@@ -1,7 +1,7 @@
 <template>
   <article class="mt-10">
     <h2 class="text-3xl font-semibold mb-6">Featured Products</h2>
-      <ProductCards :products="featuredProducts" />
+      <ProductCards :placeholderAmount=4 :products="featuredProducts" />
 
   </article>
 </template>
@@ -31,4 +31,4 @@ export default defineComponent({
   }
 
 });
-</script>@/types/product
+</script>

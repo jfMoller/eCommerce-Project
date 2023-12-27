@@ -19,5 +19,9 @@ public interface ProductRepository extends Neo4jRepository<Product, String> {
     @Query("MATCH (p:Product) return p ORDER BY p.quantity DESC LIMIT $productAmount")
     @NotNull List<Product> findProductsWithBiggestQuantity(int productAmount);
 
+    @Query("MATCH (p:Product) WHERE toLower(p.name) CONTAINS toLower($searchInput) RETURN p " +
+            "ORDER BY CASE WHEN toLower(p.name) STARTS WITH toLower(SUBSTRING($searchInput, 0, 1))" +
+            " THEN 0 ELSE 1 END")
+    @NotNull List<Product> findProductsBySearchInput(@NotNull String searchInput);
 
 }

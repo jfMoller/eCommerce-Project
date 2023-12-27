@@ -1,8 +1,7 @@
 <template>
   <section>
-    <div />
-    <SearchInput :options="products" />
-    <ProductCards :products="products" />
+    <SearchInput @search="handleSearch" />
+    <ProductCards :placeholderAmount="10" :products="products" />
   </section>
 </template>
 
@@ -16,18 +15,36 @@ import type { Product } from '@/types/product';
 export default defineComponent({
   name: "ShopView",
   setup() {
+    const productStore = useProductStore();
     const products = ref<Product[]>([]);
 
+    async function getAllProducts() {
+      products.value = await productStore.API.getAllProducts();
+    }
     onMounted(async () => {
-      products.value = await useProductStore().API.getAllProducts();
+      getAllProducts();
     });
+
+    async function getSearchedProducts(searchInput: string) {
+      products.value = await productStore.API.getSearchedProducts(searchInput);
+    }
+
+    function isEmpty(searchInput: string): boolean {
+      return searchInput === '';
+    }
+
+    async function handleSearch(searchInput: string) {
+      if (isEmpty(searchInput)) getAllProducts()
+      else getSearchedProducts(searchInput);
+    };
+
     return {
       products,
+      handleSearch,
     };
   },
   components: {
     SearchInput, ProductCards
   }
-
 });
 </script>

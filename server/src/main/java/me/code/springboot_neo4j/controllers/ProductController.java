@@ -39,6 +39,12 @@ public class ProductController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("search/{searchInput}")
+    public ResponseEntity<List<Product>> searchProducts(@PathVariable String searchInput) {
+        var result = productService.getSearchedProducts(searchInput);
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Product> addProduct(@RequestBody AddProductDTO dto) {
         var result = productService.insertProduct(dto);

@@ -43,6 +43,10 @@ public class ProductService {
         return productRepository.findProductsWithBiggestQuantity(productAmount);
     }
 
+    public List<Product> getSearchedProducts(String searchInput) {
+        return productRepository.findProductsBySearchInput(searchInput);
+    }
+
     public Product insertProduct(AddProductDTO dto) {
         try {
             Product product = new Product(dto.name(), dto.description(), dto.imageUrl(), dto.price(), dto.quantity());
