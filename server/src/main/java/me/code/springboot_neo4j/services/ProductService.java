@@ -43,8 +43,18 @@ public class ProductService {
         return productRepository.findProductsWithBiggestQuantity(productAmount);
     }
 
-    public List<Product> getSearchedProducts(String searchInput) {
-        return productRepository.findProductsBySearchInput(searchInput);
+    public List<Product> getSearchedProducts(String query, String filter) {
+        if (query.isBlank()) {
+            return switch (filter) {
+                case "lowest_price" -> productRepository.findAllProductsOrderedByLowestPrice();
+                case "highest_price" -> productRepository.findAllProductsOrderedByHighestPrice();
+                default -> productRepository.findAll();
+            };
+        } else return switch (filter) {
+            case "lowest_price" -> productRepository.findSearchedProductsOrderedByLowestPrice(query);
+            case "highest_price" -> productRepository.findSearchedProductsOrderedByHighestPrice(query);
+            default -> productRepository.findProductsBySearch(query);
+        };
     }
 
     public Product insertProduct(AddProductDTO dto) {

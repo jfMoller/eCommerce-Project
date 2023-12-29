@@ -32,7 +32,7 @@ public class SecurityConfig {
             PRODUCTS_PATH + "/all",
             PRODUCTS_PATH + "/featured",
             PRODUCTS_PATH + "/{productId}",
-            PRODUCTS_PATH + "/search/{searchInput}",
+            PRODUCTS_PATH + "/search/**",
             ORDERS_PATH + "/ongoing"
     };
 

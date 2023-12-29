@@ -25,17 +25,21 @@ export default defineComponent({
       getAllProducts();
     });
 
-    async function getSearchedProducts(searchInput: string) {
-      products.value = await productStore.API.getSearchedProducts(searchInput);
+    async function getSearchedProducts(query: string, filter: any) {
+      products.value = await productStore.API.getSearchedProducts(query, filter);
     }
 
-    function isEmpty(searchInput: string): boolean {
-      return searchInput === '';
+    function isEmpty(query: string): boolean {
+      return query === '';
     }
 
-    async function handleSearch(searchInput: string) {
-      if (isEmpty(searchInput)) getAllProducts()
-      else getSearchedProducts(searchInput);
+    function hasNoFilter(filter: any): boolean {
+      return filter === null;
+    }
+
+    async function handleSearch(query: string, filter: any) {
+      if (isEmpty(query) && hasNoFilter(filter)) getAllProducts()
+      else getSearchedProducts(query, filter);
     };
 
     return {

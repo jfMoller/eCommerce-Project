@@ -9,8 +9,8 @@ export const useProductStore = defineStore('productStore', () => {
     getProduct: async (productId: string | null): Promise<Product> =>
       await callGet(`/products/${productId}`),
 
-    getSearchedProducts: async (searchInput: string): Promise<Product[]> =>
-      await callGet(`/products/search/${searchInput}`),
+    getSearchedProducts: async (searchInput: string, filter: string): Promise<Product[]> =>
+      await callGet(`/products/search?query=${searchInput}&filter=${filter}`),
 
     getFeaturedProducts: async (): Promise<Product[]> => await callGet('/products/featured')
   }
