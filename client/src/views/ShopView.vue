@@ -1,16 +1,17 @@
 <template>
   <section>
-    <SearchInput @search="handleSearch" />
+    <ProductSearchInput @search="handleSearch" />
     <ProductCards :placeholderAmount="10" :products="products" />
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import ProductCards from '@/components/products/ProductCards.vue';
-import SearchInput from '@/components/SearchInput.vue';
+import ProductSearchInput from '@/components/ProductSearchInput.vue';
 import { useProductStore } from '@/stores/network/productStore';
 import type { Product } from '@/types/product';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: "ShopView",
@@ -21,9 +22,6 @@ export default defineComponent({
     async function getAllProducts() {
       products.value = await productStore.API.getAllProducts();
     }
-    onMounted(async () => {
-      getAllProducts();
-    });
 
     async function getSearchedProducts(query: string, filter: any) {
       products.value = await productStore.API.getSearchedProducts(query, filter);
@@ -42,13 +40,30 @@ export default defineComponent({
       else getSearchedProducts(query, filter);
     };
 
+    const route = useRoute();
+
+    onMounted(async () => {
+      handleSearch(route.query.query as string, route.query.filter as string);
+    })
+
+    watch(
+      () => ({
+        query: route.query.query as string,
+        filter: route.query.filter as string,
+      }),
+      (newQuery) => {
+        const { query, filter } = newQuery;
+        handleSearch(query || '', filter || null);
+      },
+    );
+
     return {
       products,
       handleSearch,
     };
   },
   components: {
-    SearchInput, ProductCards
+    ProductSearchInput, ProductCards
   }
 });
 </script>

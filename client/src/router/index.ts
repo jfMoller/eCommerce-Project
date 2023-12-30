@@ -16,6 +16,7 @@ import AddProduct from '@/components/admintools/AddProduct.vue'
 import EditProduct from '@/components/admintools/EditProduct.vue'
 import DeleteProduct from '@/components/admintools/DeleteProduct.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
+import ShopView from '../views/ShopView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,7 +34,11 @@ const router = createRouter({
     {
       path: '/shop',
       name: 'shop',
-      component: () => import('../views/ShopView.vue')
+      component: () => import('../views/ShopView.vue'),
+      props: (route) => ({
+        query: route.query.query,
+        filter: route.query.filter
+      })
     },
     {
       path: '/product/:productId',

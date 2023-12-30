@@ -44,13 +44,27 @@ public class ProductService {
     }
 
     public List<Product> getSearchedProducts(String query, String filter) {
-        if (query.isBlank()) {
-            return switch (filter) {
-                case "lowest_price" -> productRepository.findAllProductsOrderedByLowestPrice();
-                case "highest_price" -> productRepository.findAllProductsOrderedByHighestPrice();
-                default -> productRepository.findAll();
-            };
-        } else return switch (filter) {
+        if (isBlankSearchQuery(query)) {
+            return loadAllProductsWithFilter(filter);
+        } else {
+            return loadSearchedProductsWithFilter(query, filter);
+        }
+    }
+
+    private boolean isBlankSearchQuery(String query) {
+        return query.isBlank();
+    }
+
+    private List<Product> loadAllProductsWithFilter(String filter) {
+        return switch (filter) {
+            case "lowest_price" -> productRepository.findAllProductsOrderedByLowestPrice();
+            case "highest_price" -> productRepository.findAllProductsOrderedByHighestPrice();
+            default -> productRepository.findAll();
+        };
+    }
+
+    private List<Product> loadSearchedProductsWithFilter(String query, String filter) {
+        return switch (filter) {
             case "lowest_price" -> productRepository.findSearchedProductsOrderedByLowestPrice(query);
             case "highest_price" -> productRepository.findSearchedProductsOrderedByHighestPrice(query);
             default -> productRepository.findProductsBySearch(query);

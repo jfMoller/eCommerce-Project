@@ -23,7 +23,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue';
+import { defineComponent, ref, reactive, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 
 export default defineComponent({
   name: 'SearchInput',
@@ -32,6 +34,8 @@ export default defineComponent({
       type: String,
       default: 'Search our products...',
     },
+    query: String,
+    filter: String
   },
 
   setup(props, { emit }) {
@@ -41,6 +45,26 @@ export default defineComponent({
       lowestPrice: false,
       highestPrice: false,
     });
+    const router = useRouter();
+    const route = useRoute();
+
+    onMounted(async () => {
+      const query = route.query.query as string;
+      const filter = route.query.filter as string;
+
+      searchInput.value = query;
+
+      if (filter == "lowest_price") {
+        filters.lowestPrice = true;
+      }
+
+      else if (filter == "highest_price") {
+        filters.highestPrice = true;
+      }
+      handleFilterChange();
+
+    });
+
 
     function showDropdown() {
       isOpenDropdown.value = true;
@@ -53,6 +77,12 @@ export default defineComponent({
     function handleSearch() {
       emit('search', searchInput.value, filters.lowestPrice ? "lowest_price" : filters.highestPrice ? "highest_price" : null
       );
+
+      const queryParameters = {
+        query: searchInput.value,
+        filter: filters.lowestPrice ? 'lowest_price' : filters.highestPrice ? 'highest_price' : null,
+      };
+      router.push({ name: 'shop', query: queryParameters });
     }
 
     function handleFilterChange() {
