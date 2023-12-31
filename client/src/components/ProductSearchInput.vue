@@ -10,14 +10,18 @@
       class=" bg-white w-[28rem] transition duration-400 rounded-sm min-h-max shadow-md border border-gray-300 absolute top-[2.63rem] flex flex-col p-4 space-y-2">
       <h3 class="text-xl font-semibold">Sort by</h3>
       <div class="w-full border bordet-t-gray-300"></div>
-      <label>
-        <input type="checkbox" v-model="filters.lowestPrice" @change="handleFilterChange" />
-        Lowest Price
-      </label>
-      <label>
-        <input type="checkbox" v-model="filters.highestPrice" @change="handleFilterChange" />
-        Highest price
-      </label>
+      <div class="flex flex-col text-lg items-start justify-center space-y-1">
+        <label>
+          <input type="checkbox" :checked="filters.lowestPrice" @change="() => handleFilterChange('lowest_price')"
+            class="form-checkbox h-4 w-4" />
+          Lowest Price
+        </label>
+        <label>
+          <input type="checkbox" :checked="filters.highestPrice" @change="() => handleFilterChange('highest_price')"
+            class="form-checkbox h-4 w-4" />
+          Highest price
+        </label>
+      </div>
     </div>
   </div>
 </template>
@@ -56,15 +60,12 @@ export default defineComponent({
 
       if (filter == "lowest_price") {
         filters.lowestPrice = true;
-      }
 
-      else if (filter == "highest_price") {
+      } else if (filter == "highest_price") {
         filters.highestPrice = true;
       }
-      handleFilterChange();
 
     });
-
 
     function showDropdown() {
       isOpenDropdown.value = true;
@@ -75,7 +76,9 @@ export default defineComponent({
     }
 
     function handleSearch() {
-      emit('search', searchInput.value, filters.lowestPrice ? "lowest_price" : filters.highestPrice ? "highest_price" : null
+      emit('search',
+        searchInput.value ? searchInput.value : '',
+        filters.lowestPrice ? "lowest_price" : filters.highestPrice ? "highest_price" : null
       );
 
       const queryParameters = {
@@ -85,9 +88,16 @@ export default defineComponent({
       router.push({ name: 'shop', query: queryParameters });
     }
 
-    function handleFilterChange() {
-      if (filters.lowestPrice) filters.highestPrice = false;
-      else if (filters.highestPrice) filters.lowestPrice = false;
+    function handleFilterChange(targetFilter: string) {
+      if (targetFilter === "lowest_price") {
+        filters.lowestPrice = !filters.lowestPrice;
+        filters.highestPrice = false;
+      }
+
+      if (targetFilter === "highest_price") {
+        filters.highestPrice = !filters.highestPrice;
+        filters.lowestPrice = false;
+      }
 
     }
 

@@ -36,14 +36,26 @@ export default defineComponent({
     }
 
     async function handleSearch(query: string, filter: any) {
-      if (isEmpty(query) && hasNoFilter(filter)) getAllProducts()
-      else getSearchedProducts(query, filter);
+      if (isEmpty(query) && hasNoFilter(filter)) {
+        getAllProducts();
+      } else {
+        getSearchedProducts(query, filter);
+      }
     };
 
     const route = useRoute();
 
     onMounted(async () => {
-      handleSearch(route.query.query as string, route.query.filter as string);
+      const query = route.query.query as string;
+      const filter = route.query.filter as string;
+      const hasNoSearchQuery = query == undefined;
+      const hasNoFilter = filter == undefined;
+
+      if (hasNoSearchQuery || hasNoFilter) {
+        getAllProducts();
+      } else {
+        handleSearch(query, filter)
+      };
     })
 
     watch(
