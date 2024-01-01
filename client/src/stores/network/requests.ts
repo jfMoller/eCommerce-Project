@@ -17,6 +17,10 @@ export async function callPut(endpoint: string, data: any) {
   return await makeRequest('PUT', endpoint, data)
 }
 
+export async function callPatch(endpoint: string, data: any) {
+  return await makeRequest('PATCH', endpoint, data)
+}
+
 export async function callDelete(endpoint: string) {
   return await makeRequest('DELETE', endpoint, undefined)
 }

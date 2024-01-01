@@ -52,6 +52,6 @@ public class Order {
     }
 
     public enum Status {
-        PENDING, PROCESSING, SHIPPED, DELIVERED
+        PENDING, SHIPPED, DELIVERED
     }
 }

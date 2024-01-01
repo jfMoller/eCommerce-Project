@@ -15,8 +15,8 @@ import HandleProductsView from '@/views/admin/HandleProductsView.vue'
 import AddProduct from '@/components/admintools/AddProduct.vue'
 import EditProduct from '@/components/admintools/EditProduct.vue'
 import DeleteProduct from '@/components/admintools/DeleteProduct.vue'
+import HandleOrdersView from '@/views/admin/HandleOrdersView.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
-import ShopView from '../views/ShopView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -133,6 +133,11 @@ const router = createRouter({
               component: DeleteProduct
             }
           ]
+        },
+        {
+          path: 'orders',
+          name: 'HandleOrdersView',
+          component: HandleOrdersView,
         }
       ]
     },

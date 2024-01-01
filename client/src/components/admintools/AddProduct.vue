@@ -47,9 +47,7 @@ export default defineComponent({
 
     async function addNewProduct() {
       const newProduct = { ...product.value };
-      console.log(product)
-      const response = await adminToolsStore.API.addProduct(newProduct);
-      console.log(response)
+      await adminToolsStore.API.addProduct(newProduct);
       resetProductValues();
     }
 

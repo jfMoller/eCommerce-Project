@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import type { CreateProductDto, EditProductDto, Product } from '@/types/product'
-import { callPost, callPut, callDelete } from './requests'
+import { callGet, callPost, callPut, callPatch, callDelete } from './requests'
+import type { OrderStatus, UserOrder } from '@/types/order'
 
 export const useAdminToolsStore = defineStore('adminToolsStore', () => {
   const API = {
@@ -11,7 +12,15 @@ export const useAdminToolsStore = defineStore('adminToolsStore', () => {
       await callPut(`/products/edit/${productId}`, dto),
 
     deleteProduct: async (productId: string): Promise<Product> =>
-      await callDelete(`/products/delete/${productId}`)
+      await callDelete(`/products/delete/${productId}`),
+
+    getAllPlacedOrders: async (): Promise<UserOrder[]> => await callGet('/users/orders/all'),
+
+    setExpectedDeliveryDate: async (orderId: string, date: string) =>
+      await callPatch(`/orders/set/delivery`, { orderId: orderId, date: date }),
+
+    setOrderStatus: async (orderId: string, status: OrderStatus) =>
+      await callPatch(`/orders/set/status`, { orderId: orderId, status: status })
   }
 
   return {

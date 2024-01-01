@@ -1,5 +1,12 @@
 import type { Product, UnavailableProduct } from './product'
 
+interface OrderItem {
+  id: string
+  product: Product
+  amount: number
+  price: number
+}
+
 export interface Order {
   id: string
   price: number
@@ -24,9 +31,18 @@ export interface PlacedOrder {
   items: OrderItem[]
 }
 
-interface OrderItem {
+export interface UserOrder {
   id: string
-  product: Product
-  amount: number
+  userEmail: string
   price: number
+  status: string
+  received: string
+  expectedDelivery: string | null
+  items: OrderItem[]
+}
+
+export enum OrderStatus {
+  PENDING,
+  SHIPPED,
+  DELIVERED
 }

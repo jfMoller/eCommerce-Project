@@ -5,6 +5,9 @@
         <router-link :to="{ name: 'HandleProductsView' }" class="text-blue-700 hover:text-blue-500">
           Products
         </router-link>
+        <router-link :to="{ name: 'HandleOrdersView' }" class="text-blue-700 hover:text-blue-500">
+          Orders
+        </router-link>
       </div>
     </div>
     <RouterView class="p-4" />
