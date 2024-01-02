@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,9 @@ public interface OrderRepository extends Neo4jRepository<Order, String> {
 
     @Query("MATCH (o:Order) WHERE o.id = $id RETURN o")
     @NotNull Optional<Order> findById(@NotNull String id);
+
+    @Query("MATCH (o:Order) WHERE o.id = $orderId SET o.expectedDelivery = $expectedDelivery")
+    void updateExpectedDelivery(@NotNull String orderId, LocalDateTime expectedDelivery);
 
     // Returns a populated list of the specific User's orders
     @Query("MATCH (user:User {id: $userId})<-[pb:PLACED_BY]-(order:Order)-[includes:INCLUDES]->(item:OrderItem)-[refersTo:REFERS_TO]->(product:Product) " +

@@ -8,8 +8,8 @@ import me.code.springboot_neo4j.dtos.responses.error.details.OrderErrorDetail;
 import me.code.springboot_neo4j.dtos.responses.success.Success;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.exceptions.types.variants.OrderException;
-import me.code.springboot_neo4j.models.nodes.OrderItem;
 import me.code.springboot_neo4j.models.nodes.Order;
+import me.code.springboot_neo4j.models.nodes.OrderItem;
 import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.repositories.OrderRepository;
@@ -17,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class OrderService {
@@ -96,6 +99,31 @@ public class OrderService {
                     HttpStatus.BAD_REQUEST,
                     "Could not retrieve ongoing order");
         }
+    }
+
+    @Transactional
+    public Success setExpectedDelivery(String orderId, String date) {
+        System.out.println(date);
+        try {
+            Order order = findOrder(orderId);
+
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+            LocalDateTime expectedDelivery = LocalDateTime.parse(date, dateTimeFormatter);
+
+            orderRepository.updateExpectedDelivery(order.getId(), expectedDelivery);
+
+            return new Success(HttpStatus.OK, "Successfully updated expected delivery");
+
+        } catch (Exception exception) {
+            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, exception.getMessage());
+        }
+    }
+
+    public Order findOrder(String orderId) {
+        return orderRepository.findById(orderId).orElseThrow(
+                () -> new CustomRuntimeException(
+                        HttpStatus.NOT_FOUND,
+                        "Could not find order with id: " + orderId));
     }
 
     public List<PlacedOrderDTO> getUsersOrders(String userId) {

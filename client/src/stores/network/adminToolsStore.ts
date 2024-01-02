@@ -17,7 +17,7 @@ export const useAdminToolsStore = defineStore('adminToolsStore', () => {
     getAllPlacedOrders: async (): Promise<UserOrder[]> => await callGet('/users/orders/all'),
 
     setExpectedDeliveryDate: async (orderId: string, date: string) =>
-      await callPatch(`/orders/set/delivery`, { orderId: orderId, date: date }),
+      await callPatch(`/orders/delivery`, { orderId: orderId, date: date }),
 
     setOrderStatus: async (orderId: string, status: OrderStatus) =>
       await callPatch(`/orders/set/status`, { orderId: orderId, status: status })

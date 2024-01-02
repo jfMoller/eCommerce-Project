@@ -39,7 +39,8 @@ public class SecurityConfig {
     private static final String[] ADMIN_URLS = {
             PRODUCTS_PATH + "/add",
             PRODUCTS_PATH + "/edit/{productId}",
-            PRODUCTS_PATH + "/delete/{productId}"
+            PRODUCTS_PATH + "/delete/{productId}",
+            ORDERS_PATH + "/delivery"
     };
 
     private static final String ADMIN_ROLE = User.Role.ADMIN.toString();
