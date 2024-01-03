@@ -1,9 +1,6 @@
 package me.code.springboot_neo4j.services;
 
-import me.code.springboot_neo4j.dtos.requests.EditedProductDTO;
-import me.code.springboot_neo4j.dtos.requests.AddProductDTO;
 import me.code.springboot_neo4j.dtos.responses.entities.UnavailableProductDTO;
-import me.code.springboot_neo4j.dtos.responses.success.Success;
 import me.code.springboot_neo4j.exceptions.types.CustomRuntimeException;
 import me.code.springboot_neo4j.models.nodes.OrderItem;
 import me.code.springboot_neo4j.models.nodes.Product;
@@ -69,43 +66,6 @@ public class ProductService {
             case "highest_price" -> productRepository.findSearchedProductsOrderedByHighestPrice(query);
             default -> productRepository.findProductsBySearch(query);
         };
-    }
-
-    public Product insertProduct(AddProductDTO dto) {
-        try {
-            Product product = new Product(dto.name(), dto.description(), dto.imageUrl(), dto.price(), dto.quantity());
-            return productRepository.save(product);
-        } catch (Exception exception) {
-            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not create product");
-        }
-    }
-
-    public Success deleteProduct(String productId) {
-        if (isValidProductID(productId)) {
-            productRepository.deleteById(productId);
-            return new Success(HttpStatus.OK, "The product was deleted successfully");
-        } else {
-            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Could not delete product");
-        }
-    }
-
-    private boolean isValidProductID(String product_id) {
-        return productRepository.existsById(product_id);
-    }
-
-    public Success editProduct(String productId, EditedProductDTO dto) {
-        if (isValidProductID(productId)) {
-            Product product = loadProductById(productId);
-
-            product.setName(dto.name());
-            product.setDescription(dto.description());
-            product.setPrice(dto.price());
-            product.setQuantity(dto.quantity());
-
-            productRepository.save(product);
-            return new Success(HttpStatus.OK, "The product was edited successfully");
-
-        } else throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, "Failed to edit the product");
     }
 
     public List<UnavailableProductDTO> findUnavailableProducts(List<OrderItem> items) {

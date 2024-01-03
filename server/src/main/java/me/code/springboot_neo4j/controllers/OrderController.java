@@ -1,6 +1,5 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dtos.requests.UpdateExpectedDeliveryDTO;
 import me.code.springboot_neo4j.dtos.requests.GetOngoingOrderDTO;
 import me.code.springboot_neo4j.dtos.requests.PlaceOrderDTO;
 import me.code.springboot_neo4j.dtos.responses.entities.OngoingOrderDTO;
@@ -43,9 +42,4 @@ public class OrderController {
         return ResponseEntity.ok(result);
     }
 
-    @PatchMapping("/delivery")
-    public ResponseEntity<Success> updateExpectedDelivery(@RequestBody UpdateExpectedDeliveryDTO dto) {
-        var result = orderService.setExpectedDelivery(dto.orderId(), dto.date());
-        return result.toResponseEntity();
-    }
 }

@@ -2,7 +2,7 @@
     <div v-if="props.order" class="min-w-[20rem] bg-white shadow-md z-10 p-10">
 
         <div class="flex justify-between">
-            <h2 class="text-lg font-bold">Edit Order</h2>
+            <h2 class="text-lg font-bold">Send Order</h2>
             <button class="font-semibold px-3 rounded-md border" @click="props.onClose">X</button>
         </div>
         <div class="border-t mt-4"></div>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <button @click="saveExpectedDelivery" class="bg-blue-500 text-white px-4 py-2 rounded w-full">
-                Save
+                Send
             </button>
         </div>
 
@@ -40,13 +40,13 @@ import { defineComponent, onMounted, ref, watch } from 'vue';
 import type { UserOrder } from '@/types/order';
 
 export default defineComponent({
-    name: 'OrderTableAside',
+    name: 'SendOrderAside',
     props: {
         order: {
             type: Object as () => UserOrder | null,
             required: true,
         },
-        onSave: {
+        onSend: {
             type: Function,
             required: true,
         },
@@ -93,7 +93,7 @@ export default defineComponent({
         });
 
         async function saveExpectedDelivery() {
-            props.onSave(props.order?.id, `${selectedDeliveryDate.value}T${selectedDeliveryTime.value}:00`)
+            props.onSend(props.order?.id, `${selectedDeliveryDate.value}T${selectedDeliveryTime.value}:00`)
         }
 
         return { receivedDate, receivedTime, selectedDeliveryDate, selectedDeliveryTime, saveExpectedDelivery, props };

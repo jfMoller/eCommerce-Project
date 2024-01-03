@@ -16,7 +16,7 @@
         <tbody class="bg-gray-100">
           <tr v-for="order in orders" :key="order.id" class="hover:bg-white relative cursor-pointer"
           :class="{ 'bg-white': order === selectedOrder, 'hover:bg-gray-300': order !== selectedOrder }"
-            @click="() => showOrderTableAside(order)">
+            @click="() => showSendOrderAside(order)">
             <td class="border p-2">{{ order.userEmail }}</td>
             <td class="border p-2">{{ order.price }}</td>
             <td class="border p-2">{{ order.status }}</td>
@@ -35,7 +35,7 @@
           </tr>
         </tbody>
       </table>
-      <OrderTableAside v-if="selectedOrder" :order="selectedOrder" :onSave="setExpectedDeliveryDate" :onClose="hideOrderTableAside" />
+      <SendOrderAside v-if="selectedOrder" :order="selectedOrder" :onSend="sendOrder" :onClose="hideSendOrderAside" />
     </div>
   </section>
 </template>
@@ -44,7 +44,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import { useAdminToolsStore } from '@/stores/network/adminToolsStore';
-import OrderTableAside from '@/components/admintools/OrderTableAside.vue'
+import SendOrderAside from '@/components/admintools/SendOrderAside.vue'
 import type { UserOrder } from '@/types/order';
 
 export default defineComponent({
@@ -56,30 +56,30 @@ export default defineComponent({
     const selectedOrder = ref<UserOrder | null>(null);
 
     async function loadOrders() {
-      orders.value = await adminToolsStore.API.getAllPlacedOrders();
+      orders.value = await adminToolsStore.API.getAllOrders();
     }
 
     onMounted(async () => {
       loadOrders();
     });
 
-    function showOrderTableAside(order: UserOrder) {
+    function showSendOrderAside(order: UserOrder) {
       selectedOrder.value = order;
     }
 
-    async function hideOrderTableAside() {
+    async function hideSendOrderAside() {
       selectedOrder.value = null;
       loadOrders();
     }
 
-    async function setExpectedDeliveryDate(orderId: string, date: string) {
-      const response = await adminToolsStore.API.setExpectedDeliveryDate(orderId, date);
+    async function sendOrder(orderId: string, expectedDeliveryDate: string) {
+      const response = await adminToolsStore.API.sendOrder(orderId, expectedDeliveryDate);
       console.log(response);
     }
 
-    return { orders, selectedOrder, showOrderTableAside, hideOrderTableAside, setExpectedDeliveryDate };
+    return { orders, selectedOrder, showSendOrderAside, hideSendOrderAside, sendOrder };
   },
 
-  components: { OrderTableAside }
+  components: { SendOrderAside }
 });
 </script>

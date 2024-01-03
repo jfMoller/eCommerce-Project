@@ -1,8 +1,5 @@
 package me.code.springboot_neo4j.controllers;
 
-import me.code.springboot_neo4j.dtos.requests.EditedProductDTO;
-import me.code.springboot_neo4j.dtos.requests.AddProductDTO;
-import me.code.springboot_neo4j.dtos.responses.success.Success;
 import me.code.springboot_neo4j.models.nodes.Product;
 import me.code.springboot_neo4j.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,23 +40,5 @@ public class ProductController {
     public ResponseEntity<List<Product>> searchProducts(@RequestParam String query, @RequestParam String filter) {
         var result = productService.getSearchedProducts(query, filter);
         return ResponseEntity.ok(result);
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<Product> addProduct(@RequestBody AddProductDTO dto) {
-        var result = productService.insertProduct(dto);
-        return ResponseEntity.ok(result);
-    }
-
-    @PutMapping("/edit/{productId}")
-    public ResponseEntity<Success> editProduct(@PathVariable String productId, @RequestBody EditedProductDTO dto) {
-        var result = productService.editProduct(productId, dto);
-        return result.toResponseEntity();
-    }
-
-    @DeleteMapping("/delete/{productId}")
-    public ResponseEntity<Success> deleteProduct(@PathVariable String productId) {
-        var result = productService.deleteProduct(productId);
-        return result.toResponseEntity();
     }
 }
