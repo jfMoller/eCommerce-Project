@@ -38,7 +38,7 @@ public class OrderController {
 
     @GetMapping("/all")
     public ResponseEntity<List<PlacedOrderDTO>> getUserOrders(@AuthenticationPrincipal User user) {
-        var result = orderService.getUsersOrders(user.getId());
+        var result = orderService.getUserOrders(user.getId());
         return ResponseEntity.ok(result);
     }
 

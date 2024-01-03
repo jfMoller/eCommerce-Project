@@ -1,6 +1,7 @@
 package me.code.springboot_neo4j.controllers;
 
 import me.code.springboot_neo4j.dtos.requests.AddProductDTO;
+import me.code.springboot_neo4j.dtos.requests.ChangeExpectedDeliveryDTO;
 import me.code.springboot_neo4j.dtos.requests.EditedProductDTO;
 import me.code.springboot_neo4j.dtos.requests.SendOrderDTO;
 import me.code.springboot_neo4j.dtos.responses.entities.UserOrderDTO;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/admintools")
+@RequestMapping("api/admin_tools")
 public class AdminToolsController {
     private final AdminToolsService adminToolsService;
 
@@ -47,9 +48,22 @@ public class AdminToolsController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/order/all/{status}")
+    public ResponseEntity<List<UserOrderDTO>> getAllUsersOrders(@PathVariable String status) {
+        var result = adminToolsService.getAllUsersOrders(status);
+        return ResponseEntity.ok(result);
+    }
+
     @PatchMapping("/order/send")
     public ResponseEntity<Success> sendOrder(@RequestBody SendOrderDTO dto) {
-        var result = adminToolsService.sendOrder(dto.orderId(), dto.expectedDeliveryDate());
+        System.out.println("Con");
+        var result = adminToolsService.sendOrder(dto.orderId(), dto.expectedDelivery());
+        return result.toResponseEntity();
+    }
+
+    @PatchMapping("/order/expected_delivery")
+    public ResponseEntity<Success> changeExpectedDelivery(@RequestBody ChangeExpectedDeliveryDTO dto) {
+        var result = adminToolsService.changeExpectedDelivery(dto.orderId(), dto.newExpectedDelivery());
         return result.toResponseEntity();
     }
 

@@ -17,6 +17,7 @@ import EditProduct from '@/components/admintools/EditProduct.vue'
 import DeleteProduct from '@/components/admintools/DeleteProduct.vue'
 import HandleOrdersView from '@/views/admin/HandleOrdersView.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
+import UsersOrdersTable from '@/components/admintools/UsersOrdersTable.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -138,6 +139,24 @@ const router = createRouter({
           path: 'orders',
           name: 'HandleOrdersView',
           component: HandleOrdersView,
+          redirect: '/admintools/orders/pending',
+          children: [
+            {
+              path: 'pending',
+              name: 'PendingOrders',
+              component: UsersOrdersTable
+            },
+            {
+              path: 'sent',
+              name: 'SentOrders',
+              component: UsersOrdersTable
+            },
+            {
+              path: 'all',
+              name: 'AllOrders',
+              component: UsersOrdersTable
+            }
+          ]
         }
       ]
     },

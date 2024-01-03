@@ -37,7 +37,7 @@ public class SecurityConfig {
     };
 
     private static final String[] ADMIN_URLS = {
-            API_PATH + "/admintools/**"
+            API_PATH + "/admin_tools/**"
     };
 
     private static final String ADMIN_ROLE = User.Role.ADMIN.toString();

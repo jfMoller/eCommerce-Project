@@ -52,22 +52,62 @@ public class AdminToolsService {
                 .toList();
     }
 
+    public List<UserOrderDTO> getAllUsersOrders(String status) {
+        if (isValidOrderStatus(status)) {
+            return findAllUsersOrders(status).stream()
+                    .map(order -> new UserOrderDTO(order, order.getUser().getEmail()))
+                    .toList();
+        } else throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, status + " is invalid");
+    }
+
+    public boolean isValidOrderStatus(String status) {
+        return status.equalsIgnoreCase(Order.Status.PENDING.toString()) ||
+                status.equalsIgnoreCase(Order.Status.SENT.toString());
+    }
+
     public List<Order> findAllUsersOrders() {
         return orderRepository.findAllUsersOrders().orElseThrow(
                 () -> new CustomRuntimeException(
                         HttpStatus.NOT_FOUND,
-                        "Could not find all user's orders"));
+                        "Could not find all users orders"));
+    }
+
+    public List<Order> findAllUsersOrders(String status) {
+        return orderRepository.findAllUsersOrdersByStatus(status).orElseThrow(
+                () -> new CustomRuntimeException(
+                        HttpStatus.NOT_FOUND,
+                        "Could not find all users orders"));
     }
 
     @Transactional
-    public Success sendOrder(String orderId, String expectedDeliveryDate) {
+    public Success sendOrder(String orderId, String dateAndTime) {
         try {
             Order order = findOrder(orderId);
 
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
-            LocalDateTime expectedDelivery = LocalDateTime.parse(expectedDeliveryDate, dateTimeFormatter);
+            LocalDateTime expectedDelivery = generateLocalDateTime(dateAndTime);
 
-            orderRepository.updateExpectedDelivery(order.getId(), expectedDelivery);
+            orderRepository.setOrderToSent(order.getId(), Order.Status.SENT, expectedDelivery);
+
+            return new Success(HttpStatus.OK, "Order was successfully sent");
+
+        } catch (Exception exception) {
+            throw new CustomRuntimeException(HttpStatus.BAD_REQUEST, exception.getMessage());
+        }
+    }
+
+    private LocalDateTime generateLocalDateTime(String dateAndTime) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        return LocalDateTime.parse(dateAndTime, dateTimeFormatter);
+    }
+
+    @Transactional
+    public Success changeExpectedDelivery(String orderId, String newDateAndTime) {
+        try {
+            Order order = findOrder(orderId);
+
+            LocalDateTime newExpectedDelivery = generateLocalDateTime(newDateAndTime);
+
+            orderRepository.setExpectedDelivery(order.getId(), newExpectedDelivery);
 
             return new Success(HttpStatus.OK, "Successfully updated expected delivery");
 

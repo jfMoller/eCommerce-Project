@@ -98,7 +98,7 @@ public class OrderService {
         }
     }
 
-    public List<PlacedOrderDTO> getUsersOrders(String userId) {
+    public List<PlacedOrderDTO> getUserOrders(String userId) {
         return findOrdersByUserId(userId).stream()
                 .map(PlacedOrderDTO::new)
                 .toList();

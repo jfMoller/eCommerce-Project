@@ -43,6 +43,16 @@ export interface UserOrder {
 
 export enum OrderStatus {
   PENDING,
-  SHIPPED,
-  DELIVERED
+  SENT
+}
+
+export function orderStatusToString(status: OrderStatus): string {
+  switch (status) {
+    case OrderStatus.PENDING:
+      return 'PENDING'
+    case OrderStatus.SENT:
+      return 'SENT'
+    default:
+      return 'INVALID_STATUS'
+  }
 }

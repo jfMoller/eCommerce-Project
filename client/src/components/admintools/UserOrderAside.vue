@@ -1,8 +1,11 @@
 <template>
-    <div v-if="props.order" class="min-w-[20rem] bg-white shadow-md z-10 p-10">
+    <div v-if="props.order" class="min-w-[30rem] bg-white shadow-md z-10 p-10">
 
         <div class="flex justify-between">
-            <h2 class="text-lg font-bold">Send Order</h2>
+            <h2 class="text-lg font-bold">{{
+                props.order?.status === "PENDING" ? "SEND ORDER"
+                : props.order?.status === "SENT" ? "UPDATE ORDER"
+                    : '' }}</h2>
             <button class="font-semibold px-3 rounded-md border" @click="props.onClose">X</button>
         </div>
         <div class="border-t mt-4"></div>
@@ -27,8 +30,13 @@
                     </div>
                 </div>
             </div>
-            <button @click="saveExpectedDelivery" class="bg-blue-500 text-white px-4 py-2 rounded w-full">
+            <button v-if="props.order?.status === 'PENDING'" @click="sendOrder"
+                class="bg-blue-500 text-white px-4 py-2 rounded w-full">
                 Send
+            </button>
+            <button v-if="props.order?.status === 'SENT'" @click="changeExpectedDelivery"
+                class="bg-blue-500 text-white px-4 py-2 rounded w-full">
+                Change
             </button>
         </div>
 
@@ -47,6 +55,11 @@ export default defineComponent({
             required: true,
         },
         onSend: {
+            type: Function,
+            required: true,
+        },
+
+        onUpdate: {
             type: Function,
             required: true,
         },
@@ -92,11 +105,14 @@ export default defineComponent({
             parseExpectedDelivery();
         });
 
-        async function saveExpectedDelivery() {
+        async function sendOrder() {
             props.onSend(props.order?.id, `${selectedDeliveryDate.value}T${selectedDeliveryTime.value}:00`)
         }
+        async function changeExpectedDelivery() {
+            props.onUpdate(props.order?.id, `${selectedDeliveryDate.value}T${selectedDeliveryTime.value}:00`)
+        }
 
-        return { receivedDate, receivedTime, selectedDeliveryDate, selectedDeliveryTime, saveExpectedDelivery, props };
+        return { receivedDate, receivedTime, selectedDeliveryDate, selectedDeliveryTime, sendOrder, changeExpectedDelivery, props };
     },
 });
 </script>

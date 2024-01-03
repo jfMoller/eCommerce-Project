@@ -1,6 +1,6 @@
 <template>
   <section class="p-4 relative">
-    <h2 class="text-2xl font-bold mb-4">All Orders</h2>
+    <h2 class="text-2xl font-bold mb-4">{{ generateHeader() }}</h2>
     <div class="flex">
       <table class="table-auto w-full border-collapse border">
         <thead>
@@ -15,8 +15,8 @@
         </thead>
         <tbody class="bg-gray-100">
           <tr v-for="order in orders" :key="order.id" class="hover:bg-white relative cursor-pointer"
-          :class="{ 'bg-white': order === selectedOrder, 'hover:bg-gray-300': order !== selectedOrder }"
-            @click="() => showSendOrderAside(order)">
+            :class="{ 'bg-white': order === selectedOrder, 'hover:bg-gray-300': order !== selectedOrder }"
+            @click="() => showUserOrderAside(order)">
             <td class="border p-2">{{ order.userEmail }}</td>
             <td class="border p-2">{{ order.price }}</td>
             <td class="border p-2">{{ order.status }}</td>
@@ -35,17 +35,19 @@
           </tr>
         </tbody>
       </table>
-      <SendOrderAside v-if="selectedOrder" :order="selectedOrder" :onSend="sendOrder" :onClose="hideSendOrderAside" />
+      <UserOrderAside v-if="selectedOrder" :order="selectedOrder" :onSend="sendOrder" :onUpdate="changeExpectedDelivery"
+        :onClose="hideUserOrderAside" />
     </div>
   </section>
 </template>
 
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useAdminToolsStore } from '@/stores/network/adminToolsStore';
-import SendOrderAside from '@/components/admintools/SendOrderAside.vue'
-import type { UserOrder } from '@/types/order';
+import UserOrderAside from '@/components/admintools/UserOrderAside.vue'
+import { OrderStatus, orderStatusToString, type UserOrder } from '@/types/order';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'OrdersTable',
@@ -55,31 +57,75 @@ export default defineComponent({
     const orders = ref<UserOrder[]>([]);
     const selectedOrder = ref<UserOrder | null>(null);
 
-    async function loadOrders() {
+    async function getAllOrders() {
       orders.value = await adminToolsStore.API.getAllOrders();
     }
 
-    onMounted(async () => {
-      loadOrders();
-    });
+    async function getAllOrdersByStatus(status: OrderStatus) {
+      orders.value = await adminToolsStore.API.getAllOrdersWithStatus(orderStatusToString(status));
+    }
 
-    function showSendOrderAside(order: UserOrder) {
+    const route = useRoute();
+
+    function generateHeader(): string {
+      if (route.name === "PendingOrders") {
+        return 'Pending Orders'
+      }
+
+      else if (route.name === "SentOrders") {
+        return "Sent Orders"
+      }
+
+      else return 'All Orders';
+    }
+
+
+    async function loadOrders() {
+      if (route.name === "AllOrders") {
+        getAllOrders()
+      }
+
+      else if (route.name === "PendingOrders") {
+        getAllOrdersByStatus(OrderStatus.PENDING)
+      }
+
+      else if (route.name === "SentOrders") {
+        getAllOrdersByStatus(OrderStatus.SENT)
+      }
+    }
+
+    onMounted(() => {
+      loadOrders();
+    })
+
+    watch(() => route.name, async () => {
+      loadOrders();
+      hideUserOrderAside();
+    })
+
+    function showUserOrderAside(order: UserOrder) {
       selectedOrder.value = order;
     }
 
-    async function hideSendOrderAside() {
+    async function hideUserOrderAside() {
       selectedOrder.value = null;
+    }
+
+    async function sendOrder(orderId: string, expectedDelivery: string) {
+      await adminToolsStore.API.sendOrder(orderId, expectedDelivery);
       loadOrders();
+      hideUserOrderAside();
     }
 
-    async function sendOrder(orderId: string, expectedDeliveryDate: string) {
-      const response = await adminToolsStore.API.sendOrder(orderId, expectedDeliveryDate);
-      console.log(response);
+    async function changeExpectedDelivery(orderId: string, newExpectedDelivery: string) {
+      await adminToolsStore.API.changeExpectedDelivery(orderId, newExpectedDelivery);
+      loadOrders();
+      hideUserOrderAside();
     }
 
-    return { orders, selectedOrder, showSendOrderAside, hideSendOrderAside, sendOrder };
+    return { generateHeader, orders, OrderStatus, selectedOrder, showUserOrderAside, hideUserOrderAside, sendOrder, changeExpectedDelivery };
   },
 
-  components: { SendOrderAside }
+  components: { UserOrderAside }
 });
 </script>
