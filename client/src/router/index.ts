@@ -98,7 +98,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/admintools',
+      path: '/admin_tools',
       name: 'admintools',
       component: AdminToolsView,
       beforeEnter: (to, from, next) => {
@@ -116,7 +116,7 @@ const router = createRouter({
           path: 'products',
           name: 'HandleProductsView',
           component: HandleProductsView,
-          redirect: '/admintools/products/add',
+          redirect: '/admin_tools/products/add',
           children: [
             {
               path: 'add',
@@ -139,7 +139,7 @@ const router = createRouter({
           path: 'orders',
           name: 'HandleOrdersView',
           component: HandleOrdersView,
-          redirect: '/admintools/orders/pending',
+          redirect: '/admin_tools/orders/pending',
           children: [
             {
               path: 'pending',
