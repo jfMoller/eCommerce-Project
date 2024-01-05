@@ -99,7 +99,8 @@ const router = createRouter({
     },
     {
       path: '/admin_tools',
-      name: 'admintools',
+      name: 'AdminTools',
+      redirect: '/admin_tools/products',
       component: AdminToolsView,
       beforeEnter: (to, from, next) => {
         if (

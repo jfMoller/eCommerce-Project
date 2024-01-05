@@ -1,5 +1,5 @@
 <template>
-  <section class="">
+  <section>
     <div class="flex space-x-8 border-b p-4">
       <router-link :to="{ name: 'PendingOrders' }" class="text-black hover:text-gray-500 font-semibold"
         :class="{ 'text-blue-600': isOnPendingOrdersRoute, 'bg-white': !isOnPendingOrdersRoute }">

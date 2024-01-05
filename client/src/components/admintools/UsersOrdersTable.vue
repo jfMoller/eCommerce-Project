@@ -1,43 +1,42 @@
 <template>
-  <section class="p-4 relative">
+  <section class="p-4">
     <h2 class="text-2xl font-bold mb-4">{{ generateHeader() }}</h2>
-    <div class="flex">
-      <table class="table-auto w-full border-collapse border">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="border p-2">User Email</th>
-            <th class="border p-2">Price</th>
-            <th class="border p-2">Status</th>
-            <th class="border p-2">Received</th>
-            <th class="border p-2">Expected Delivery</th>
-            <th class="border p-2">Items</th>
-          </tr>
-        </thead>
-        <tbody class="bg-gray-100">
-          <tr v-for="order in orders" :key="order.id" class="hover:bg-white relative cursor-pointer"
-            :class="{ 'bg-white': order === selectedOrder, 'hover:bg-gray-300': order !== selectedOrder }"
-            @click="() => showUserOrderAside(order)">
-            <td class="border p-2">{{ order.userEmail }}</td>
-            <td class="border p-2">{{ order.price }}</td>
-            <td class="border p-2">{{ order.status }}</td>
-            <td class="border p-2">{{ order.received }}</td>
-            <td class="border p-2">{{ order.expectedDelivery || 'N/A' }}
-            </td>
-            <td class="border p-2">
-              <div v-for="item in order.items" :key="item.product.id">
-                <div class="py-2">
-                  <img :src="item.product.imageUrl" alt="Product Image" class="w-8 h-8 inline-block mr-2" />
-                  <span class="font-bold">{{ item.product.name }}</span>
-                  <span v-if="item.amount > 1" class="font-semibold text-blue-700"> x {{ item.amount }}</span>
-                </div>
+    <table class="w-full border">
+      <thead class="text-left min-h-[0.5rem] max-h-[0.5rem]">
+        <tr class="bg-gray-200">
+          <th class="border p-2">User Email</th>
+          <th class="border p-2">Price</th>
+          <th class="border p-2">Status</th>
+          <th class="border p-2">Received</th>
+          <th class="border p-2">Expected Delivery</th>
+          <th class="border p-2">Items</th>
+        </tr>
+      </thead>
+      <tbody class="bg-gray-50">
+        <tr v-for="order in orders" :key="order.id" class="relative cursor-pointer" :class="{
+          'bg-white border-2': order === selectedOrder,
+          'hover:bg-white': order !== selectedOrder
+        }" @click="() => showUserOrderAside(order)">
+          <td class="border p-2">{{ order.userEmail }}</td>
+          <td class="border p-2">{{ order.price }}</td>
+          <td class="border p-2">{{ order.status }}</td>
+          <td class="border p-2">{{ order.received }}</td>
+          <td class="border p-2">{{ order.expectedDelivery || 'N/A' }}
+          </td>
+          <td class="border p-2">
+            <div v-for="item in order.items" :key="item.product.id">
+              <div class="py-2">
+                <img :src="item.product.imageUrl" alt="Product Image" class="w-8 h-8 inline-block mr-2" />
+                <span class="font-bold">{{ item.product.name }}</span>
+                <span v-if="item.amount > 1" class="font-semibold text-blue-700"> x {{ item.amount }}</span>
               </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </td>
+        </tr>
+      </tbody>
       <UserOrderAside v-if="selectedOrder" :order="selectedOrder" :onSend="sendOrder" :onUpdate="changeExpectedDelivery"
         :onClose="hideUserOrderAside" />
-    </div>
+    </table>
   </section>
 </template>
 

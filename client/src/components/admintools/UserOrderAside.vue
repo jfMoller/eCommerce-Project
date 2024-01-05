@@ -1,5 +1,5 @@
 <template>
-    <div v-if="props.order" class="min-w-[30rem] bg-white shadow-md z-10 p-10">
+    <div v-if="props.order" class="min-w-[30rem] bg-white border-l fixed h-screen top-[5.79rem] right-0 p-5">
 
         <div class="flex justify-between">
             <h2 class="text-lg font-bold">{{

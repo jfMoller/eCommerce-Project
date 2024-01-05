@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 bg-white rounded shadow">
+  <div class="p-4 bg-white rounded shadow max-w-[50%]">
     <h2 class="text-xl font-semibold mb-4">Add New Product</h2>
     <form @submit.prevent="addNewProduct">
       <div class="mb-4">
@@ -22,7 +22,10 @@
         <label for="productQuantity" class="block text-gray-700 font-bold mb-2">Quantity:</label>
         <input v-model="product.quantity" type="number" class="border w-full p-2 rounded" />
       </div>
-      <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Add Product</button>
+      <div class="flex justify-between">
+        <div />
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Add Product</button>
+      </div>
     </form>
   </div>
 </template>
