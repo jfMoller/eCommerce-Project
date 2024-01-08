@@ -1,6 +1,6 @@
 <template>
-  <section class="px-0 py-5 sm:p-10">
-    <div class="bg-white rounded-md p-5 flex">
+  <section class="px-0 py-5 sm:p-10 lg:flex lg:w-full lg:justify-center">
+    <div class="bg-white rounded-md p-5 flex lg:w-[80%]">
       <div class="col-span-2 flex flex-col justify-start items-start space-y-2 min-w-max max-w-max mr-5">
         <button class="border min-w-full p-4 hover:bg-blue-50 hover:text-blue-600"
           :class="{ 'bg-blue-50 text-blue-600': isOnProductsRoute, 'bg-white': !isOnProductsRoute }">

@@ -16,7 +16,7 @@
       <div v-if="isConfirmationErrorResponse" class="flex justify-center font-semibold text-red-700 mt-2">
         <p>Invalid password.</p>
       </div>
-  
+
     </div>
   </div>
 </template>
@@ -58,6 +58,15 @@ export default defineComponent({
 
 
     async function handleConfirm() {
+      if (props.isPasswordRequired) {
+        confirmWithPassword()
+      } else {
+        confirmWithoutPassword()
+      }
+      props.onCancel()
+    };
+
+    async function confirmWithPassword() {
       const confirmedCredentials = await accountStore.API.confirmCredentials(password.value)
 
       if (confirmedCredentials) {
@@ -65,11 +74,14 @@ export default defineComponent({
       } else {
         handleErrorResponseMessage()
       }
-
-    };
+    }
 
     function handleErrorResponseMessage() {
       isConfirmationErrorResponse.value = accountStore.states.isConfirmationErrorResponse
+    }
+
+    async function confirmWithoutPassword() {
+      props.onConfirm(password.value);
     }
 
     function cancel() {
