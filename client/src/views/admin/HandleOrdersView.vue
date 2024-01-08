@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="flex space-x-8 border-b p-4">
+    <div class="flex space-x-8 border-b p-2 sm:p-4 justify-center sm:justify-start">
       <router-link :to="{ name: 'PendingOrders' }" class="text-black hover:text-gray-500 font-semibold"
         :class="{ 'text-blue-600': isOnPendingOrdersRoute, 'bg-white': !isOnPendingOrdersRoute }">
         Pending
@@ -17,7 +17,7 @@
       </router-link>
     </div>
 
-    <RouterView class="p-4" />
+    <RouterView class="overflow-x-scroll p-4" />
   </section>
 </template>
 

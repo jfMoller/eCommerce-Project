@@ -1,36 +1,36 @@
 <template>
-  <div class="flex w-full space-x-5">
+  <div class="flex w-full sm:space-x-5">
     <ConfirmDialogue :isPasswordRequired="false" header="Confirm add product"
       text="Are you sure you want to add this product?" v-if="isConfirmationVisible" :onConfirm="addNewProduct"
       :onCancel="closeConfirmation" />
 
+    <ProductPreview :product="product" />
     <div class="p-4 bg-white rounded shadow w-full sm:max-w-[50%] sm:min-w-[50%]">
-      <SmallViewTitle text="Add Product" />
+      <SmallViewTitle text="Add Product" class="mb-2"/>
       <form @submit.prevent="openConfirmation">
         <div class="mb-4">
-          <label for="productName" class="block text-gray-700 font-bold mb-2">Name:</label>
+          <label for="productName" class="block text-gray-700 font-bold mb-2">Name</label>
           <input v-model="product.name" type="text" class="border w-full p-2 rounded" />
         </div>
         <div class="mb-4">
-          <label for="productDescription" class="block text-gray-700 font-bold mb-2">Description:</label>
+          <label for="productDescription" class="block text-gray-700 font-bold mb-2">Description</label>
           <textarea v-model="product.description" class="border w-full p-2 rounded"></textarea>
         </div>
         <div class="mb-4">
-          <label for="productImageUrl" class="block text-gray-700 font-bold mb-2">Image URL:</label>
+          <label for="productImageUrl" class="block text-gray-700 font-bold mb-2">Image URL</label>
           <input v-model="product.imageUrl" type="text" class="border w-full p-2 rounded" />
         </div>
         <div class="mb-4">
-          <label for="productPrice" class="block text-gray-700 font-bold mb-2">Price:</label>
+          <label for="productPrice" class="block text-gray-700 font-bold mb-2">Price</label>
           <input v-model="product.price" type="number" step="0.01" class="border w-full p-2 rounded" />
         </div>
         <div class="mb-4">
-          <label for="productQuantity" class="block text-gray-700 font-bold mb-2">Quantity:</label>
+          <label for="productQuantity" class="block text-gray-700 font-bold mb-2">Quantity</label>
           <input v-model="product.quantity" type="number" class="border w-full p-2 rounded" />
         </div>
         <SubmitButton text="Add Product" />
       </form>
     </div>
-    <ProductPreview :product="product" />
   </div>
 </template>
   

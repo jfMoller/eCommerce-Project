@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="flex space-x-8 border-b p-4">
+    <div class="flex justify-center sm:justify-start space-x-8 border-b p-2 sm:p-4">
       <router-link :to="{ name: 'AddProduct' }" class="text-black hover:text-gray-500 font-semibold"
         :class="{ 'text-blue-600': isOnAddProductRoute, 'bg-white': !isOnAddProductRoute }">
         Add
@@ -17,7 +17,7 @@
       </router-link>
     </div>
 
-    <RouterView class="p-4" />
+    <RouterView class="sm:p-4" />
   </section>
 </template>
 

@@ -1,13 +1,14 @@
 <template>
   <div class="flex w-full">
-    <div class="p-4 bg-white rounded shadow w-full sm:max-w-[50%] sm:min-w-[50%]">
-      <ConfirmDialogue :isPasswordRequired="false" header="Confirm delete product"
-        text="Are you sure you want to delete this product?" v-if="isConfirmationVisible" :onConfirm="deleteProduct"
-        :onCancel="closeConfirmation" />
-      <SmallViewTitle text="Delete product" />
+    <ConfirmDialogue :isPasswordRequired="false" header="Confirm delete product"
+      text="Are you sure you want to delete this product?" v-if="isConfirmationVisible" :onConfirm="deleteProduct"
+      :onCancel="closeConfirmation" />
 
+    <ProductPreview v-if="product" :product="product" />
+    <div class="p-4 bg-white rounded shadow w-full sm:max-w-[50%] sm:min-w-[50%] sm:ml-5">
+      <SmallViewTitle text="Delete product" class="mb-2" />
       <div class="mb-4">
-        <label for="products" class="block text-gray-700 font-bold mb-2">Product:</label>
+        <label for="products" class="block text-gray-700 font-bold mb-2">Product</label>
         <select v-model="selectedProductId" class="border w-full p-2 rounded" @change="loadProduct(selectedProductId)">
           <option v-for="product in products" :key="product.id" :value="product.id">
             {{ product.name }}
@@ -18,7 +19,6 @@
         <SubmitButton text="Delete product" additionalClass="bg-red-500 hover:bg-red-600" />
       </form>
     </div>
-    <ProductPreview v-if="product" :product="product" />
   </div>
 </template>
 

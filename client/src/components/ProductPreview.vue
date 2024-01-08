@@ -1,6 +1,6 @@
 <template>
     <div class="bg-white p-4 shadow flex-col w-full hidden sm:flex">
-        <SmallViewTitle text="Preview Product" />
+        <SmallViewTitle text="Product Preview" class="mb-4" />
 
         <img :src="product.imageUrl" class="mb-4 h-[12rem] inline-block object-scale-down cursor-pointer border p-4 w-full">
         <div class="space-y-5">

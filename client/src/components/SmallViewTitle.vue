@@ -1,6 +1,6 @@
 <template>
-    <div class="mb-4">
-        <h2 class="text-xl font-semibold"> {{ text }}</h2>
+    <div>
+        <h2 :class="['text-xl font-semibold', additionalClass]"> {{ text }}</h2>
         <div v-if="hasUnderline" class="border border-t-1 w-full mt-1"></div>
     </div>
 </template>
@@ -16,6 +16,10 @@ export default {
             type: Boolean,
             required: false,
             default: true,
+        },
+        additionalClass: {
+            tupe: String,
+            required: false,
         }
     }
 }
