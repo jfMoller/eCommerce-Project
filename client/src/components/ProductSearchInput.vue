@@ -1,20 +1,20 @@
 <template>
-  <div class="w-full flex flex-col justify-center items-center relative mb-6" @mouseover="showDropdown"
+  <div :class="['w-full flex flex-col justify-center items-center relative', additionalClass]" @mouseover="showDropdown"
     @mouseleave="hideDropdown" @keyup.enter="handleSearch">
-    <div class="flex justify-center items-center bg-white border border-gray-300 rounded px-3 w-[28rem]">
-      <i class="fas fa-search text-gray-500"></i>
-      <input type="text" v-model="searchInput" class="max-w-md px-4 py-2 w-full focus:aria-black focus:outline-none"
+    <div class="flex justify-center items-center bg-white border border-gray-600 rounded px-3 w-full lg:w-[28rem]">
+      <i class="fas fa-search text-black"></i>
+      <input type="text" v-model="searchInput" class="px-4 py-2 w-full focus:aria-black focus:outline-none"
         :placeholder="props.placeholder" />
     </div>
     <div v-if="isOpenDropdown"
-      class=" bg-white w-[28rem] transition duration-400 rounded-sm min-h-max shadow-md border border-gray-300 absolute top-[2.63rem] flex flex-col p-4 space-y-2">
-      <h3 class="text-xl font-semibold">Sort by</h3>
+      class=" bg-white w-full md:w-[28rem] transition duration-400 rounded-sm min-h-max shadow-md border border-gray-300 absolute top-[2.6rem] lg:top-[2.63rem] flex flex-col p-4 space-y-2">
+      <h3 class="text-base font-semibold">SORT BY</h3>
       <div class="w-full border bordet-t-gray-300"></div>
-      <div class="flex flex-col text-lg items-start justify-center space-y-1">
+      <div class="flex flex-col text-base items-start justify-center space-y-1">
         <label>
           <input type="checkbox" :checked="filters.lowestPrice" @change="() => handleFilterChange('lowest_price')"
             class="form-checkbox h-4 w-4" />
-          Lowest Price
+          Lowest price
         </label>
         <label>
           <input type="checkbox" :checked="filters.highestPrice" @change="() => handleFilterChange('highest_price')"
@@ -34,10 +34,17 @@ import { useRoute, useRouter } from 'vue-router';
 export default defineComponent({
   name: 'SearchInput',
   props: {
+
+    additionalClass: {
+      type: String,
+      required: false
+    },
+
     placeholder: {
       type: String,
-      default: 'Search our products...',
+      default: 'Search our products',
     },
+
     query: String,
     filter: String
   },

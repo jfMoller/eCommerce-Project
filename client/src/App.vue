@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <RouterView class="min-h-max p-10 bg-gray-50" />
+  <RouterView class="min-h-max p-4 lg:p-10 bg-gray-50" />
   <FooterInfo />
 </template>
 
@@ -14,4 +14,6 @@ import FooterInfo from './components/footer/FooterInfo.vue'
 <style>
 html {
   background-color: white;
-}</style>
+  font-family: system-ui;
+}
+</style>

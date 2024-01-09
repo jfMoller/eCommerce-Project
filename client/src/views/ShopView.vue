@@ -1,6 +1,5 @@
 <template>
   <section>
-    <ProductSearchInput @search="handleSearch" />
     <ProductCards :placeholderAmount="10" :products="products" />
   </section>
 </template>
@@ -8,7 +7,6 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import ProductCards from '@/components/products/ProductCards.vue';
-import ProductSearchInput from '@/components/ProductSearchInput.vue';
 import { useProductStore } from '@/stores/network/productStore';
 import type { Product } from '@/types/product';
 import { useRoute } from 'vue-router';
@@ -75,7 +73,7 @@ export default defineComponent({
     };
   },
   components: {
-    ProductSearchInput, ProductCards
+    ProductCards
   }
 });
 </script>

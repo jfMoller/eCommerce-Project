@@ -36,11 +36,11 @@ export default defineComponent({
     },
 
     components: {
-        LoginItem,
-        StyledRouterLink,
-        ShoppingCartItem,
-        AccountItem,
-        AdminToolsItem
-    },
+    LoginItem,
+    StyledRouterLink,
+    ShoppingCartItem,
+    AccountItem,
+    AdminToolsItem,
+},
 })
 </script>
