@@ -1,19 +1,20 @@
 <template>
   <header
-    class="bg-white py-6 px-4 md:px-10 sticky top-0 z-999 border-b-4 border-white custom-box-shadow flex justify-between items-center">
+    class="bg-white py-6 px-4 lg:py-6 sticky top-0 z-999 border-b-4 border-white custom-box-shadow flex items-center justify-between sm:justify-center space-x-6">
     <HeaderLogo />
     <!--     Desktop view -->
-    <ProductSearchInput class="hidden lg:flex" />
+    <ProductSearchInput class="hidden md:flex" />
     <NavBarItems additionalClass="hidden sm:flex space-x-6 justify-center items-center" />
 
     <!-- Phone view -->
-    <div class="sm:hidden cursor-pointer space-x-6 text-l px-4 flex justify-center items-center">
+    <div class="sm:hidden cursor-pointer space-x-6 text-l flex justify-center items-center">
       <SearchItem @toggleSearchInput="toggleSearchInput" />
       <HamburgerIcon :handleOnClick="toggleAsideVisibility" />
       <ShoppingCartItem />
     </div>
-    <div v-if="isSearchInputOpen" class="lg:hidden absolute">
-    <ProductSearchInput additionalClass="md:max-w-max" />
+    <div v-if="isSearchInputOpen"  class="fixed left-[-0.5rem]">
+    <ProductSearchInput class="md:hidden" :hasCloseSearchEnabled="true"
+      @onClose="closeSearchInput" />
   </div>
   </header>
   <HamburgerDropdown :isOpen="isAsideOpen" :onClose="closeAside" :onClickOutside="handleClickOutsideAside" />
@@ -52,11 +53,14 @@ export default defineComponent({
 
     function toggleSearchInput(isShowingSearchInput: boolean) {
       isSearchInputOpen.value = isShowingSearchInput;
-      console.log(isSearchInputOpen.value)
+    }
+
+    function closeSearchInput() {
+      isSearchInputOpen.value = false;
     }
 
 
-    return { isAsideOpen, toggleAsideVisibility, closeAside, handleClickOutsideAside, isSearchInputOpen, toggleSearchInput }
+    return { isAsideOpen, toggleAsideVisibility, closeAside, handleClickOutsideAside, isSearchInputOpen, toggleSearchInput, closeSearchInput }
 
   },
   components: {

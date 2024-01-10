@@ -1,7 +1,6 @@
 <template>
-    <div class="cursor-pointer">
-        <i v-if="!isShowingSearchInput" class="fas fa-search" @click="toggleSearchInput" />
-        <i v-if="isShowingSearchInput" class="fas fa-close" @click="toggleSearchInput" />
+    <div class="cursor-pointer relative">
+        <i class="fas fa-search" @click="toggleSearchInput" />
     </div>
 </template>
   

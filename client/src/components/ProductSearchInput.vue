@@ -1,13 +1,14 @@
 <template>
-  <div :class="['w-full flex flex-col justify-center items-center relative', additionalClass]" @mouseover="showDropdown"
+  <div :class="['flex flex-col justify-center items-center relative', additionalClass]" @mouseover="showDropdown"
     @mouseleave="hideDropdown" @keyup.enter="handleSearch">
-    <div class="flex justify-center items-center bg-white border border-gray-600 rounded px-3 w-full lg:w-[28rem]">
+    <div class="flex justify-center items-center bg-white border border-gray-600 rounded px-3 lg:w-[28rem]">
       <i class="fas fa-search text-black"></i>
       <input type="text" v-model="searchInput" class="px-4 py-2 w-full focus:aria-black focus:outline-none"
         :placeholder="props.placeholder" />
+      <i v-if="hasCloseSearchEnabled" class="fas fa-close cursor-pointer" @click="handleCloseSearch" />
     </div>
     <div v-if="isOpenDropdown"
-      class=" bg-white w-full md:w-[28rem] transition duration-400 rounded-sm min-h-max shadow-md border border-gray-300 absolute top-[2.6rem] lg:top-[2.63rem] flex flex-col p-4 space-y-2">
+      class=" bg-white w-full lg:w-[28rem] transition duration-400 rounded-sm min-h-max shadow-md border border-gray-300 absolute top-[2.6rem] lg:top-[2.63rem] flex flex-col p-4 space-y-2">
       <h3 class="text-base font-semibold">SORT BY</h3>
       <div class="w-full border bordet-t-gray-300"></div>
       <div class="flex flex-col text-base items-start justify-center space-y-1">
@@ -43,6 +44,11 @@ export default defineComponent({
     placeholder: {
       type: String,
       default: 'Search our products',
+    },
+
+    hasCloseSearchEnabled: {
+      type: Boolean,
+      default: false,
     },
 
     query: String,
@@ -108,7 +114,11 @@ export default defineComponent({
 
     }
 
-    return { props, showDropdown, hideDropdown, searchInput, isOpenDropdown, filters, handleSearch, handleFilterChange };
+    function handleCloseSearch() {
+      emit('onClose', true)
+    }
+
+    return { props, showDropdown, hideDropdown, searchInput, isOpenDropdown, filters, handleSearch, handleFilterChange, handleCloseSearch };
   },
 });
 </script>
