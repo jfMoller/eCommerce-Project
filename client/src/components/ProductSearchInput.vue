@@ -1,14 +1,15 @@
 <template>
   <div :class="['flex flex-col justify-center items-center relative', additionalClass]" @mouseover="showDropdown"
     @mouseleave="hideDropdown" @keyup.enter="handleSearch">
-    <div class="flex justify-center items-center bg-white border border-gray-600 rounded px-3 lg:w-[28rem]">
+    <div
+      class="flex justify-center items-center bg-white border border-white md:border-gray-600 rounded py-[0.6rem] md:py-0 px-6 sm:px-3 w-screen sm:w-full lg:w-[28rem]">
       <i class="fas fa-search text-black"></i>
       <input type="text" v-model="searchInput" class="px-4 py-2 w-full focus:aria-black focus:outline-none"
         :placeholder="props.placeholder" />
       <i v-if="hasCloseSearchEnabled" class="fas fa-close cursor-pointer" @click="handleCloseSearch" />
     </div>
     <div v-if="isOpenDropdown"
-      class=" bg-white w-full lg:w-[28rem] transition duration-400 rounded-sm min-h-max shadow-md border border-gray-300 absolute top-[2.6rem] lg:top-[2.63rem] flex flex-col p-4 space-y-2">
+      class=" bg-white w-full lg:w-[28rem] transition duration-400 rounded-sm min-h-max shadow-md border border-gray-300 absolute top-[3.8rem] md:top-[2.6rem] lg:top-[2.63rem] flex flex-col p-4 space-y-2">
       <h3 class="text-base font-semibold">SORT BY</h3>
       <div class="w-full border bordet-t-gray-300"></div>
       <div class="flex flex-col text-base items-start justify-center space-y-1">

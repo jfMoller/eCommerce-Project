@@ -1,21 +1,19 @@
 <template>
   <header
-    class="bg-white py-6 px-4 lg:py-6 sticky top-0 z-999 border-b-4 border-white custom-box-shadow flex items-center justify-between sm:justify-center space-x-6">
+    class="bg-white py-4 px-6 lg:py-6 sticky top-0 z-999 border-b-4 border-white custom-box-shadow flex items-center justify-between md:justify-center space-x-6">
     <HeaderLogo />
     <!--     Desktop view -->
     <ProductSearchInput class="hidden md:flex" />
-    <NavBarItems additionalClass="hidden sm:flex space-x-6 justify-center items-center" />
+    <NavBarItems additionalClass="hidden md:flex space-x-6 justify-center items-center" />
 
     <!-- Phone view -->
-    <div class="sm:hidden cursor-pointer space-x-6 text-l flex justify-center items-center">
+    <div class="md:hidden cursor-pointer space-x-6 text-l flex justify-center items-center">
       <SearchItem @toggleSearchInput="toggleSearchInput" />
       <HamburgerIcon :handleOnClick="toggleAsideVisibility" />
       <ShoppingCartItem />
     </div>
-    <div v-if="isSearchInputOpen"  class="fixed left-[-0.5rem]">
-    <ProductSearchInput class="md:hidden" :hasCloseSearchEnabled="true"
-      @onClose="closeSearchInput" />
-  </div>
+    <ProductSearchDropdown :isOpen="isSearchInputOpen" :onClose="closeSearchInput"
+      :onClickOutside="handleClickOutsideSearchInput" />
   </header>
   <HamburgerDropdown :isOpen="isAsideOpen" :onClose="closeAside" :onClickOutside="handleClickOutsideAside" />
 </template>
@@ -29,6 +27,7 @@ import SearchItem from './SearchItem.vue';
 import NavBarItems from './NavBarItems.vue';
 import ShoppingCartItem from './ShoppingCartItem.vue';
 import HamburgerDropdown from './HamburgerDropdown.vue';
+import ProductSearchDropdown from '../products/ProductSearchDropdown.vue';
 
 export default defineComponent({
   name: "NavBar",
@@ -46,7 +45,7 @@ export default defineComponent({
     }
 
     function handleClickOutsideAside(event: any) {
-      if (!event.target.closest('bg-gray-800')) { // The aside background color
+      if (event.target.className.includes("outside-aside-components")) {
         closeAside()
       }
     }
@@ -55,16 +54,31 @@ export default defineComponent({
       isSearchInputOpen.value = isShowingSearchInput;
     }
 
+    function handleClickOutsideSearchInput(event: any) {
+      if (event.target.className.includes("outside-search-components")) {
+        closeSearchInput()
+      }
+    }
+
     function closeSearchInput() {
       isSearchInputOpen.value = false;
     }
 
-
-    return { isAsideOpen, toggleAsideVisibility, closeAside, handleClickOutsideAside, isSearchInputOpen, toggleSearchInput, closeSearchInput }
+    return {
+      isAsideOpen,
+      toggleAsideVisibility,
+      closeAside,
+      handleClickOutsideAside,
+      isSearchInputOpen,
+      toggleSearchInput,
+      handleClickOutsideSearchInput,
+      closeSearchInput
+    }
 
   },
   components: {
-    HeaderLogo, ProductSearchInput, SearchItem, HamburgerIcon, NavBarItems, ShoppingCartItem, HamburgerDropdown
+    HeaderLogo, ProductSearchInput, SearchItem, HamburgerIcon, NavBarItems, ShoppingCartItem, HamburgerDropdown,
+    ProductSearchDropdown
   },
 })
 </script>
