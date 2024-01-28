@@ -1,20 +1,6 @@
 <template>
   <section>
-    <div v-if="product" class="flex justify-center">
-      <div class="bg-white p-4 w-full shadow-md rounded-lg flex">
-        <img :src="product.imageUrl" :alt="product.name"
-          class="mb-4 h-[12rem] inline-block object-scale-down cursor-pointer">
-        <div class="flex flex-col justify-start items-start">
-          <h3 class="text-l text-center font-semibold mb-3">{{ product.name }}</h3>
-          <p>{{ product.description }}</p>
-          <span class="text-xl font-semibold text-black">{{ product.price }} :-</span>
-
-          <div class="flex flex-col justify-between items-center">
-           <BuyNowButton :product="product" />
-          </div>
-        </div>
-      </div>
-    </div>
+    <ProductCard v-if="product" :product="product" :isForProductView='true' />
   </section>
 </template>
   
@@ -24,7 +10,7 @@ import type { Product } from '@/types/product';
 import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 import { useProductStore } from '@/stores/network/productStore';
 import { useRoute } from 'vue-router';
-import BuyNowButton from '@/components/products/BuyNowButton.vue';
+import ProductCard from '@/components/products/ProductCard.vue';
 
 export default defineComponent({
   name: "ProductView",
@@ -47,7 +33,7 @@ export default defineComponent({
     };
   },
   components: {
-    BuyNowButton
+    ProductCard
 }
 
 });

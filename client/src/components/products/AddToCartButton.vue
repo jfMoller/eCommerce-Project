@@ -1,5 +1,5 @@
 <template>
-  <StyledButton text="Buy now" :disabled="isBuyButtonDisabled" :class="buttonStyles" additionalClass="mb-3"
+  <StyledButton text="ADD TO CART" :disabled="isButtonDisabled" :class="[buttonStyles, 'font-extrabold']"
     :handleClick="handleBuyButtonClick" />
 </template>
   
@@ -11,7 +11,7 @@ import { useProductStore } from '@/stores/network/productStore';
 import type { Product } from '@/types/product';
 
 export default defineComponent({
-  name: "BuyNowButton",
+  name: "AddToCartButton",
   props: {
     product: {
       type: Object as () => Product,
@@ -22,15 +22,15 @@ export default defineComponent({
   setup(props) {
     const shoppingCartStore = useShoppingCartStore();
     const productStore = useProductStore();
-    const isBuyButtonDisabled = ref<boolean>(props.product.quantity <= 0);
+    const isButtonDisabled = ref<boolean>(props.product.quantity <= 0);
 
     const buttonStyles = computed(() => ({
-      'bg-gray-300': isBuyButtonDisabled.value,
-      'text-gray-500': isBuyButtonDisabled.value,
-      'cursor-not-allowed': isBuyButtonDisabled.value,
-      'hover:bg-gray-300': isBuyButtonDisabled.value,
-      'hover:text-gray-500': isBuyButtonDisabled.value,
-      'border-gray-400': isBuyButtonDisabled.value,
+      'bg-gray-300': isButtonDisabled.value,
+      'text-gray-500': isButtonDisabled.value,
+      'cursor-not-allowed': isButtonDisabled.value,
+      'hover:bg-gray-300': isButtonDisabled.value,
+      'hover:text-gray-500': isButtonDisabled.value,
+      'border-gray-400': isButtonDisabled.value,
     }));
 
     async function handleBuyButtonClick() {
@@ -40,13 +40,13 @@ export default defineComponent({
       if (targetProduct.quantity > productAmount) {
         shoppingCartStore.methods.addProductId(props.product.id);
       } else {
-        isBuyButtonDisabled.value = true
+        isButtonDisabled.value = true
       }
       
     }
 
     return {
-      isBuyButtonDisabled,
+      isButtonDisabled,
       buttonStyles,
       handleBuyButtonClick,
     };
