@@ -48,6 +48,32 @@
     </div>
 
     <div v-if="isAuthenticated">
+
+      <h2 class="text-l font-bold my-6 text-center uppercase">2. Select delivery method</h2>
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Delivery Method</label>
+        <select v-model="selectedDeliveryMethod" id="selectedDeliveryMethod">
+          <option v-for="deliveryMethod in deliveryMethods" :key="deliveryMethod" :value="deliveryMethod">
+            {{ deliveryMethod }}</option>
+        </select>
+      </div>
+
+      <h2 class="text-l font-bold my-6 text-center uppercase">3. Select delivery address</h2>
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Delivery Address</label>
+        <input v-model="deliveryAddress" type="map" id="email"
+          class="w-full px-3 py-2 border rounded border-gray-400 focus:outline-none" required />
+      </div>
+
+      <h2 class="text-l font-bold my-6 text-center uppercase">4. Select payment method</h2>
+      <div class="mb-4">
+        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Payment Method</label>
+        <select v-model="selectedPaymentMethod" id="selectedDeliveryMethod">
+          <option v-for="paymentMethod in paymentMethods" :key="paymentMethod" :value="paymentMethod">
+            {{ paymentMethod }} </option>
+        </select>
+      </div>
+
       <h2 class="text-l font-bold my-6 text-center uppercase">2. Confirm your order</h2>
       <div class="w-full flex justify-center items-center">
         <button @click="placeOrder" class="bg-green-500 hover:bg-green-600 px-6 py-2 text-l text-white rounded">Confirm
@@ -80,6 +106,8 @@ import { useOrderStore } from '@/stores/network/orderStore';
 import { useShoppingCartStore } from '@/stores/shoppingCartStore';
 import { useAuthenticationStore } from '@/stores/authenticationStore';
 import type { OngoingOrder } from '@/types/order';
+import { DeliveryMethod } from '@/types/order';
+import { PaymentMethod } from '@/types/order';
 import StyledRouterLink from '../StyledRouterLink.vue';
 
 export default defineComponent({
@@ -89,8 +117,18 @@ export default defineComponent({
     const shoppingCartStore = useShoppingCartStore();
     const ongoingOrder = ref<OngoingOrder | null>(null);
     const isAuthenticated = computed(() => useAuthenticationStore().states.isAuthenticated);
+    const deliveryMethods = ref<DeliveryMethod[] | []>()
+    const paymentMethods = ref<PaymentMethod[] | []>()
 
-    onMounted(updateOngoingOrder);
+    const selectedDeliveryMethod = ref<string>('')
+    const deliveryAddress = ref<string>('')
+    const selectedPaymentMethod = ref<string>('')
+
+    onMounted(() => {
+      updateOngoingOrder();
+      getDeliveryMethods();
+      getPaymentMethods();
+    });
 
     watch(
       () => shoppingCartStore.states.productAmount,
@@ -100,6 +138,14 @@ export default defineComponent({
         }
       }
     );
+
+    async function getDeliveryMethods() {
+      deliveryMethods.value = await orderStore.API.getAvailableDeliveryMethods();
+    }
+
+    async function getPaymentMethods() {
+      paymentMethods.value = await orderStore.API.getAvailablePaymentMethods();
+    }
 
     async function updateOngoingOrder() {
       ongoingOrder.value = await orderStore.API.getOngoingOrder();
@@ -114,11 +160,25 @@ export default defineComponent({
     }
 
     async function placeOrder() {
-      await orderStore.API.placeOrder()
+      await orderStore.API.placeOrder(
+        selectedDeliveryMethod.value,
+        deliveryAddress.value,
+        selectedPaymentMethod.value)
       ongoingOrder.value = null
     }
 
-    return { ongoingOrder, addProduct, removeProduct, placeOrder, isAuthenticated };
+    return {
+      ongoingOrder,
+      addProduct,
+      removeProduct,
+      deliveryMethods,
+      selectedDeliveryMethod,
+      deliveryAddress,
+      paymentMethods,
+      selectedPaymentMethod,
+      placeOrder,
+      isAuthenticated
+    };
   },
 
   components: { LoadingScreen, StyledRouterLink }

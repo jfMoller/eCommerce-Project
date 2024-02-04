@@ -33,7 +33,9 @@ public class SecurityConfig {
             PRODUCTS_PATH + "/featured",
             PRODUCTS_PATH + "/{productId}",
             PRODUCTS_PATH + "/search/**",
-            ORDERS_PATH + "/ongoing"
+            ORDERS_PATH + "/ongoing",
+            ORDERS_PATH + "/delivery/methods",
+            ORDERS_PATH + "/payment/methods",
     };
 
     private static final String[] ADMIN_URLS = {

@@ -6,9 +6,12 @@ export const useOrderStore = defineStore('orderStore', () => {
   const shoppingCartStore = useShoppingCartStore()
 
   const API = {
-    placeOrder: async () => {
+    placeOrder: async (deliveryMethod: string, deliveryAddress: string, paymentMethod: string) => {
       const response = await callPost('/orders/place', {
-        productIds: shoppingCartStore.methods.getAllProductIds()
+        productIds: shoppingCartStore.methods.getAllProductIds(),
+        deliveryMethod: deliveryMethod,
+        deliveryAddress: deliveryAddress,
+        paymentMethod: paymentMethod
       })
       if (response.success) {
         shoppingCartStore.methods.clearProductIds()
@@ -20,7 +23,11 @@ export const useOrderStore = defineStore('orderStore', () => {
         productIds: shoppingCartStore.methods.getAllProductIds()
       }),
 
-    getPlacedOrders: async () => await callGet('/orders/all')
+    getPlacedOrders: async () => await callGet('/orders/all'),
+
+    getAvailableDeliveryMethods: async () => await callGet('/orders/delivery/methods'),
+
+    getAvailablePaymentMethods: async () => await callGet('/orders/payment/methods')
   }
 
   return {

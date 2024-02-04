@@ -56,3 +56,29 @@ export function orderStatusToString(status: OrderStatus): string {
       return 'INVALID_STATUS'
   }
 }
+
+export enum DeliveryMethod {
+  HOME_DELIVERY
+}
+
+export function deliveryMethodToString(method: DeliveryMethod): string {
+  switch (method) {
+    case DeliveryMethod.HOME_DELIVERY:
+      return 'HOME_DELIVERY'
+    default:
+      return 'INVALID_DELIVERY_METHOD'
+  }
+}
+
+export enum PaymentMethod {
+  PAY_ON_DELIVERY
+}
+
+export function paymentMethodToString(method: PaymentMethod): string {
+  switch (method) {
+    case PaymentMethod.PAY_ON_DELIVERY:
+      return 'PAY_ON_DELIVERY'
+    default:
+      return 'INVALID_PAYMENT_METHOD'
+  }
+}
