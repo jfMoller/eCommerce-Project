@@ -5,6 +5,7 @@ import me.code.springboot_neo4j.dtos.requests.PlaceOrderDTO;
 import me.code.springboot_neo4j.dtos.responses.entities.OngoingOrderDTO;
 import me.code.springboot_neo4j.dtos.responses.entities.PlacedOrderDTO;
 import me.code.springboot_neo4j.dtos.responses.success.Success;
+import me.code.springboot_neo4j.models.nodes.Order;
 import me.code.springboot_neo4j.models.nodes.User;
 import me.code.springboot_neo4j.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,26 @@ public class OrderController {
 
     @PostMapping("/place")
     public ResponseEntity<Success> placeOrder(@AuthenticationPrincipal User user, @RequestBody PlaceOrderDTO dto) {
-        var result = orderService.placeOrder(user, dto.productIds());
+        var result = orderService.placeOrder(
+                user, dto.productIds(), dto.deliveryMethod(), dto.deliveryAddress(), dto.paymentMethod());
         return result.toResponseEntity();
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<PlacedOrderDTO>> getUserOrders(@AuthenticationPrincipal User user) {
         var result = orderService.getUserOrders(user.getId());
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/delivery/methods")
+    public ResponseEntity<List<Order.DeliveryMethod>> getAvailableDeliveryMethods() {
+        var result = orderService.getAvailableDeliveryMethods();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/payment/methods")
+    public ResponseEntity<List<Order.PaymentMethod>> getAvailablePaymentMethods() {
+        var result = orderService.getAvailablePaymentMethods();
         return ResponseEntity.ok(result);
     }
 

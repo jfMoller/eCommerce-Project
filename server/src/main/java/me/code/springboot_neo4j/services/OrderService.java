@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -37,7 +38,12 @@ public class OrderService {
     }
 
     @Transactional
-    public Success placeOrder(User user, String[] productIds) {
+    public Success placeOrder(
+            User user,
+            String[] productIds,
+            Order.DeliveryMethod deliveryMethod,
+            String deliveryAddress,
+            Order.PaymentMethod paymentMethod) {
         try {
             List<Product> products =
                     productService.loadProductsById(productIds);
@@ -58,7 +64,7 @@ public class OrderService {
             }
 
             productService.updateProductQuantities(items);
-            orderRepository.save(new Order(user, items));
+            orderRepository.save(new Order(user, items, deliveryMethod, deliveryAddress, paymentMethod));
 
             return new Success(
                     HttpStatus.OK,
@@ -109,6 +115,14 @@ public class OrderService {
                 () -> new CustomRuntimeException(
                         HttpStatus.NOT_FOUND,
                         "Could not find orders placed by user with id: " + userId));
+    }
+
+    public List<Order.DeliveryMethod> getAvailableDeliveryMethods() {
+        return Arrays.stream(Order.DeliveryMethod.values()).toList();
+    }
+
+    public List<Order.PaymentMethod> getAvailablePaymentMethods() {
+        return Arrays.stream(Order.PaymentMethod.values()).toList();
     }
 
 }
