@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-center items-center">
-    <h2 class="text-l font-bold mb-6 text-center uppercase">Your Shopping Cart</h2>
-    <div class="p-4 bg-white rounded shadow relative min-w-max w-[70%]">
+    <h2 class="text-l font-bold mb-6 text-left uppercase">Your Shopping Cart</h2>
+    <div class="p-0 sm:p-4 bg-white rounded shadow w-full sm:min-w-max sm:w-[70%] mb-4">
       <LoadingScreen />
 
       <ul>
@@ -17,17 +17,17 @@
             </div>
             <div class="flex flex-col items-center sm:flex-row">
               <div class="flex items-center border rounded-md">
-                <div class="px-3 py-3 text-center flex text-l">
+                <div class="px-3 py-3 text-left flex text-l">
 
                   <p class="text-gray-700">{{ item.amount }}</p>
                 </div>
 
                 <div class="flex flex-col">
                   <button @click="() => addProduct(item.product.id)" :disabled="item.amount >= item.product.quantity"
-                    class="text-center border-l border-b font-bold text-2xl px-2"
+                    class="text-left border-l border-b font-bold text-2xl px-2"
                     :class="{ 'bg-gray-100 text-gray-400 cursor-not-allowed': item.amount >= item.product.quantity }">+</button>
                   <button @click="() => removeProduct(item.product.id)"
-                    class="text-center border-l font-bold text-2xl px-2">-</button>
+                    class="text-left border-l font-bold text-2xl px-2">-</button>
                 </div>
               </div>
 
@@ -41,48 +41,57 @@
         </div>
 
       </ul>
+      <div class="w-full font-bold flex justify-between items-center mt-4 px-4">
+        <p>Total price:</p>
+        <p>{{ ongoingOrder?.totalPrice }}:-</p>
+      </div>
     </div>
-    <div class="w-full sm:w-[70%] bg-white rounded shadow font-bold flex justify-between items-center p-4 mt-4">
-      <p>Total price:</p>
-      <p>{{ ongoingOrder?.totalPrice }}:-</p>
-    </div>
 
-    <div v-if="isAuthenticated">
+    <div v-if="isAuthenticated" class="sm:min-w-max sm:w-[70%] w-full space-y-4">
 
-      <h2 class="text-l font-bold my-6 text-center uppercase">2. Select delivery method</h2>
-      <div class="mb-4">
-        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Delivery Method</label>
-        <select v-model="selectedDeliveryMethod" id="selectedDeliveryMethod">
-          <option v-for="deliveryMethod in deliveryMethods" :key="deliveryMethod" :value="deliveryMethod">
-            {{ deliveryMethod }}</option>
-        </select>
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="text-l font-bold mb-6 text-left uppercase">2. Select delivery address</h2>
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Delivery Address</label>
+          <input v-model="deliveryAddress" type="map" id="email"
+            class="w-full px-3 py-2 border rounded border-gray-400 focus:outline-none" required />
+        </div>
       </div>
 
-      <h2 class="text-l font-bold my-6 text-center uppercase">3. Select delivery address</h2>
-      <div class="mb-4">
-        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Delivery Address</label>
-        <input v-model="deliveryAddress" type="map" id="email"
-          class="w-full px-3 py-2 border rounded border-gray-400 focus:outline-none" required />
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="text-l font-bold mb-6 text-left uppercase">3. Select delivery method</h2>
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Delivery Method</label>
+          <select v-model="selectedDeliveryMethod" id="selectedDeliveryMethod">
+            <option v-for="deliveryMethod in deliveryMethods" :key="deliveryMethod" :value="deliveryMethod">
+              {{ deliveryMethod }}</option>
+          </select>
+        </div>
       </div>
 
-      <h2 class="text-l font-bold my-6 text-center uppercase">4. Select payment method</h2>
-      <div class="mb-4">
-        <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Payment Method</label>
-        <select v-model="selectedPaymentMethod" id="selectedDeliveryMethod">
-          <option v-for="paymentMethod in paymentMethods" :key="paymentMethod" :value="paymentMethod">
-            {{ paymentMethod }} </option>
-        </select>
+
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="text-l font-bold mb-6 text-left uppercase">4. Select payment method</h2>
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Payment Method</label>
+          <select v-model="selectedPaymentMethod" id="selectedDeliveryMethod">
+            <option v-for="paymentMethod in paymentMethods" :key="paymentMethod" :value="paymentMethod">
+              {{ paymentMethod }} </option>
+          </select>
+        </div>
       </div>
 
-      <h2 class="text-l font-bold my-6 text-center uppercase">2. Confirm your order</h2>
-      <div class="w-full flex justify-center items-center">
-        <button @click="placeOrder" class="bg-green-500 hover:bg-green-600 px-6 py-2 text-l text-white rounded">Confirm
-          order</button>
+      <div class="p-4 bg-white rounded shadow">
+        <h2 class="text-l font-bold my-6 text-left uppercase">{{ isAuthenticated ? '5' : '2' }}. Confirm your order</h2>
+        <div class="w-full flex justify-center items-center">
+          <button @click="placeOrder" class="bg-green-500 hover:bg-green-600 px-6 py-2 text-l text-white rounded">Confirm
+            order</button>
+        </div>
       </div>
     </div>
     <div v-else>
 
-      <h2 class="text-l font-bold my-6 text-center uppercase">2. Login to complete your order</h2>
+      <h2 class="text-l font-bold my-6 text-left uppercase">2. Login to complete your order</h2>
       <div class="flex flex-col justify-center">
         <button
           class="w-max-min bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition duration-300">
