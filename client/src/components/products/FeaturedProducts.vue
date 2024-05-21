@@ -1,8 +1,7 @@
 <template>
-  <article class="mt-10">
-    <h2 class="text-3xl font-semibold mb-6">Featured Products</h2>
-      <ProductCards :placeholderAmount=4 :products="featuredProducts" />
-
+  <article class="flex flex-col justify-center items-center mt-2">
+    <div class="bg-gray-200 h-[0.1rem] w-[30rem] my-2"></div>
+    <ProductCards :placeholderAmount=4 :products="featuredProducts" class="w-full md:max-w-max mt-2" />
   </article>
 </template>
   

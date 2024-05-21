@@ -1,7 +1,6 @@
 <template>
     <div class="cursor-pointer transition duration-300" @mouseover="showPopup" @mouseleave="hidePopup">
-        <IconRouterLink iconClass="fas fa-sliders" path="/admin_tools" />
-        <p></p>
+        <IconRouterLink iconClass="fas fa-id-card" path="/admin_tools" />
         <AdminToolsPopup v-if="isShowingPopup" />
     </div>
 </template>

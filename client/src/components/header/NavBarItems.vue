@@ -4,9 +4,8 @@
         <LoginItem v-if="!isAuthenticated" />
         <AccountItem v-else />
         <StyledRouterLink text="SHOP" path="/shop" />
-        <StyledRouterLink text="ABOUT" path="/about" />
-        <StyledRouterLink text="CONTACT" path="/contact" />
-        <ShoppingCartItem :additionalClass="hasProductsInCart ? ' ' : 'pointer-events-none'" />
+        <ShoppingCartItem v-if="props.includeShoppingCartItem"
+            :additionalClass="hasProductsInCart ? ' ' : 'pointer-events-none'" />
     </nav>
 </template>
   
@@ -26,6 +25,11 @@ export default defineComponent({
             Type: String,
             required: false
         },
+        includeShoppingCartItem: {
+            Type: Boolean,
+            required: false,
+            default: true
+        }
     },
     setup(props) {
         const isAuthenticated = computed(() => useAuthenticationStore().states.isAuthenticated)
@@ -36,11 +40,11 @@ export default defineComponent({
     },
 
     components: {
-    LoginItem,
-    StyledRouterLink,
-    ShoppingCartItem,
-    AccountItem,
-    AdminToolsItem,
-},
+        LoginItem,
+        StyledRouterLink,
+        ShoppingCartItem,
+        AccountItem,
+        AdminToolsItem,
+    },
 })
 </script>

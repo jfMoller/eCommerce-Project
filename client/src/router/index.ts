@@ -1,11 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AboutView from '../views/AboutView.vue'
 import LoginView from '../views/LoginView.vue'
 import SignupView from '../views/SignupView.vue'
 import AccountView from '../views/AccountView.vue'
 import ProductView from '@/views/ProductView.vue'
-import ContactView from '@/views/ContactView.vue'
 import EditAccountView from '../views/EditAccountView.vue'
 import ShowAccountOrdersView from '@/views/ShowAccountOrdersView.vue'
 import { useAuthenticationStore } from '@/stores/authenticationStore'
@@ -28,11 +26,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
-      component: AboutView
-    },
-    {
       path: '/shop',
       name: 'shop',
       component: () => import('../views/ShopView.vue'),
@@ -45,11 +38,6 @@ const router = createRouter({
       path: '/product/:productId',
       name: 'productView',
       component: ProductView
-    },
-    {
-      path: '/contact',
-      name: 'contact',
-      component: ContactView
     },
     {
       path: '/login',

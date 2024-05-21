@@ -1,5 +1,5 @@
 <template>
-  <StyledButton text="ADD TO CART" :disabled="isButtonDisabled" :class="[buttonStyles, 'font-extrabold']"
+  <StyledButton text="ADD TO CART" :disabled="isButtonDisabled" :class="[buttonStyles, 'font-extrabold text-sm']"
     :handleClick="handleBuyButtonClick" />
 </template>
   

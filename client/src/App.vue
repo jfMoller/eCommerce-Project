@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <RouterView class="min-h-max p-2.5 bg-gray-50" />
+  <RouterView class="min-h-max p-0 sm:p-2.5 bg-gray-50" />
   <FooterInfo />
 </template>
 

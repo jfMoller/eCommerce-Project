@@ -2,11 +2,7 @@
     <nav class="space-x-6">
         <StyledRouterLink text="Home" path="/"
             additionalClass="text-gray-800 hover:text-gray-300 transition duration-300 ease-in-out" />
-        <StyledRouterLink text="About" path="/about"
-            additionalClass="text-gray-800 hover:text-gray-300 transition duration-300 ease-in-out" />
         <StyledRouterLink text="Shop" path="/shop"
-            additionalClass="text-gray-800 hover:text-gray-300 transition duration-300 ease-in-out" />
-        <StyledRouterLink text="Contact" path="/contact"
             additionalClass="text-gray-800 hover:text-gray-300 transition duration-300 ease-in-out" />
     </nav>
 </template>
