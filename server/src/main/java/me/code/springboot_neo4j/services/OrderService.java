@@ -41,8 +41,8 @@ public class OrderService {
     public Success placeOrder(
             User user,
             String[] productIds,
-            Order.DeliveryMethod deliveryMethod,
             String deliveryAddress,
+            Order.DeliveryMethod deliveryMethod,
             Order.PaymentMethod paymentMethod) {
         try {
             List<Product> products =
@@ -64,7 +64,7 @@ public class OrderService {
             }
 
             productService.updateProductQuantities(items);
-            orderRepository.save(new Order(user, items, deliveryMethod, deliveryAddress, paymentMethod));
+            orderRepository.save(new Order(user, items, deliveryAddress, deliveryMethod, paymentMethod));
 
             return new Success(
                     HttpStatus.OK,

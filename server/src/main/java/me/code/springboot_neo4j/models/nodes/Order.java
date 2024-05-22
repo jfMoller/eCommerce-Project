@@ -38,15 +38,15 @@ public class Order {
     public Order(
             User user,
             List<OrderItem> items,
-            DeliveryMethod deliveryMethod,
             String deliveryAddress,
+            DeliveryMethod deliveryMethod,
             PaymentMethod paymentMethod) {
         this.status = Status.PENDING;
         this.user = user;
         this.items = items;
         this.price = getTotalPrice();
-        this.deliveryMethod = deliveryMethod;
         this.deliveryAddress = deliveryAddress;
+        this.deliveryMethod = deliveryMethod;
         this.paymentMethod = paymentMethod;
         this.received = LocalDateTime.now();
         this.expectedDelivery = null;

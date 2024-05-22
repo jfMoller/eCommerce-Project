@@ -6,11 +6,11 @@ export const useOrderStore = defineStore('orderStore', () => {
   const shoppingCartStore = useShoppingCartStore()
 
   const API = {
-    placeOrder: async (deliveryMethod: string, deliveryAddress: string, paymentMethod: string) => {
+    placeOrder: async (deliveryAddress: string, deliveryMethod: string, paymentMethod: string) => {
       const response = await callPost('/orders/place', {
         productIds: shoppingCartStore.methods.getAllProductIds(),
-        deliveryMethod: deliveryMethod,
         deliveryAddress: deliveryAddress,
+        deliveryMethod: deliveryMethod,
         paymentMethod: paymentMethod
       })
       if (response.success) {

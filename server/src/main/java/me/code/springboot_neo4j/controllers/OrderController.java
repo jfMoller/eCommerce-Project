@@ -34,7 +34,7 @@ public class OrderController {
     @PostMapping("/place")
     public ResponseEntity<Success> placeOrder(@AuthenticationPrincipal User user, @RequestBody PlaceOrderDTO dto) {
         var result = orderService.placeOrder(
-                user, dto.productIds(), dto.deliveryMethod(), dto.deliveryAddress(), dto.paymentMethod());
+                user, dto.productIds(), dto.deliveryAddress(), dto.deliveryMethod(), dto.paymentMethod());
         return result.toResponseEntity();
     }
 
