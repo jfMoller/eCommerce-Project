@@ -67,7 +67,7 @@ public class Order {
     }
 
     public enum DeliveryMethod {
-        HOME_DELIVERY
+        DRONE_DELIVERY
     }
 
     public enum PaymentMethod {

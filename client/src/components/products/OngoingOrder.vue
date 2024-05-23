@@ -50,7 +50,7 @@
         </ul>
 
         <div v-if="ongoingOrder !== null && !isConfirmedOrder"
-          class="w-full font-bold flex justify-between items-center my-4 pb-4 px-2">
+          class="w-full font-bold flex justify-between items-center my-4 px-2">
           <p class="ml-[0.47rem]">Total price:</p>
           <p>{{ ongoingOrder?.totalPrice }}:-</p>
         </div>
@@ -59,28 +59,33 @@
       <div v-if="isAuthenticated" class="sm:min-w-max w-full space-y-4">
         <h2 class="text-l font-bold uppercase text-center sm:text-left">2. Fill in your delivery details</h2>
         <div class="p-2 sm:p-4 bg-white rounded shadow pb-4 w-full">
-
-          <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Delivery address</label>
-          <input v-model="deliveryDetails.deliveryAddress" type="text" id="deliveryAddress"
-            class="w-full px-3 py-2 border rounded border-gray-300 focus:outline-none" required />
+          <div class="flex items-center justify-between pb-4">
+            <label for="deliveryLocation" class="block text-gray-700 text-sm font-bold mb-2">Delivery Location</label>
+            <button @click="getGeoLocation" class="bg-sky-500 hover:bg-sky-600 px-6 py-2 text-l text-white rounded">Get my
+              location</button>
+          </div>
+          <iframe class="w-full h-[20rem] rounded-md"
+            :src="`https://maps.google.com/maps?q=${deliveryCoordinates.latitude},${deliveryCoordinates.longitude}&hl=en&z=14&amp;output=embed`">
+          </iframe>
         </div>
 
         <div class="flex justify-between">
           <div class="p-4 bg-white rounded shadow w-full mr-4">
-            <h2 class="text-l font-bold mb-6 text-center sm:text-left uppercase whitespace-nowrap">3. Select delivery method</h2>
+            <h2 class="text-l font-bold mb-6 text-center sm:text-left uppercase whitespace-nowrap">3. Select delivery
+              method</h2>
             <div class="mb-4">
               <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Delivery Method</label>
               <select v-model="selectedDeliveryMethod" id="selectedDeliveryMethod"
                 class="px-3 py-2 border rounded border-gray-300 focus:outline-none">
                 <option v-for="deliveryMethod in deliveryMethods" :key="deliveryMethod" :value="deliveryMethod">
-                  {{ deliveryMethod === 'HOME_DELIVERY' ? 'Home delivery' : deliveryMethod }}</option>
+                  {{ deliveryMethod === 'DRONE_DELIVERY' ? 'Drone delivery' : deliveryMethod }}</option>
               </select>
             </div>
           </div>
 
-
           <div class="p-4 bg-white rounded shadow w-full">
-            <h2 class="text-l font-bold mb-6 text-center sm:text-left uppercase whitespace-nowrap">4. Select payment method</h2>
+            <h2 class="text-l font-bold mb-6 text-center sm:text-left uppercase whitespace-nowrap">4. Select payment
+              method</h2>
             <div class="mb-4">
               <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Payment Method</label>
               <select v-model="selectedPaymentMethod" id="selectedDeliveryMethod"
@@ -148,8 +153,9 @@ export default defineComponent({
     const deliveryMethods = ref<string[] | []>()
     const paymentMethods = ref<string[] | []>()
 
-    const deliveryDetails = reactive({
-      deliveryAddress: '',
+    const deliveryCoordinates = reactive({
+      latitude: '',
+      longitude: ''
     })
 
     const selectedDeliveryMethod = ref<string>('')
@@ -207,11 +213,22 @@ export default defineComponent({
 
     async function placeOrder() {
       await orderStore.API.placeOrder(
-        deliveryDetails.deliveryAddress,
+        deliveryCoordinates.latitude,
+        deliveryCoordinates.longitude,
         selectedDeliveryMethod.value,
         selectedPaymentMethod.value)
       ongoingOrder.value = null
       isConfirmedOrder.value = true;
+    }
+
+    function getGeoLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(showPosition);
+      }
+    }
+    function showPosition(position: any) {
+      deliveryCoordinates.latitude = position.coords.latitude;
+      deliveryCoordinates.longitude = position.coords.longitude;
     }
 
     function clearConfirmedOrder() {
@@ -224,12 +241,13 @@ export default defineComponent({
       removeProduct,
       deliveryMethods,
       selectedDeliveryMethod,
-      deliveryDetails,
+      deliveryCoordinates,
       paymentMethods,
       selectedPaymentMethod,
       placeOrder,
       isAuthenticated,
       isConfirmedOrder,
+      getGeoLocation,
       clearConfirmedOrder
     };
   },

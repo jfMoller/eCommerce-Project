@@ -6,7 +6,7 @@
 </template>
   
 <script lang="ts">
-import AccountOrLogoutPopup from '../AccountOrLogoutPopup.vue';
+import AccountOrLogoutPopup from '../account/AccountOrLogoutPopup.vue';
 
 import { defineComponent, ref } from 'vue';
 import IconRouterLink from '../IconRouterLink.vue';
