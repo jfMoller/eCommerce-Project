@@ -1,6 +1,6 @@
 <template>
     <div v-if="props.order"
-        class="w-screen sm:w-max sm:min-w-[30rem] bg-white border-l fixed h-screen top-[5.78rem] right-0 p-5 shadow-md">
+        class="w-screen sm:w-max sm:min-w-[30rem] bg-white border-l fixed h-screen top-[6.45rem] sm:top-[5.78rem] right-0 p-5 shadow-md">
 
         <ConfirmDialogue :isPasswordRequired="false" header="Confirm send order"
             text="Are you sure you want to send this order?"

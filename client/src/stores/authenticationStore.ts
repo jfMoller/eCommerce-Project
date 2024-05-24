@@ -11,9 +11,7 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
 
   const methods = {
     handleAuthentication: async (response: LoginResponseSuccess, routerOriginName?: string) => {
-
       if (response.success && response.token) {
-
         storeJwtToken(response.token)
         states.isAuthenticated.value = true
 
@@ -42,6 +40,7 @@ export const useAuthenticationStore = defineStore('authenticationStore', () => {
 
   function revokeAuthentication() {
     states.isAuthenticated.value = false
+    states.isAdmin.value = false
   }
 
   function storeJwtToken(token: string) {

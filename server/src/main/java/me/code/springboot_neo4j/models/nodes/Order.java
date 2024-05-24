@@ -24,8 +24,9 @@ public class Order {
     private Status status;
     private double price;
     private PaymentMethod paymentMethod;
+    private float latitude;
+    private float longitude;
     private DeliveryMethod deliveryMethod;
-    private String deliveryAddress;
     private LocalDateTime received;
     private LocalDateTime expectedDelivery;
 
@@ -38,14 +39,16 @@ public class Order {
     public Order(
             User user,
             List<OrderItem> items,
-            String deliveryAddress,
+            float latitude,
+            float longitude,
             DeliveryMethod deliveryMethod,
             PaymentMethod paymentMethod) {
         this.status = Status.PENDING;
         this.user = user;
         this.items = items;
         this.price = getTotalPrice();
-        this.deliveryAddress = deliveryAddress;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.deliveryMethod = deliveryMethod;
         this.paymentMethod = paymentMethod;
         this.received = LocalDateTime.now();

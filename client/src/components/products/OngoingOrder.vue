@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col justify-center items-center w-full">
-    <div v-if="!isConfirmedOrder">
+    <div v-if="!isConfirmedOrder" class="w-full flex flex-col items-center justify-center">
       <h2 class="text-l font-bold text-center sm:text-left uppercase w-full sm:min-w-max sm:w-[70%] py-4">Inspect your
         cart
       </h2>
-      <div class="p-0 sm:p-4 bg-white rounded shadow w-full sm:min-w-max sm:w-[70%] mb-4">
+      <div class="p-4 bg-white rounded shadow w-full sm:min-w-max sm:w-[70%] mb-4">
         <LoadingScreen />
         <ul>
           <div v-if="ongoingOrder !== null && !isConfirmedOrder">
@@ -50,23 +50,20 @@
         </ul>
 
         <div v-if="ongoingOrder !== null && !isConfirmedOrder"
-          class="w-full font-bold flex justify-between items-center my-4 px-2">
+          class="w-full font-bold flex justify-between items-center mt-4 mb-1 px-2">
           <p class="ml-[0.47rem]">Total price:</p>
           <p>{{ ongoingOrder?.totalPrice }}:-</p>
         </div>
       </div>
 
-      <div v-if="isAuthenticated" class="sm:min-w-max w-full space-y-4">
+      <div v-if="isAuthenticated" class="sm:min-w-max w-full space-y-4 text-l font-bold sm:w-[70%] pb-4">
         <h2 class="text-l font-bold uppercase text-center sm:text-left">2. Fill in your delivery details</h2>
-        <div class="p-2 sm:p-4 bg-white rounded shadow pb-4 w-full">
-          <div class="flex items-center justify-between pb-4">
-            <label for="deliveryLocation" class="block text-gray-700 text-sm font-bold mb-2">Delivery Location</label>
-            <button @click="getGeoLocation" class="bg-sky-500 hover:bg-sky-600 px-6 py-2 text-l text-white rounded">Get my
-              location</button>
-          </div>
-          <iframe class="w-full h-[20rem] rounded-md"
+        <div class="p-4 bg-white rounded shadow pb-4 w-full flex flex-col justify-center items-center">
+          <iframe id="googleMap" class="w-full h-[20rem] rounded-md mb-4"
             :src="`https://maps.google.com/maps?q=${deliveryCoordinates.latitude},${deliveryCoordinates.longitude}&hl=en&z=14&amp;output=embed`">
           </iframe>
+          <button @click="getGeoLocation" class="bg-sky-500 hover:bg-sky-600 px-6 py-2 text-l text-white rounded">Get my
+            location</button>
         </div>
 
         <div class="flex justify-between">

@@ -9,7 +9,7 @@
       </div>
 
       <div class="text-center text-gray-400">
-        <p>&copy; 2023 eCommerce Company. All rights reserved.</p>
+        <p>&copy; 2024 eCommerce Project</p>
       </div>
     </div>
   </footer>

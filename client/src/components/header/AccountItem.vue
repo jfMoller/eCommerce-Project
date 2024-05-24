@@ -1,6 +1,6 @@
 <template>
     <div class="cursor-pointer transition duration-300" @mouseover="showPopup" @mouseleave="hidePopup">
-        <IconRouterLink iconClass="fas fa-user" path="/account" />
+        <IconRouterLink iconClass="fas fa-user" path="/account/edit" />
         <AccountOrLogoutPopup v-if="isShowingPopup" />
     </div>
 </template>

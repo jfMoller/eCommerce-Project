@@ -34,7 +34,7 @@ public class MockProductsConfig {
             new Product(
                     "Decaf Colombian Coffee",
                     "Medium roast decaffeinated Colombian coffee beans.",
-                    "https://www.freshroastedcoffee.com/cdn/shop/products/medium_1a53b4fc-6e44-419f-95d8-a6711618b12e_700x700.jpg?v=1646667784",
+                    "https://www.freshroastedcoffee.com/cdn/shop/products/medium_134d8ab1-48f2-42ff-b935-8fe434ab6352_700x700.jpg?v=1703802767",
                     14.99,
                     12),
             new Product(
