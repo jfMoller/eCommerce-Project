@@ -99,7 +99,8 @@
             your order</h2>
           <div class="w-full flex justify-center items-center">
             <button @click="placeOrder"
-              class="bg-green-500 hover:bg-green-600 px-6 py-2 text-l text-white rounded">Confirm
+              :disabled="deliveryCoordinates.latitude == '' || deliveryCoordinates.longitude == ''"
+              class="bg-green-500 hover:bg-green-600 px-6 py-2 text-l text-white rounded disabled:bg-gray-500 disabled:cursor-not-allowed">Confirm
               order</button>
           </div>
         </div>
