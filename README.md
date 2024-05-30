@@ -58,3 +58,14 @@ Run Application.java
 cd client
     npm run dev
 ```
+
+6.	Login or register an account
+```
+   Admin account:
+   { email: "admin@admin.com", password: "Password" }
+
+   User account:
+   { email: "user@user.com", password: "Password" }
+
+```
+   For mock user configuration, refer to the        "MockUsersConfig.java" in the neo4j server package
