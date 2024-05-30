@@ -1,7 +1,7 @@
 # **eCommerce-Project**
 
 ## **Introduction**
-I wanted to build a fullstack webshop in order to improve my understanding of e-commerce systems; the end result could be useful as a starting point for other e-commerce applications.
+I wanted to build a fullstack website in order to improve my understanding of e-commerce systems; the end result could be useful as a starting point for other e-commerce applications.
 
 ## **Description**
 The project includes an SPA with Vue 3 (Composition API) & TypeScript, using Pinia for global storage and Tailwind CSS for styling and responsive design; the backend was built with Java Spring Boot & Neo4J.
